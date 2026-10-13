@@ -7,13 +7,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Sayı Dizisi">
-<meta name="hub-build" content="SEQ-20261013-01">
-<title>Sayı Dizisi V1 · Playus antrenmanı</title>
+<meta name="hub-build" content="SEQ-20261013-02">
+<title>Sayı Dizisi V1.1 · Playus antrenmanı</title>
 <style>
 :root{color-scheme:dark;--bg:#182131;--panel:#222e41;--muted:#aebfd2;--lime:#fff45e;--teal:#20a48d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overscroll-behavior:none}
-button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid var(--lime);outline-offset:3px}[hidden]{display:none!important}
+button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--lime);outline-offset:3px}[hidden]{display:none!important}
 #game{position:fixed;inset:0;width:100%;height:100%;height:100dvh;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
 #safe{position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 .tools{position:fixed;z-index:3;top:max(10px,env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none}
@@ -25,6 +25,16 @@ button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,sele
 .hero{display:flex;gap:8px;margin:17px 0 22px}.hero span{width:43px;height:43px;display:grid;place-items:center;border-radius:10px;color:white;font-size:22px;font-weight:850;box-shadow:inset 0 -2px #0002}.hero .arrow{background:none;color:#90a6c1;box-shadow:none;width:26px}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:11px 10px}.options label{font-size:11px;color:#b2c3d6;display:flex;flex-direction:column;gap:6px}.options .wide{grid-column:1/-1}
 select{width:100%;border:1px solid #7388a74a;background:#2c3a50;color:#f3f6fa;border-radius:11px;padding:11px 7px;font-size:12px;min-height:43px;touch-action:manipulation}
+.custom-entry{padding:13px;border:1px solid #7897b740;border-radius:13px;background:#182536}
+.custom-entry label{font-size:12px;font-weight:750;color:#d8e9f5}
+.custom-input-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.custom-input-row input{min-width:0;flex:1;width:100%;min-height:49px;border:1px solid #879db64d;border-radius:10px;background:#2c3a50;color:#fff;padding:10px 11px;font-size:22px;letter-spacing:2px;font-variant-numeric:tabular-nums;touch-action:manipulation}
+.custom-input-row input::placeholder{font-size:16px;letter-spacing:.5px;color:#a4b5c7}
+.custom-input-row input[aria-invalid="true"]{border-color:#fba894}
+#customCount{font-size:12px;font-variant-numeric:tabular-nums;color:#bbd0e2;white-space:nowrap}
+#customHelp{font-size:11px;line-height:1.55;color:#b3c9dd;margin:8px 0 0}
+#customHelp[data-error="true"]{color:#ffc2b2}
+.primary:disabled{cursor:not-allowed;opacity:.43}
 .check{display:flex;align-items:center;gap:10px;color:#bacbdc;font-size:12px;margin:13px 0;line-height:1.4}.check input{width:18px;height:18px;accent-color:#ffef68}
 .primary,.secondary{width:100%;border-radius:13px;padding:14px 12px;min-height:49px;font-size:15px;font-weight:850;touch-action:manipulation}.primary{background:var(--lime);border:1px solid #fffbd0;color:#172132;box-shadow:inset 0 -3px #beae38;margin-top:15px}.secondary{background:#35485d;border:1px solid #7e96b23b;color:#eef3f7;margin-top:9px}.link{border:0;background:none;color:#b9cddd;padding:14px 4px;width:100%;font-size:12px;touch-action:manipulation}
 .notice{font-size:11px;line-height:1.5;padding:11px 12px;border-radius:11px;background:#1b2534;border:1px solid #718bac22;margin-top:13px;color:#bccbde}
@@ -43,13 +53,18 @@ details{margin-top:14px;font-size:12px;color:#aebfd0;line-height:1.55}summary{co
 <canvas id="game" tabindex="0" role="application" aria-label="Sayı dizisi oyunu. Üst sıradaki sayıları sırayla bul. Her doğru dokunuşta tuşlar yer değiştirir."></canvas>
 <div class="tools"><button id="homeBtn" aria-label="Ayarlar">‹</button><button id="pauseBtn" aria-label="Duraklat" hidden>Ⅱ</button></div>
 <section id="panel"><div class="sheet">
-<div class="kicker">SAYI DİZİSİ V1 · KAYIT REFERANSLI</div>
+<div class="kicker">SAYI DİZİSİ V1.1 · KENDİ DİZİNİ GİR</div>
 <h1 id="heading">Sırayı oku.<br><em>Yeni yeri bul.</em></h1>
 <p id="intro">Üstteki <strong>8 sayıyı sırayla bul.</strong> Her doğru dokunuşta dokuz tuşun yeri değişir; sayının rengi aynı kalır. <strong>İlk doğru sayıya bastığında süre başlar.</strong></p>
 <div class="hero" id="hero" aria-hidden="true"><span style="background:#9b25ae">6</span><span style="background:#01a7f3">8</span><span style="background:#4aad4e">5</span><span style="background:#f24234">7</span><span class="arrow">→</span><span style="background:#fff45e;color:#142030">?</span></div>
 <div id="settings">
 <div class="options">
-<label class="wide">Dizilim<select id="route"><option value="record">Videodaki sıra + aynı yerleşimler</option><option value="mixed">Aynı sıra + yeni yerleşimler</option><option value="random">Yeni 8 sayı + yeni yerleşimler</option></select></label>
+<label class="wide">Dizilim<select id="route"><option value="record">Videodaki sıra + aynı yerleşimler</option><option value="custom">Kendi 8 sayımı gir + yeni yerleşimler</option><option value="mixed">Aynı sıra + yeni yerleşimler</option><option value="random">Yeni 8 sayı + yeni yerleşimler</option></select></label>
+<div id="customEntry" class="custom-entry wide" hidden>
+<label for="customSequence">Oynayacağın 8 haneli dizi</label>
+<div class="custom-input-row"><input id="customSequence" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Örn. 68576867" aria-describedby="customHelp customCount" aria-invalid="false"><span id="customCount" aria-live="polite">0 / 8</span></div>
+<p id="customHelp" aria-live="polite">1–9 kullan. Aynı rakam tekrarlanabilir; 0 yok.</p>
+</div>
 <label>Çalışma<select id="mode"><option value="challenge">Hatasız süre provası</option><option value="learn">Öğren · yanlışta devam</option></select></label>
 <label>Hareket<select id="motion"><option value="reference">Kayıt · ≈0,20 sn</option><option value="slow">Yavaş · ≈0,40 sn</option></select></label>
 <label class="wide">Ekran yerleşimi<select id="layout"><option value="responsive">Ekrana uyumlu kare tuşlar</option><option value="source">Kaynağın oranı · 512 × 1038</option></select></label>
@@ -74,22 +89,23 @@ details{margin-top:14px;font-size:12px;color:#aebfd0;line-height:1.55}summary{co
 <p>Kaynak: gönderdiğin 512 × 1128, 30 FPS, yaklaşık 12,32 saniyelik video. Görünen dizi 6–8–5–7–6–8–6–7; sonuç 4,47 saniye. Sekiz yerleşim ve yedi yer değiştirme ölçüldü. Kayıtta resmî oyun başlığı görünmediğinden “Sayı Dizisi” bu antrenmanın adıdır.</p>
 <p>İlk doğru basışla son doğru basışın görünür kareleri arasındaki 4,467 saniye, sonuç ekranıyla uyumlu. Bu ham dokunma kaydı değildir. Küçük sıçramalı hareket eğrisi görüntüden uyarlandı; yaklaşık 0,20 saniye. Dokunma kabulü varsayılan olarak parmak inerken gerçekleşir.</p>
 <p>Başarılı tek koşu, yanlış sayı/boşluk cezasını veya hareket sırasında özgün dokunma kuralını kesin göstermiyor. Bu trainer yanlış sayıda süre provasını bitirir; öğrenmede devam eder. Boşa dokunuş yalnız sayılır. Bir temas bir cevap verir; sürükleme ve tutma tekrar üretmez. Görünen canlı tuş alanı kullanılır.</p>
+<p>“Kendi 8 sayımı gir” seçeneğinde yalnız 1–9 rakamlarından oluşan sekiz haneli sıra kabul edilir; tekrar eden rakamlar geçerlidir. Girdiğin sıra tekrar denemede değişmez, tuş yerleşimleri yeniden üretilir. Her özel dizinin rekoru ayrı tutulur.</p>
 <p>Yeni dizilimler kendi üretimimizdir; özgün rastgele dağılımı bilinmiyor. Ara verilen veya rehberle oynanan tur rekora yazılmaz. Gerçek kişi avatarı, çevrimiçi sıralama ve oyunun müzik kaydı kopyalanmadı. Playus hesabına bağlanmaz. Fiziksel iPhone/Safari eşleşmesi doğrulanmadı.</p>
 </details>
-<div class="build"><span>SEQ-20261013-01<br>Bağımsız antrenman · diğer oyunları değiştirmez</span><button id="refresh">Sürümü yenile</button></div>
+<div class="build"><span>SEQ-20261013-02<br>Bağımsız antrenman · diğer oyunları değiştirmez</span><button id="refresh">Sürümü yenile</button></div>
 </div></section>
 <div id="live" aria-live="polite"></div>
 <script>
 'use strict';
 const REF={"sequence":[6,8,5,7,6,8,6,7],"boards":[[7,1,8,4,2,6,3,9,5],[8,9,5,2,3,6,1,7,4],[7,6,1,5,2,9,8,3,4],[3,5,6,4,9,1,2,7,8],[8,9,1,2,5,4,7,6,3],[7,3,6,8,5,9,2,4,1],[5,9,6,8,1,3,7,4,2],[9,3,1,7,8,5,2,4,6]],"palette":{"7":"#f24234","1":"#e81d63","8":"#01a7f3","4":"#fe9700","2":"#2094f2","6":"#9b25ae","3":"#00bbd3","9":"#ffc007","5":"#4aad4e"},"curves":[[[0.0,0.0],[0.02435,0.349278],[0.057683,0.935866],[0.091017,1.064567],[0.12435,1.071331],[0.157683,1.037961],[0.191017,0.999267],[0.22435,0.999267],[0.23,1.0]],[[0.0,0.0],[0.037327,0.662306],[0.07066,1.050486],[0.103994,1.099714],[0.137327,1.070315],[0.17066,1.018924],[0.203994,1.00061],[0.237327,1.00061],[0.24232700000000001,1.0]],[[0.0,0.0],[0.030615,0.602439],[0.063949,0.73252],[0.097282,1.060926],[0.130615,1.098374],[0.163949,1.056911],[0.197282,1.002023],[0.230615,1.0],[0.235615,1.0]],[[0.0,0.0],[0.011896,0.263796],[0.04523,0.691143],[0.078563,1.081301],[0.111896,1.099838],[0.14523,1.056911],[0.178563,1.003098],[0.211896,1.0],[0.23,1.0]],[[0.0,0.0],[0.014491,0.306971],[0.047824,0.807175],[0.081158,1.066197],[0.114491,1.098542],[0.147824,1.068011],[0.181158,1.002609],[0.214491,1.00057],[0.23,1.0]],[[0,0],[0.033333,0.501626],[0.066667,0.957627],[0.1,1.090042],[0.133333,1.09167],[0.166667,1.000813],[0.2,1.000814],[0.23,1.0]],[[0.0,0.0],[0.009188,0.217469],[0.042522,0.677886],[0.075855,0.898166],[0.109188,1.093688],[0.142522,1.063591],[0.175855,0.999593],[0.209188,0.999593],[0.23,1.0]]],"duration":0.194398,"overshoot":1.658338,"observedEventSeconds":[0.0,0.566667,1.066667,1.633333,2.166667,3.2,4.033333,4.466667],"referenceResult":4.47,"glyphs":{"7":{"path":"M13.50,31.55L6.50,31.46L5.44,30.48L6.50,28.25L11.75,20.48L12.15,19.48L14.63,15.48L15.59,14.48L15.99,13.48L17.98,10.48L19.49,7.48L18.50,7.16L16.50,7.00L1.50,7.00L0.50,6.79L0.19,6.48L0.00,4.48L0.05,1.48L0.46,0.48L1.50,0.00L28.50,0.13L29.20,0.48L29.74,1.48L29.86,5.48L29.50,7.48L28.13,9.48L25.50,14.11L24.36,15.48L23.96,16.48L20.50,21.98L19.17,24.48L18.50,25.29L15.50,30.17L14.50,31.14L13.50,31.55Z","w":29.857,"h":31.593},"1":{"path":"M16.65,31.43L10.65,31.38L9.51,30.37L9.47,11.37L9.32,8.37L8.65,7.87L6.65,8.06L1.65,9.00L0.65,8.80L0.24,8.37L0.03,7.37L0.00,5.37L0.06,3.37L0.65,2.55L2.65,1.90L10.65,0.22L16.65,0.00L17.65,0.16L17.91,0.37L18.24,1.37L18.26,30.37L17.65,31.14L16.65,31.43Z","w":18.285,"h":31.433},"8":{"path":"M20.49,32.41L12.49,32.50L10.49,32.18L6.49,31.08L4.49,30.41L3.49,29.32L2.49,28.95L1.90,28.41L1.49,27.41L0.43,26.41L0.00,22.41L0.11,21.41L0.80,19.41L1.97,18.41L2.49,17.41L3.49,17.00L5.42,15.41L3.49,13.43L2.49,12.95L2.04,12.41L1.19,10.41L1.07,9.41L1.24,7.41L1.81,5.41L2.49,4.42L4.49,2.43L6.49,1.18L12.49,0.11L19.49,0.00L21.49,0.20L25.49,0.88L27.31,1.41L28.49,2.21L29.49,2.62L31.86,5.41L32.32,7.41L32.40,9.41L32.32,10.41L31.64,12.41L30.49,13.09L29.49,14.26L27.91,15.41L31.49,18.08L32.47,19.41L33.35,21.41L33.53,24.41L33.31,25.41L31.71,28.41L30.11,29.41L29.49,30.05L25.49,31.57L20.49,32.41ZM21.24,12.41L22.49,11.71L23.49,10.76L23.70,9.41L22.02,7.41L21.49,7.15L17.49,6.79L12.49,7.01L11.56,7.41L10.49,8.19L9.90,9.41L10.01,10.41L10.49,11.28L12.49,12.47L14.49,12.70L17.49,12.75L19.49,12.71L21.24,12.41ZM19.04,25.41L21.49,25.26L23.60,24.41L24.28,22.41L24.20,21.41L23.49,20.59L21.49,19.39L18.49,19.10L12.49,19.19L11.49,19.73L10.49,20.00L9.02,21.41L8.97,22.41L9.24,23.41L9.95,24.41L10.49,24.81L12.49,25.33L14.49,25.49L19.04,25.41Z","w":33.529,"h":32.522},"4":{"path":"M27.24,31.57L22.24,31.64L20.24,30.53L19.92,29.50L19.76,26.50L19.24,25.75L18.24,25.54L4.24,25.65L2.24,25.49L0.24,24.34L0.01,23.50L0.07,20.50L0.97,18.50L1.94,17.50L2.24,16.90L3.24,16.22L3.92,15.50L4.30,14.50L5.24,14.08L5.84,13.50L6.24,12.45L7.24,11.99L7.64,11.50L7.98,10.50L9.55,9.50L9.86,8.50L10.24,8.09L11.24,7.57L11.73,6.50L12.89,5.50L13.49,4.50L14.24,3.78L14.85,3.50L15.43,2.50L16.24,1.77L17.05,1.50L17.58,0.50L18.24,0.08L27.24,0.07L28.06,0.50L28.27,1.50L28.76,2.50L28.84,17.50L30.24,18.90L32.24,19.21L33.24,19.72L33.60,20.50L33.78,23.50L33.24,25.23L32.24,25.58L30.24,25.75L29.24,26.36L28.90,29.50L28.42,30.50L27.24,31.57ZM19.57,18.50L20.01,17.50L20.07,16.50L20.00,10.50L19.51,8.50L19.24,8.28L18.18,8.50L17.91,9.50L17.24,10.18L16.61,10.50L16.06,11.50L13.49,14.50L13.24,15.30L12.24,15.77L11.58,16.50L11.03,18.50L12.24,19.17L14.24,19.35L19.24,18.91L19.57,18.50Z","w":33.785,"h":31.678},"2":{"path":"M31.43,31.45L30.43,32.05L29.43,32.27L17.43,32.14L6.43,32.27L2.43,32.04L1.43,31.82L0.82,31.31L0.58,30.31L0.55,27.31L0.96,26.31L1.76,25.31L5.11,23.31L7.26,22.31L8.70,21.31L11.43,19.98L12.43,19.14L15.43,17.65L16.43,16.87L17.43,16.52L18.56,15.31L20.09,14.31L21.43,12.61L21.78,11.31L21.35,9.31L20.43,8.24L19.43,7.49L17.43,6.89L15.43,6.83L12.43,7.21L11.43,7.76L10.43,8.45L9.65,9.31L9.23,10.31L8.43,11.43L7.43,12.01L0.43,11.85L0.11,11.31L0.00,10.31L0.15,9.31L0.89,8.31L2.43,5.37L4.43,3.25L8.16,1.31L9.43,0.86L12.43,0.29L17.43,0.00L21.43,0.45L23.43,1.00L27.59,3.31L28.13,4.31L29.43,5.64L30.14,7.31L30.33,8.31L30.51,9.31L30.44,12.31L29.72,14.31L28.33,16.31L25.43,18.90L23.43,20.32L19.43,22.68L17.90,23.31L17.43,23.95L16.71,24.31L18.43,24.80L29.43,24.99L30.81,25.31L31.43,26.13L31.69,27.31L31.70,30.31L31.43,31.45Z","w":31.702,"h":32.273},"6":{"path":"M21.61,32.51L16.61,32.68L13.61,32.52L10.61,31.92L8.61,31.17L6.61,30.07L4.61,28.61L2.61,26.29L1.13,23.34L0.05,19.34L0.00,15.34L0.45,11.34L1.13,9.34L2.69,6.34L4.61,4.09L7.61,1.99L9.61,1.07L12.61,0.30L14.61,0.05L18.61,0.03L21.61,0.49L25.61,1.97L26.61,2.60L28.80,4.34L30.31,6.34L30.78,7.34L31.09,8.34L30.61,9.04L29.77,9.34L24.61,9.40L23.61,9.14L21.02,7.34L19.61,6.84L17.61,6.64L14.61,6.72L12.69,7.34L10.61,8.69L9.42,10.34L8.60,12.34L8.34,13.34L8.38,14.34L8.61,14.83L9.61,14.76L12.61,12.93L15.61,11.91L20.61,11.61L23.61,11.90L24.61,12.11L26.61,12.99L28.72,14.34L30.62,16.34L31.61,18.48L32.03,20.34L31.93,23.34L31.09,26.34L28.61,29.19L27.10,30.34L24.61,31.59L21.61,32.51ZM21.07,25.34L22.22,24.34L22.91,23.34L23.18,22.34L23.12,21.34L22.87,20.34L21.61,19.00L19.61,18.14L17.61,17.94L14.61,18.35L11.61,19.63L10.53,20.34L9.54,21.34L9.54,22.34L10.31,23.34L12.61,25.28L13.61,25.76L15.61,26.09L18.61,26.06L20.61,25.65L21.07,25.34Z","w":32.025,"h":32.684},"3":{"path":"M19.30,32.62L15.30,32.72L9.30,32.08L7.30,31.61L6.14,30.56L5.30,30.29L3.30,29.19L2.98,28.56L2.30,27.75L1.90,27.56L1.30,26.69L0.70,25.56L0.12,23.56L0.00,22.56L0.30,22.19L1.30,21.74L7.30,21.81L8.30,22.06L8.82,22.56L9.25,23.56L10.61,24.56L11.30,25.41L13.30,25.86L17.30,26.01L20.30,25.71L20.63,25.56L21.48,24.56L22.30,24.10L22.64,23.56L22.74,22.56L22.27,20.56L20.30,19.71L18.30,19.35L13.30,19.35L11.30,18.63L10.95,17.56L10.96,14.56L11.30,13.88L13.30,13.27L18.30,13.26L19.30,12.73L20.30,12.51L21.61,11.56L22.17,10.56L22.15,9.56L21.74,8.56L20.30,7.66L18.30,6.94L14.30,7.01L11.30,8.04L10.65,8.56L10.25,9.56L8.30,10.97L3.30,10.93L2.30,10.83L1.30,10.44L0.90,9.56L0.97,8.56L2.07,6.56L2.90,5.56L3.30,4.44L4.30,4.04L6.16,2.56L7.30,2.00L10.30,1.10L11.30,0.43L15.30,0.02L18.30,0.00L20.30,0.10L22.72,0.56L25.30,1.71L26.30,1.96L27.38,2.56L29.52,4.56L30.80,6.56L30.90,9.56L30.57,11.56L30.30,12.12L29.08,13.56L28.30,14.16L27.25,14.56L26.87,15.56L27.30,16.21L28.30,16.86L28.83,17.56L30.40,18.56L31.31,20.56L31.55,23.56L30.72,27.56L30.30,28.04L29.25,28.56L28.70,29.56L28.30,29.87L27.30,30.10L26.30,30.97L24.99,31.56L24.30,31.84L19.30,32.62Z","w":31.569,"h":32.752},"9":{"path":"M19.49,32.64L17.49,32.97L12.49,32.90L11.84,32.37L8.49,31.86L6.49,31.04L6.09,30.37L5.49,30.01L4.49,29.81L3.91,29.37L3.49,28.23L2.49,27.89L2.13,27.37L1.39,24.37L2.49,23.59L7.49,23.61L8.49,23.77L9.49,24.06L9.86,24.37L10.49,25.50L12.49,26.06L17.49,26.19L19.49,25.77L20.18,25.37L20.49,24.77L21.01,24.37L21.49,24.24L22.26,23.37L22.49,22.25L23.49,21.53L23.65,20.37L23.07,18.37L22.49,18.25L22.24,18.37L21.69,19.37L18.49,20.13L17.95,20.37L17.49,21.20L15.49,21.51L10.49,21.51L8.49,21.27L7.63,20.37L4.49,19.75L3.99,19.37L3.67,18.37L2.49,17.87L2.11,17.37L1.89,16.37L1.49,15.73L0.79,15.37L0.49,14.85L0.08,13.37L0.04,10.37L0.23,8.37L0.49,7.59L0.90,7.37L1.36,6.37L2.16,5.37L2.40,4.37L3.49,3.97L4.11,3.37L4.55,2.37L6.49,1.67L8.10,1.37L10.49,0.23L16.49,0.00L20.10,0.37L21.49,0.91L21.99,1.37L23.49,1.65L25.37,2.37L25.99,3.37L27.49,3.88L27.99,4.37L28.18,5.37L28.49,5.76L29.49,6.12L29.69,6.37L29.88,7.37L30.91,9.37L31.49,9.72L31.81,10.37L32.09,12.37L32.14,19.37L31.95,21.37L31.49,23.55L30.49,24.12L29.49,27.10L29.29,27.37L28.49,27.59L27.79,28.37L27.49,29.47L26.49,29.60L25.20,30.37L24.18,31.37L23.49,31.69L19.75,32.37L19.49,32.64ZM17.32,14.37L18.49,13.96L19.49,13.85L21.49,13.07L22.25,11.37L22.21,10.37L20.83,8.37L19.49,7.82L18.49,7.70L17.80,7.37L17.49,6.85L15.49,6.38L14.49,6.36L12.49,6.93L12.14,7.37L10.49,7.83L9.85,8.37L9.69,9.37L9.10,10.37L9.13,11.37L9.49,11.83L10.02,13.37L10.49,13.82L13.49,14.39L14.49,14.86L15.49,14.84L17.32,14.37Z","w":32.144,"h":32.971},"5":{"path":"M21.94,31.28L19.94,31.76L16.94,31.96L11.94,31.91L8.94,31.48L6.94,30.91L4.94,29.78L1.65,27.01L0.94,26.00L0.47,25.01L0.00,23.01L0.36,22.01L0.94,21.68L5.94,21.58L6.94,21.71L7.94,22.00L8.94,23.18L10.94,24.56L13.94,25.31L16.94,25.27L18.28,25.01L18.94,24.68L20.98,23.01L21.29,22.01L21.43,20.01L21.15,19.01L20.58,18.01L19.94,17.49L16.94,16.52L12.94,16.67L9.45,18.01L7.94,18.88L6.94,19.01L2.94,19.01L1.22,18.01L1.24,16.01L2.04,11.01L2.78,4.01L3.10,2.01L3.48,1.01L3.94,0.46L4.94,0.13L23.94,0.13L24.94,0.00L26.94,0.18L27.94,0.98L28.23,2.01L28.25,5.01L27.94,6.18L25.94,6.78L24.94,6.84L10.94,6.81L9.94,7.13L9.34,8.01L8.94,9.97L8.94,11.30L9.94,11.60L14.94,10.62L20.94,10.73L23.94,11.45L25.94,12.60L26.94,13.45L27.94,13.86L28.58,15.01L29.45,16.01L30.22,18.01L30.49,20.01L30.48,23.01L29.68,25.01L28.60,27.01L26.40,29.01L23.94,30.61L21.94,31.28Z","w":30.496,"h":31.967},"0":{"path":"M36.42,55.94L33.42,56.11L26.42,55.99L20.42,54.83L17.42,53.81L14.42,52.50L10.42,50.01L8.42,48.31L5.91,45.75L3.25,41.75L2.21,39.75L1.20,36.75L0.17,31.75L0.00,27.75L0.27,23.75L0.97,19.75L2.03,16.75L3.04,14.75L5.60,10.75L7.42,8.72L10.42,5.98L15.42,3.05L19.42,1.45L22.42,0.73L26.42,0.13L33.42,0.03L38.42,0.50L43.42,1.81L45.42,2.58L47.42,3.49L51.13,5.75L55.42,9.68L57.82,12.75L59.88,16.75L60.64,18.75L61.56,22.75L61.79,24.75L62.01,27.75L61.77,31.75L60.75,36.75L59.66,39.75L58.70,41.75L57.47,43.75L55.98,45.75L53.08,48.75L50.42,50.82L48.42,52.05L43.42,54.23L39.42,55.34L36.42,55.94ZM36.29,41.75L39.42,40.25L41.17,38.75L42.86,36.75L43.89,34.75L44.74,31.75L45.04,27.75L44.63,23.75L43.71,20.75L41.42,17.31L39.42,15.71L36.42,14.29L32.42,13.56L29.42,13.59L26.42,14.11L23.42,15.24L21.42,16.53L19.40,18.75L18.26,20.75L17.21,23.75L16.86,26.75L16.89,29.75L17.13,31.75L17.99,34.75L19.05,36.75L21.42,39.28L22.42,40.13L25.70,41.75L28.42,42.29L31.42,42.46L33.42,42.34L36.29,41.75Z","w":62.006,"h":56.108},".":{"path":"M13.14,17.40L11.14,17.94L9.14,18.09L7.14,17.94L5.14,17.40L3.14,16.13L2.14,15.14L0.88,13.28L0.27,11.28L0.00,8.28L0.78,5.28L2.04,3.28L3.00,2.28L5.14,0.85L7.14,0.20L9.14,0.00L11.14,0.28L13.14,0.85L15.15,2.28L17.41,5.28L18.00,7.28L18.22,9.28L17.63,12.28L17.24,13.28L15.81,15.28L13.14,17.40Z","w":18.224,"h":18.091},"s":{"path":"M33.14,43.46L31.14,43.72L23.14,43.76L15.14,42.64L10.14,40.92L7.14,39.54L4.14,37.34L3.17,36.40L1.66,34.40L0.61,32.40L0.08,30.40L0.00,29.40L1.14,28.54L14.14,28.44L16.14,28.57L17.14,29.29L19.10,31.40L20.14,31.97L22.14,32.63L25.14,33.04L31.14,33.04L32.14,32.80L33.14,32.42L34.14,31.77L34.55,31.40L35.07,30.40L34.93,29.40L34.14,28.44L33.14,28.05L28.14,27.25L18.14,26.48L12.14,25.54L9.14,24.68L7.14,23.84L5.14,22.74L4.14,21.94L2.84,20.40L1.69,18.40L0.91,15.40L0.89,12.40L1.83,9.40L3.06,7.40L5.14,5.20L7.14,3.74L10.14,2.38L14.14,1.08L18.14,0.43L24.14,0.00L28.14,0.04L31.14,0.34L35.14,1.06L38.14,1.93L43.14,4.15L46.14,6.47L48.00,8.40L49.14,10.04L50.20,12.40L50.39,13.40L49.87,14.40L49.14,14.68L35.14,14.74L34.03,14.40L32.34,12.40L30.97,11.40L28.14,10.23L27.14,10.06L24.14,9.97L21.14,10.16L19.14,10.81L18.14,11.44L17.47,12.40L17.43,13.40L17.95,14.40L19.14,15.10L20.14,15.39L38.14,16.91L43.14,18.12L45.14,18.89L47.14,20.09L49.14,21.78L50.33,23.40L51.29,26.40L51.49,28.40L51.40,30.40L50.70,33.40L49.14,36.19L48.16,37.40L45.14,39.84L41.72,41.40L38.14,42.62L33.14,43.46Z","w":51.511,"h":43.807}}};
-const BUILD='SEQ-20261013-01';
+const BUILD='SEQ-20261013-02';
 const $=id=>document.getElementById(id);
 const canvas=$('game'),ctx=canvas.getContext('2d',{alpha:false});
 const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 const colors=REF.palette;
 const glyphPaths=Object.fromEntries(Object.entries(REF.glyphs).map(([n,g])=>[n,new Path2D(g.path)]));
 const CFG={referenceWidth:512,referenceHeight:1038,key:'sequencePractice.v1.records',duration:REF.duration,back:REF.overshoot};
-let config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false};
+let config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false,customSequence:''};
 let state='settings',priorState='running',sequence=[],boards=[],progress=0,elapsed=0,visual=0,last=0,raf=0;
 let fromPos=[],toPos=[],animStart=-99999,animIndex=-1,pressed=null,wrong=null,wrongAt=-99999;
 let hits=[],errors=0,empty=0,interrupted=false,isDemo=false,demoCursor=0,manual=false,seed=1,completedRun=null;
@@ -103,7 +119,42 @@ let audio=null;
 function rng(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function freshSeed(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]||1;}catch(e){return (Date.now()^Math.floor(Math.random()*4294967295))>>>0;}}
-function readSettings(){config={route:$('route').value,mode:$('mode').value,motion:$('motion').value,layout:$('layout').value,guide:$('guide').checked,sound:$('sound').checked};}
+// Custom targets use the existing nine-key game; no new gameplay timing is added.
+const CUSTOM_STORAGE_KEY='sequencePractice.v1.customSequence';
+function parseCustomSequence(raw){
+ const value=String(raw||'').replace(/\s/g,'');
+ if(!value)return {valid:false,value,message:'8 rakam yaz. 1–9 kullan; aynı rakam tekrarlanabilir.'};
+ if(/[^1-9]/.test(value))return {valid:false,value,message:'Yalnız 1–9 rakamlarını kullan. Bu oyunda 0 tuşu yok.'};
+ if(value.length!==8)return {valid:false,value,message:value.length<8
+  ?'Tam 8 rakam gerekli. '+(8-value.length)+' rakam daha yaz.'
+  :'Tam 8 rakam gerekli. '+(value.length-8)+' fazla rakamı sil.'};
+ return {valid:true,value,message:'Sıran: '+value.split('').join(' → ')+'. Her doğru basışta tuşlar yer değiştirir.'};
+}
+function readSettings(){
+ const entry=parseCustomSequence($('customSequence').value);
+ config={route:$('route').value,mode:$('mode').value,motion:$('motion').value,layout:$('layout').value,guide:$('guide').checked,sound:$('sound').checked,customSequence:entry.value};
+ if(config.route==='custom'&&entry.valid)store.set(CUSTOM_STORAGE_KEY,entry.value);
+}
+function syncCustomEntry(){
+ const own=$('route').value==='custom',entry=parseCustomSequence($('customSequence').value);
+ $('customEntry').hidden=!own;
+ $('customCount').textContent=entry.value.length+' / 8';
+ $('customHelp').textContent=entry.message;
+ const invalid=own&&!entry.valid&&entry.value.length>0;
+ $('customHelp').dataset.error=String(invalid);
+ $('customSequence').setAttribute('aria-invalid',String(invalid));
+ $('customSequence').setCustomValidity(own&&!entry.valid?entry.message:'');
+ if(state==='settings'){
+  $('start').disabled=own&&!entry.valid;
+  // A recorded demo is not a demonstration of the user's custom target.
+  $('demo').hidden=own;
+ }else $('start').disabled=false;
+}
+function recordKey(){return config.route==='custom'?'custom:'+sequence.join(''):config.route;}
+function refreshSettingsPreview(){
+ if(state!=='settings')return;
+ readSettings();initialize();state='settings';syncCustomEntry();resize();
+}
 function validBest(r){return r&&Number.isFinite(r.ms)&&r.ms>0?r:null;}
 function eligible(){return config.mode==='challenge'&&config.motion==='reference'&&!config.guide&&!interrupted&&!isDemo&&!manual&&errors===0;}
 function stopFrame(){if(raf)cancelAnimationFrame(raf);raf=0;}
@@ -111,12 +162,17 @@ function schedule(){if(!manual&&!raf&&['armed','running','demo'].includes(state)
 function clockStamp(e){let t=Number(e&&e.timeStamp),now=performance.now();if(t>1e12)t-=performance.timeOrigin;return Number.isFinite(t)&&Math.abs(t-now)<60000?t:now;}
 function notify(message){$('live').textContent=message;}
 function initialize(seedValue){
+ if(config.route==='custom'){
+  const entry=parseCustomSequence(config.customSequence);
+  if(!entry.valid){stopFrame();held.clear();state='settings';return false;}
+  config.customSequence=entry.value;
+ }
  stopFrame();held.clear();progress=0;elapsed=0;visual=0;hits=[];errors=0;empty=0;pressed=null;wrong=null;wrongAt=-99999;interrupted=false;runStarted=false;completedRun=null;animStart=-99999;animIndex=-1;last=0;demoCursor=0;manual=false;isDemo=false;
  seed=seedValue===undefined?freshSeed():seedValue;
- sequence=config.route==='random'?Array.from({length:8},()=>1+Math.floor(rng()*9)):REF.sequence.slice();
+ sequence=config.route==='custom'?config.customSequence.split('').map(Number):config.route==='random'?Array.from({length:8},()=>1+Math.floor(rng()*9)):REF.sequence.slice();
  boards=config.route==='record'?REF.boards.map(b=>b.slice()):[];
  if(config.route!=='record'){for(let i=0;i<8;i++){let b=shuffle([1,2,3,4,5,6,7,8,9]);if(i&&b.every((n,j)=>n===boards[i-1][j]))[b[0],b[1]]=[b[1],b[0]];boards.push(b);}}
- toPos=positionsFor(boards[0]);fromPos=toPos.map(p=>({...p}));state='armed';last=performance.now();armedSince=last;
+ toPos=positionsFor(boards[0]);fromPos=toPos.map(p=>({...p}));state='armed';last=performance.now();armedSince=last;return true;
 }
 function positionsFor(board){const out=[];board.forEach((n,i)=>out[n]={c:i%3,r:Math.floor(i/3)});return out;}
 function backEase(t){const u=Math.max(0,Math.min(1,t))-1;return 1+(CFG.back+1)*u*u*u+CFG.back*u*u;}
@@ -178,14 +234,17 @@ function press(n,now,automatic=false){
  render();schedule();return true;
 }
 function arm(){
- readSettings();initialize();$('panel').hidden=true;$('pauseBtn').hidden=true;resize();notify('Hazır. İlk '+sequence[0]+' dokunuşunda süre başlayacak.');render();schedule();
+ readSettings();
+ if(!initialize()){showPanel('settings');syncCustomEntry();$('customSequence').focus();notify(parseCustomSequence(config.customSequence).message);return;}
+ $('customSequence').blur();
+ $('panel').hidden=true;$('pauseBtn').hidden=true;resize();notify('Hazır. İlk '+sequence[0]+' dokunuşunda süre başlayacak.');render();schedule();
 }
-function retry(){initialize();$('panel').hidden=true;$('pauseBtn').hidden=true;resize();render();schedule();}
+function retry(){if(!initialize()){showPanel('settings');return;}$('panel').hidden=true;$('pauseBtn').hidden=true;resize();render();schedule();}
 function finish(ok,wrongNumber){
  stopFrame();held.clear();state=ok?'done':'error';$('pauseBtn').hidden=true;
  let newBest=false;
- if(ok&&eligible()&&elapsed>0){const prev=validBest(records[config.route]);if(!prev||elapsed<prev.ms){records[config.route]={ms:elapsed,date:new Date().toISOString()};store.set(CFG.key,records);newBest=true;}}
- completedRun={ok,elapsed,errors,empty,progress,route:config.route,eligible:ok&&eligible(),newBest,hits:hits.map(h=>({...h})),interrupted};
+ if(ok&&eligible()&&elapsed>0){const prev=validBest(records[recordKey()]);if(!prev||elapsed<prev.ms){records[recordKey()]={ms:elapsed,date:new Date().toISOString()};store.set(CFG.key,records);newBest=true;}}
+ completedRun={ok,elapsed,errors,empty,progress,route:config.route,sequence:sequence.slice(),eligible:ok&&eligible(),newBest,hits:hits.map(h=>({...h})),interrupted};
  showPanel(ok?'done':'error',ok?'':('Beklenen '+sequence[progress]+' yerine '+wrongNumber+' geldi.\nBu deneme geçerli rekor sayılmaz.'));
  render();notify(ok?'Tamamlandı. '+(elapsed/1000).toFixed(2)+' saniye.':'Yanlış sayı.');
 }
@@ -198,13 +257,15 @@ function showPanel(kind,reason=''){
  if(setup){$('heading').innerHTML='Sırayı oku.<br><em>Yeni yeri bul.</em>';$('start').textContent='PROVAYA HAZIRLAN';}
  else if(paused){$('heading').textContent='Duraklatıldı';$('start').textContent='DEVAM ET';$('reason').textContent=reason||'Bu tur ara verildiği için rekor dışı. Aynı noktadan çalışmaya devam edebilirsin.';}
  else if(demoDone){$('heading').textContent='Kayıt akışı tamam';$('start').textContent='KENDİM DENEYECEĞİM';$('reason').textContent='Bu puansız gösterim, karelerden çıkarılan basış aralıklarını kullandı. Gerçek oyuncunun parmak kaydı değildir.';$('stats').hidden=true;}
- else if(done){$('heading').textContent=(elapsed/1000).toFixed(2).replace('.',',')+' saniye';$('start').textContent=config.route==='record'?'AYNI KAYITLA TEKRAR':'YENİ YERLEŞİMLE TEKRAR';$('reason').textContent=completedRun.newBest?'Yeni yerel rekor.':completedRun.eligible?'Sekiz sayı tamamlandı. Daha kısa süre daha iyi.':'Çalışma tamamlandı. Yardım, öğrenme veya ara verme nedeniyle rekora yazılmadı.';}
+ else if(done){$('heading').textContent=(elapsed/1000).toFixed(2).replace('.',',')+' saniye';$('start').textContent=config.route==='custom'?'AYNI DİZİYLE YENİ YERLEŞİM':config.route==='record'?'AYNI KAYITLA TEKRAR':'YENİ YERLEŞİMLE TEKRAR';$('reason').textContent=completedRun.newBest?'Yeni yerel rekor.':completedRun.eligible?'Sekiz sayı tamamlandı. Daha kısa süre daha iyi.':'Çalışma tamamlandı. Yardım, öğrenme veya ara verme nedeniyle rekora yazılmadı.';}
  else{$('heading').textContent='Yanlış tuş';$('start').textContent='TEKRAR DENE';}
  if(done||error){
-  const best=validBest(records[config.route]), vals=[[progress+'/'+sequence.length,'Doğru basış'],[(elapsed/1000).toFixed(2)+' sn','İlk doğru basıştan'],[errors,'Yanlış sayı'],[best?(best.ms/1000).toFixed(2)+' sn':'—','Bu dizilimde yerel rekor']];
+  const best=validBest(records[recordKey()]), vals=[[progress+'/'+sequence.length,'Doğru basış'],[(elapsed/1000).toFixed(2)+' sn','İlk doğru basıştan'],[errors,'Yanlış sayı'],[best?(best.ms/1000).toFixed(2)+' sn':'—',config.route==='custom'?'Bu 8 haneli dizi için rekor':'Bu dizilimde yerel rekor']];
   $('stats').innerHTML=vals.map(v=>'<div class="stat"><b>'+v[0]+'</b>'+v[1]+'</div>').join('');
   $('splitList').innerHTML='<div class="split"><span>1. doğru basış</span><strong>Sayaç başlangıcı · 0,00</strong></div>'+hits.slice(1).map(h=>'<div class="split"><span>'+h.step+'. sayı · '+h.n+'</span><strong>'+(h.interval/1000).toFixed(3)+' sn</strong></div>').join('')+'<p style="font-size:10px;margin-top:10px">İlk sayı öncesindeki gözlem süresi sonuca dahil değil. Boşa dokunuş: '+empty+'.</p>';
  }
+ if((done||error)&&config.route==='custom')$('reason').textContent='Senin dizin: '+sequence.join('–')+'\n'+$('reason').textContent;
+ syncCustomEntry();
 }
 function settings(){
  stopFrame();held.clear();state='settings';isDemo=false;manual=false;$('pauseBtn').hidden=true;readSettings();initialize();state='settings';showPanel('settings');resize();render();
@@ -261,7 +322,9 @@ function resize(){
  const s=contain?Math.min(W/512,usefulH/1038):Math.min(W/512,usefulH/700);
  const aw=contain?512*s:W,ah=contain?1038*s:usefulH;
  L={s,aw,ah,ox:(W-aw)/2,oy:safeTop+(usefulH-ah)/2};
- $('sizeInfo').textContent='Tuş: '+Math.round(106*s)+' × '+Math.round(106*s)+' px · Kayıttaki dizi: 6–8–5–7–6–8–6–7. İlk doğru basışla sayaç başlar; sonraki arama ve yer değiştirme süreleri dahildir.';
+ const own=parseCustomSequence(config.customSequence);
+ const targetText=config.route==='custom'?(own.valid?'Senin dizin: '+own.value.split('').join('–')+'.':'Kendi dizini oynamak için 8 rakamı tamamla.'):config.route==='random'?'Her denemede yeni 8 sayı.':'Kayıttaki dizi: 6–8–5–7–6–8–6–7.';
+ $('sizeInfo').textContent='Tuş: '+Math.round(106*s)+' × '+Math.round(106*s)+' px · '+targetText+' İlk doğru basışla sayaç başlar; sonraki arama ve yer değiştirme süreleri dahildir.';
  render();
 }
 function render(){
@@ -324,7 +387,10 @@ canvas.addEventListener('contextmenu',e=>e.preventDefault());
 $('start').addEventListener('click',()=>{if(state==='settings')arm();else if(state==='paused')resume();else if(state==='demoDone')arm();else retry();});
 $('demo').addEventListener('click',beginDemo);$('homeBtn').addEventListener('click',settings);$('pauseBtn').addEventListener('click',()=>pause());$('settingsBtn').addEventListener('click',settings);
 $('refresh').addEventListener('click',()=>{const u=new URL(location.href);u.searchParams.set('v',String(Date.now()));location.replace(u.href);});
-for(const id of ['layout','route','mode','motion','guide','sound'])$(id).addEventListener('change',()=>{if(state==='settings'){readSettings();initialize();state='settings';resize();}});
+for(const id of ['layout','route','mode','motion','guide','sound'])$(id).addEventListener('change',refreshSettingsPreview);
+$('customSequence').addEventListener('input',refreshSettingsPreview);
+$('customSequence').addEventListener('blur',()=>{const entry=parseCustomSequence($('customSequence').value);if(entry.valid)$('customSequence').value=entry.value;syncCustomEntry();});
+$('customSequence').addEventListener('keydown',e=>{if(e.key==='Enter'&&state==='settings'){e.preventDefault();arm();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(false,'Uygulama arka plana geçti. Bu tur rekora yazılmayacak.');});
 let resizeQueued=false;
 function onResize(){if(resizeQueued)return;resizeQueued=true;requestAnimationFrame(()=>{resizeQueued=false;if(Math.abs(canvas.getBoundingClientRect().width-W)>1&&['running','demo'].includes(state))pause(false,'Ekran yönü değişti. Bu tur rekora yazılmayacak.');resize();});}
@@ -341,9 +407,9 @@ document.addEventListener('keydown',e=>{
 // Local deterministic tests only. No game automation is enabled in normal play.
 if(new URLSearchParams(location.search).get('test')==='1'||window.__ENABLE_SEQUENCE_TEST__===true){
  window.__sequenceTest={
-  ref:()=>JSON.parse(JSON.stringify(REF)),cfg:()=>({...CFG}),
+  ref:()=>JSON.parse(JSON.stringify(REF)),cfg:()=>({...CFG}),parseCustom:parseCustomSequence,recordKey,
   snapshot:()=>({state,progress,elapsed,visual,errors,empty,sequence:sequence.slice(),board:boards[Math.min(progress,7)].slice(),positions:positions(),held:[...held],interrupted,isDemo,records:JSON.parse(JSON.stringify(records)),eligible:eligible(),size:{...L},hits:hits.map(h=>({...h})),raf:!!raf}),
-  setup:(opts={},seedValue=41729)=>{config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false,...opts};initialize(seedValue);manual=true;resize();state='armed';last=1000;armedSince=last;$('panel').hidden=true;render();},
+  setup:(opts={},seedValue=41729)=>{config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false,customSequence:'',...opts};if(!initialize(seedValue))return false;manual=true;resize();state='armed';last=1000;armedSince=last;$('panel').hidden=true;render();},
   advance:ms=>{advance(last+ms);render();},
   hit:n=>press(n,last,true),
   point:n=>geometry(n),
@@ -359,6 +425,10 @@ if(new URLSearchParams(location.search).get('test')==='1'||window.__ENABLE_SEQUE
   frames:()=>frameCount
  };
 }
+try{
+ const saved=JSON.parse(store.get(CUSTOM_STORAGE_KEY)||'""');
+ if(typeof saved==='string'&&parseCustomSequence(saved).valid)$('customSequence').value=saved;
+}catch(e){}
 settings();
 </script>
 </body></html>
