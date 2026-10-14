@@ -1,434 +1,232 @@
 <!doctype html>
-<html lang="tr">
-<head>
-<meta charset="utf-8">
+<html lang="tr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#182131">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Sayı Dizisi">
-<meta name="hub-build" content="SEQ-20261013-02">
-<title>Sayı Dizisi V1.1 · Playus antrenmanı</title>
+<meta name="theme-color" content="#101016"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Arrow Wall Prova"><meta name="hub-build" content="ARW-20261014-02">
+<title>Arrow Wall V2 · Ölçümlü prova ve eğitim</title>
 <style>
-:root{color-scheme:dark;--bg:#182131;--panel:#222e41;--muted:#aebfd2;--lime:#fff45e;--teal:#20a48d}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overscroll-behavior:none}
-button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--lime);outline-offset:3px}[hidden]{display:none!important}
-#game{position:fixed;inset:0;width:100%;height:100%;height:100dvh;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
-#safe{position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-.tools{position:fixed;z-index:3;top:max(10px,env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none}
-.tools button{pointer-events:auto;border:1px solid #ffffff23;border-radius:50%;background:#131b29bf;width:38px;height:38px;padding:0;color:white;font-size:23px;touch-action:manipulation}
-#panel{position:fixed;z-index:6;inset:0;display:flex;align-items:center;justify-content:center;overflow:auto;padding:max(60px,env(safe-area-inset-top)) 17px max(22px,env(safe-area-inset-bottom));background:linear-gradient(#101927fa,#142031f5);touch-action:pan-y}
-.sheet{width:min(440px,100%);max-height:100%;overflow:auto;overscroll-behavior:contain;background:#202c3eef;border:1px solid #6985a733;border-radius:25px;padding:24px;box-shadow:0 25px 90px #0004;touch-action:pan-y}
-.kicker{font-size:10px;letter-spacing:1.8px;font-weight:800;color:#d9e573}.sheet h1{margin:12px 0 12px;font-size:37px;line-height:1.04;letter-spacing:-1.4px}.sheet h1 em{font-style:normal;color:#7ad3c2}
-.sheet p{font-size:13px;line-height:1.55;color:#bdcadd;margin:0 0 16px}.sheet p strong{color:#f9fafb}
-.hero{display:flex;gap:8px;margin:17px 0 22px}.hero span{width:43px;height:43px;display:grid;place-items:center;border-radius:10px;color:white;font-size:22px;font-weight:850;box-shadow:inset 0 -2px #0002}.hero .arrow{background:none;color:#90a6c1;box-shadow:none;width:26px}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:11px 10px}.options label{font-size:11px;color:#b2c3d6;display:flex;flex-direction:column;gap:6px}.options .wide{grid-column:1/-1}
-select{width:100%;border:1px solid #7388a74a;background:#2c3a50;color:#f3f6fa;border-radius:11px;padding:11px 7px;font-size:12px;min-height:43px;touch-action:manipulation}
-.custom-entry{padding:13px;border:1px solid #7897b740;border-radius:13px;background:#182536}
-.custom-entry label{font-size:12px;font-weight:750;color:#d8e9f5}
-.custom-input-row{display:flex;align-items:center;gap:10px;margin-top:8px}
-.custom-input-row input{min-width:0;flex:1;width:100%;min-height:49px;border:1px solid #879db64d;border-radius:10px;background:#2c3a50;color:#fff;padding:10px 11px;font-size:22px;letter-spacing:2px;font-variant-numeric:tabular-nums;touch-action:manipulation}
-.custom-input-row input::placeholder{font-size:16px;letter-spacing:.5px;color:#a4b5c7}
-.custom-input-row input[aria-invalid="true"]{border-color:#fba894}
-#customCount{font-size:12px;font-variant-numeric:tabular-nums;color:#bbd0e2;white-space:nowrap}
-#customHelp{font-size:11px;line-height:1.55;color:#b3c9dd;margin:8px 0 0}
-#customHelp[data-error="true"]{color:#ffc2b2}
-.primary:disabled{cursor:not-allowed;opacity:.43}
-.check{display:flex;align-items:center;gap:10px;color:#bacbdc;font-size:12px;margin:13px 0;line-height:1.4}.check input{width:18px;height:18px;accent-color:#ffef68}
-.primary,.secondary{width:100%;border-radius:13px;padding:14px 12px;min-height:49px;font-size:15px;font-weight:850;touch-action:manipulation}.primary{background:var(--lime);border:1px solid #fffbd0;color:#172132;box-shadow:inset 0 -3px #beae38;margin-top:15px}.secondary{background:#35485d;border:1px solid #7e96b23b;color:#eef3f7;margin-top:9px}.link{border:0;background:none;color:#b9cddd;padding:14px 4px;width:100%;font-size:12px;touch-action:manipulation}
-.notice{font-size:11px;line-height:1.5;padding:11px 12px;border-radius:11px;background:#1b2534;border:1px solid #718bac22;margin-top:13px;color:#bccbde}
-.reason{white-space:pre-line;border-left:3px solid #fa927c;background:#ce624b14;padding:11px 13px;border-radius:0 10px 10px 0}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}.stat{background:#324159;border-radius:12px;padding:12px;color:#afc0d5;font-size:10px}.stat b{display:block;color:white;font-size:25px;margin-bottom:4px;font-variant-numeric:tabular-nums}
-#splitList{font-size:12px;line-height:1.5;color:#bfccda;margin:12px 0}#splitList .split{display:flex;justify-content:space-between;padding:7px 1px;border-bottom:1px solid #ffffff10}#splitList strong{color:#f8faff;font-variant-numeric:tabular-nums}
-details{margin-top:14px;font-size:12px;color:#aebfd0;line-height:1.55}summary{color:#d5e3ec;font-weight:700;cursor:pointer;padding:6px 0;touch-action:manipulation}details p{font-size:11px!important;margin-top:9px!important;margin-bottom:0!important}
-.build{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:13px;border-top:1px solid #ffffff15;font-size:10px;color:#8fa2bb}.build button{font-size:11px;border:1px solid #ffffff26;color:#bed0e2;background:none;padding:8px 10px;border-radius:10px;touch-action:manipulation}
-#live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-@media(max-height:800px){#panel{align-items:flex-start;padding-top:max(54px,calc(env(safe-area-inset-top) + 44px))}.sheet{padding:19px}.sheet h1{font-size:33px}.hero{margin:13px 0 17px}}
-@media(prefers-reduced-motion:reduce){.hero{animation:none}}
-</style>
-</head>
-<body>
-<div id="safe"></div>
-<canvas id="game" tabindex="0" role="application" aria-label="Sayı dizisi oyunu. Üst sıradaki sayıları sırayla bul. Her doğru dokunuşta tuşlar yer değiştirir."></canvas>
-<div class="tools"><button id="homeBtn" aria-label="Ayarlar">‹</button><button id="pauseBtn" aria-label="Duraklat" hidden>Ⅱ</button></div>
-<section id="panel"><div class="sheet">
-<div class="kicker">SAYI DİZİSİ V1.1 · KENDİ DİZİNİ GİR</div>
-<h1 id="heading">Sırayı oku.<br><em>Yeni yeri bul.</em></h1>
-<p id="intro">Üstteki <strong>8 sayıyı sırayla bul.</strong> Her doğru dokunuşta dokuz tuşun yeri değişir; sayının rengi aynı kalır. <strong>İlk doğru sayıya bastığında süre başlar.</strong></p>
-<div class="hero" id="hero" aria-hidden="true"><span style="background:#9b25ae">6</span><span style="background:#01a7f3">8</span><span style="background:#4aad4e">5</span><span style="background:#f24234">7</span><span class="arrow">→</span><span style="background:#fff45e;color:#142030">?</span></div>
-<div id="settings">
-<div class="options">
-<label class="wide">Dizilim<select id="route"><option value="record">Videodaki sıra + aynı yerleşimler</option><option value="custom">Kendi 8 sayımı gir + yeni yerleşimler</option><option value="mixed">Aynı sıra + yeni yerleşimler</option><option value="random">Yeni 8 sayı + yeni yerleşimler</option></select></label>
-<div id="customEntry" class="custom-entry wide" hidden>
-<label for="customSequence">Oynayacağın 8 haneli dizi</label>
-<div class="custom-input-row"><input id="customSequence" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Örn. 68576867" aria-describedby="customHelp customCount" aria-invalid="false"><span id="customCount" aria-live="polite">0 / 8</span></div>
-<p id="customHelp" aria-live="polite">1–9 kullan. Aynı rakam tekrarlanabilir; 0 yok.</p>
-</div>
-<label>Çalışma<select id="mode"><option value="challenge">Hatasız süre provası</option><option value="learn">Öğren · yanlışta devam</option></select></label>
-<label>Hareket<select id="motion"><option value="reference">Kayıt · ≈0,20 sn</option><option value="slow">Yavaş · ≈0,40 sn</option></select></label>
-<label class="wide">Ekran yerleşimi<select id="layout"><option value="responsive">Ekrana uyumlu kare tuşlar</option><option value="source">Kaynağın oranı · 512 × 1038</option></select></label>
-</div>
-<label class="check"><input type="checkbox" id="guide">Sıradaki doğru tuşu çerçevele · öğrenme yardımı</label>
-<label class="check"><input type="checkbox" id="sound">Kısa dokunma sesi · yeniden üretilmiş</label>
-<div class="notice" id="sizeInfo"></div>
-</div>
-<p id="reason" class="reason" hidden></p>
-<div class="stats" id="stats" hidden></div>
-<div id="splitList" hidden></div>
-<button class="primary" id="start">PROVAYA HAZIRLAN</button>
-<button class="secondary" id="demo">KAYITTAKİ AKIŞI İZLE · PUANSIZ</button>
-<button class="secondary" id="settingsBtn" hidden>AYARLARA DÖN</button>
-<details id="tips"><summary>Yüksek skor için neye bakmalıyım?</summary>
-<p><strong>Sayının yeri değil, rengi sabit.</strong> Örneğin kayıtta 6 mor, 8 açık mavi, 5 yeşil ve 7 kırmızı. Üstteki sıradaki sayıyı okuduktan sonra o rengin yeni yerini ara.</p>
-<p><strong>Eski konuma tekrar basma.</strong> İlk doğru dokunuşta bütün tuşlar hareket eder. Bir sonraki sayıyı, gördüğün yeni konumunda yakala; yalnız hedefteki hücreyi ezberleme.</p>
-<p><strong>Başparmakları zorunlu olarak çaprazlama.</strong> Sol el sol yarıda, sağ el sağ yarıda hazır olabilir. Ortadaki tuşu hangisi rahat erişiyorsa o parmakla dene. Uzun basma ve sürükleme yerine kısa dokunup kaldır.</p>
-<p><strong>Gerçek çalışma:</strong> Kayıt düzeninde kontrolü tanıdıktan sonra “Aynı sıra + yeni yerleşimler”e geç. Böylece sadece sekiz dokunma noktasını ezberlemezsin.</p>
+:root{color-scheme:dark;--pink:#f23e7d;--lime:#e8f59a;--muted:#afafbf}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101016;color:#f8f5f2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overscroll-behavior:none}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid var(--lime);outline-offset:3px}[hidden]{display:none!important}
+#game{position:fixed;inset:0;width:100%;height:100%;height:100dvh;touch-action:none;user-select:none;-webkit-user-select:none;display:block}#safe{position:absolute;visibility:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}.tools{position:fixed;z-index:3;left:12px;right:12px;top:max(10px,env(safe-area-inset-top));display:flex;justify-content:space-between;pointer-events:none}.tools button{width:40px;height:40px;border:1px solid #fff2;border-radius:50%;background:#12121dcc;color:white;font-size:23px;padding:0;pointer-events:auto;touch-action:manipulation}
+#overlay{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:linear-gradient(#111119f5,#171721fa);padding:max(60px,env(safe-area-inset-top)) 16px max(22px,env(safe-area-inset-bottom));overflow:auto;touch-action:pan-y}.sheet{width:min(440px,100%);max-height:100%;overflow:auto;overscroll-behavior:contain;border:1px solid #fff2;border-radius:24px;background:#20202bcc;padding:23px;box-shadow:0 24px 100px #0005}.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:800;color:#f387ac}h1{font-size:37px;line-height:1.03;letter-spacing:-1.1px;margin:12px 0 14px}h1 em{font-style:normal;color:var(--lime)}p{font-size:13px;color:#bfc0cd;line-height:1.55;margin:0 0 14px}strong{color:#fff}.hero{height:64px;position:relative;margin:6px 0 17px;display:flex;align-items:center;justify-content:space-between;border-radius:12px;background:#12121b;padding:10px 17px}.mini-wall{background:#eee9e4;width:32px;height:51px;border-radius:2px}.hero img{width:140px;height:auto;filter:drop-shadow(0 3px 6px #0008)}.hero span{color:#9494a8;font-size:10px;line-height:1.6}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}.options label{font-size:11px;color:#babbca;display:flex;flex-direction:column;gap:6px}.options .wide{grid-column:1/-1}select{width:100%;border:1px solid #fff2;background:#30303e;color:#f9f7fd;border-radius:10px;min-height:44px;padding:9px;font-size:12px;touch-action:manipulation}.check{display:flex;align-items:center;gap:10px;font-size:12px;color:#bfc1ce;line-height:1.4;margin:13px 0}.check input{width:18px;height:18px;accent-color:var(--pink)}.small{font-size:10px;line-height:1.6;color:#989aad}.notice{padding:11px 12px;border:1px solid #fff1;background:#15151ecc;border-radius:11px;margin:12px 0 4px;font-size:11px;line-height:1.5;color:#c4c5d3}.primary,.secondary{width:100%;border-radius:13px;min-height:48px;padding:14px 10px;font-size:14px;font-weight:850;touch-action:manipulation}.primary{background:var(--pink);border:1px solid #ff84af;color:#fff;box-shadow:inset 0 -3px #a92251;margin-top:14px}.secondary{border:1px solid #fff2;color:#e4e5ee;background:#363646;margin-top:9px}.link{background:none;border:0;color:#c0bdcf;font-size:12px;min-height:42px;width:100%;padding:12px;touch-action:manipulation}.reason{border-left:3px solid var(--pink);background:#ff4e8710;padding:11px 12px;border-radius:0 10px 10px 0;white-space:pre-line}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.stat{font-size:10px;color:#aaaabb;border-radius:11px;padding:11px;background:#ffffff09}.stat b{font-size:23px;display:block;color:#fff;margin-bottom:5px;font-variant-numeric:tabular-nums}.build{border-top:1px solid #fff1;margin-top:16px;padding-top:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:10px;color:#9192a7}.build button{font-size:10px;color:#ddd8e9;background:none;border:1px solid #fff2;border-radius:9px;padding:9px;touch-action:manipulation}details{margin:13px 0 0;color:#abadbf;font-size:11px;line-height:1.6}summary{font-size:12px;font-weight:700;color:#e2dbe9;cursor:pointer;padding:6px 0;touch-action:manipulation}details p{font-size:11px;margin:9px 0 0}.live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-height:800px){#overlay{align-items:flex-start;padding-top:max(54px,calc(env(safe-area-inset-top) + 40px))}.sheet{padding:18px}h1{font-size:32px}.hero{display:none}.options{gap:9px}}@media(max-width:350px){.options{grid-template-columns:1fr}.options .wide{grid-column:1}}
+</style></head><body>
+<div id="safe"></div><canvas id="game" role="application" tabindex="0" aria-label="Arrow Wall: oku gördüğün yükseklikten göndermek için oyun alanına dokun."></canvas>
+<div class="tools"><button type="button" id="home" aria-label="Ayarlar">‹</button><button type="button" id="pause" aria-label="Duraklat" hidden>Ⅱ</button></div>
+<section id="overlay"><div class="sheet">
+<div class="eyebrow">ARROW WALL V2 · HAREKET + ZAMANLAMA</div><h1 id="heading">Kenarı yakala.<br><em>Boşluğu koru.</em></h1>
+<div class="hero" id="hero"><div class="mini-wall"></div><img id="heroArrow" alt="Duvara doğru sola bakan ok"><span>YAVAŞ KENAR<br>HIZLI MERKEZ</span></div>
+<p id="intro">Ok sağda yukarı-aşağı hareket eder. <strong>Bir dokunuşla o anki yükseklikten sola gönder.</strong> Duvara yerleşmiş okların gövdesine değmeden puan topla. Basılı tutmak tekrar ateşlemez.</p>
+<div id="settings"><div class="options">
+<label class="wide">Çalışma<select id="mode"><option value="reference">Video provası · ölçülen hareket</option><option value="challenge">Normal mücadele · yeni ritim</option><option value="training">Eğitim · hedefli tekrar</option></select></label>
+<label id="lessonField" class="wide" hidden>Eğitim<select id="lesson"><option value="edges">1 · Üst-alt kenar zamanlaması</option><option value="cluster">2 · İlk 5 oku sık yerleştir</option><option value="sandwich">3 · Sandviç: dıştan içe doldur</option><option value="gaps">4 · Merkezde kalan boşluğu bul</option></select></label>
+<label>Tempo<select id="tempo"><option value="0.5">0,50× · öğren</option><option value="0.75">0,75× · çalış</option><option value="1" selected>1,00× · kayıt</option><option value="1.15">1,15× · zor</option></select></label>
+<label id="checkpointField">Başlangıç<select id="checkpoint"><option value="0">0 · kaydın başı</option><option value="5">5 ok · ilk küme hazır</option><option value="10">10 ok · iki kenar</option><option value="18">18 ok · ileri bölüm</option><option value="24">24 ok · son aralıklar</option></select></label>
+<label class="wide">Görünüm<select id="layout"><option value="source">Videonun oranını koru · 480 × 854</option><option value="screen">Ekranı doldur · oranları uyarla</option></select></label>
+</div><label class="check"><input id="guide" type="checkbox">Güvenli boşlukları ve atış hizasını göster</label><label class="check"><input id="sound" type="checkbox">Kısa atış / sonuç sesi · yeniden üretilmiş</label>
+<div class="notice" id="modeNote"></div><p class="small" id="sizeInfo" style="margin-top:9px"></p></div>
+<p id="reason" class="reason" hidden></p><div id="stats" class="stats" hidden></div>
+<button type="button" id="start" class="primary">PROVAYA BAŞLA</button>
+<button type="button" id="demo" class="secondary">25 PUANLIK YERLEŞİMİ İZLE · PUANSIZ</button>
+<button type="button" id="restart" class="secondary" hidden>BAŞTAN DENE</button>
+<button type="button" id="configure" class="link" hidden>AYARLARA DÖN</button>
+<details id="tips"><summary>Yüksek puan için çalışma yolu</summary>
+<p><strong>1. Okun peşinden bakışınla koşma.</strong> Önce duvarda boşluğu seç; ardından sağdaki okun o yüksekliğe gelmesini bekle. Parmak ekranın boş orta-sağ alanında sabit bir noktadan dokunabilir.</p>
+<p><strong>2. Kenarda zaman penceresi genişler.</strong> Ok üst ve alt dönüşte yavaşlar, ortada hızlanır. Merkezde son anda uzun bir karar vermek yerine hedef aralığı önceden seç.</p>
+<p><strong>3. Sandviç yöntemi.</strong> Videodaki tam koşuda ilk beş ok alt kenarda kümeleniyor, sonra üst kenar açılıyor. İki taraftan içeri doğru ilerleyip merkezi son aşamaya bırak. Bu, videodaki yerleşim yöntemi; her turda garanti sonuç değildir.</p>
+<p><strong>4. Eğitimden provaya.</strong> Önce 0,75× hızda kenar dersini; sonra sık yerleşim ve sandviç dersini çalış. Ardından 1,00×, rehber kapalı, baştan video provası. Eğitim puanı ile normal rekor ayrı tutulur.</p>
 </details>
-<details id="limits"><summary>Kaynak ve birebirlik sınırı</summary>
-<p>Kaynak: gönderdiğin 512 × 1128, 30 FPS, yaklaşık 12,32 saniyelik video. Görünen dizi 6–8–5–7–6–8–6–7; sonuç 4,47 saniye. Sekiz yerleşim ve yedi yer değiştirme ölçüldü. Kayıtta resmî oyun başlığı görünmediğinden “Sayı Dizisi” bu antrenmanın adıdır.</p>
-<p>İlk doğru basışla son doğru basışın görünür kareleri arasındaki 4,467 saniye, sonuç ekranıyla uyumlu. Bu ham dokunma kaydı değildir. Küçük sıçramalı hareket eğrisi görüntüden uyarlandı; yaklaşık 0,20 saniye. Dokunma kabulü varsayılan olarak parmak inerken gerçekleşir.</p>
-<p>Başarılı tek koşu, yanlış sayı/boşluk cezasını veya hareket sırasında özgün dokunma kuralını kesin göstermiyor. Bu trainer yanlış sayıda süre provasını bitirir; öğrenmede devam eder. Boşa dokunuş yalnız sayılır. Bir temas bir cevap verir; sürükleme ve tutma tekrar üretmez. Görünen canlı tuş alanı kullanılır.</p>
-<p>“Kendi 8 sayımı gir” seçeneğinde yalnız 1–9 rakamlarından oluşan sekiz haneli sıra kabul edilir; tekrar eden rakamlar geçerlidir. Girdiğin sıra tekrar denemede değişmez, tuş yerleşimleri yeniden üretilir. Her özel dizinin rekoru ayrı tutulur.</p>
-<p>Yeni dizilimler kendi üretimimizdir; özgün rastgele dağılımı bilinmiyor. Ara verilen veya rehberle oynanan tur rekora yazılmaz. Gerçek kişi avatarı, çevrimiçi sıralama ve oyunun müzik kaydı kopyalanmadı. Playus hesabına bağlanmaz. Fiziksel iPhone/Safari eşleşmesi doğrulanmadı.</p>
-</details>
-<div class="build"><span>SEQ-20261013-02<br>Bağımsız antrenman · diğer oyunları değiştirmez</span><button id="refresh">Sürümü yenile</button></div>
-</div></section>
-<div id="live" aria-live="polite"></div>
+<details id="limits"><summary>Neler ölçüldü, neler belirsiz?</summary>
+<p>Kaynak: gönderdiğin Arrow Wall eğitim videosu. Son tam koşunun yaklaşık 50 saniyelik görünür salınımı konum/zaman tablosuna çevrildi. Uçuşta görünmeyen sağ ok konumları ara değerlerle tamamlanır. Referans provasında kendi dokunuşların bu saat çizelgesini kullanır; özgün hızlanmanın zamanla mı skorla mı belirlendiği tek koşudan kesin bilinmiyor.</p>
+<p>Kenarlarda yavaşlayan hareket, atışta sabitlenen yükseklik, yaklaşık 0,12 sn yatay uçuş ve önceki oklara göre yerleşimler eşlendi. Modelin 4,5 kaynak piksel merkez ayrımı videodaki dar başarılı aralıklarla ve son çarpışmayla uyumlu seçildi; bu özgün gizli çarpışma eşiğinin kesin ölçümü değildir.</p>
+<p>Normal mücadelede aynı kenar-merkez davranışıyla, ölçülen yarım tur sürelerinden yeni ritim üretilir. Referans zaman çizelgesi bittiğinde son tempoya yakın üretilmiş devam başlar. 25 puan sınır değildir. Eğitim hedef bantları bize ait öğretici yardımlardır.</p>
+<p>Videonun deneme hakkı / minimum puan iddiası sunucu kuralı olarak doğrulanmadı; bu oyunun denemeleri zaten sınırsız. Özgün parmak kaydı, telefon gecikmesi, müzik ve hesap bağlantısı yoktur. Fiziksel iPhone/Safari eşitliği doğrulanmadı.</p></details>
+<div class="build"><span>ARW-20261014-02<br>Bağımsız antrenman · ARROW WALL V2</span><button type="button" id="refresh">Sürümü yenile</button></div>
+</div></section><div class="live" id="live" aria-live="polite"></div>
 <script>
 'use strict';
-const REF={"sequence":[6,8,5,7,6,8,6,7],"boards":[[7,1,8,4,2,6,3,9,5],[8,9,5,2,3,6,1,7,4],[7,6,1,5,2,9,8,3,4],[3,5,6,4,9,1,2,7,8],[8,9,1,2,5,4,7,6,3],[7,3,6,8,5,9,2,4,1],[5,9,6,8,1,3,7,4,2],[9,3,1,7,8,5,2,4,6]],"palette":{"7":"#f24234","1":"#e81d63","8":"#01a7f3","4":"#fe9700","2":"#2094f2","6":"#9b25ae","3":"#00bbd3","9":"#ffc007","5":"#4aad4e"},"curves":[[[0.0,0.0],[0.02435,0.349278],[0.057683,0.935866],[0.091017,1.064567],[0.12435,1.071331],[0.157683,1.037961],[0.191017,0.999267],[0.22435,0.999267],[0.23,1.0]],[[0.0,0.0],[0.037327,0.662306],[0.07066,1.050486],[0.103994,1.099714],[0.137327,1.070315],[0.17066,1.018924],[0.203994,1.00061],[0.237327,1.00061],[0.24232700000000001,1.0]],[[0.0,0.0],[0.030615,0.602439],[0.063949,0.73252],[0.097282,1.060926],[0.130615,1.098374],[0.163949,1.056911],[0.197282,1.002023],[0.230615,1.0],[0.235615,1.0]],[[0.0,0.0],[0.011896,0.263796],[0.04523,0.691143],[0.078563,1.081301],[0.111896,1.099838],[0.14523,1.056911],[0.178563,1.003098],[0.211896,1.0],[0.23,1.0]],[[0.0,0.0],[0.014491,0.306971],[0.047824,0.807175],[0.081158,1.066197],[0.114491,1.098542],[0.147824,1.068011],[0.181158,1.002609],[0.214491,1.00057],[0.23,1.0]],[[0,0],[0.033333,0.501626],[0.066667,0.957627],[0.1,1.090042],[0.133333,1.09167],[0.166667,1.000813],[0.2,1.000814],[0.23,1.0]],[[0.0,0.0],[0.009188,0.217469],[0.042522,0.677886],[0.075855,0.898166],[0.109188,1.093688],[0.142522,1.063591],[0.175855,0.999593],[0.209188,0.999593],[0.23,1.0]]],"duration":0.194398,"overshoot":1.658338,"observedEventSeconds":[0.0,0.566667,1.066667,1.633333,2.166667,3.2,4.033333,4.466667],"referenceResult":4.47,"glyphs":{"7":{"path":"M13.50,31.55L6.50,31.46L5.44,30.48L6.50,28.25L11.75,20.48L12.15,19.48L14.63,15.48L15.59,14.48L15.99,13.48L17.98,10.48L19.49,7.48L18.50,7.16L16.50,7.00L1.50,7.00L0.50,6.79L0.19,6.48L0.00,4.48L0.05,1.48L0.46,0.48L1.50,0.00L28.50,0.13L29.20,0.48L29.74,1.48L29.86,5.48L29.50,7.48L28.13,9.48L25.50,14.11L24.36,15.48L23.96,16.48L20.50,21.98L19.17,24.48L18.50,25.29L15.50,30.17L14.50,31.14L13.50,31.55Z","w":29.857,"h":31.593},"1":{"path":"M16.65,31.43L10.65,31.38L9.51,30.37L9.47,11.37L9.32,8.37L8.65,7.87L6.65,8.06L1.65,9.00L0.65,8.80L0.24,8.37L0.03,7.37L0.00,5.37L0.06,3.37L0.65,2.55L2.65,1.90L10.65,0.22L16.65,0.00L17.65,0.16L17.91,0.37L18.24,1.37L18.26,30.37L17.65,31.14L16.65,31.43Z","w":18.285,"h":31.433},"8":{"path":"M20.49,32.41L12.49,32.50L10.49,32.18L6.49,31.08L4.49,30.41L3.49,29.32L2.49,28.95L1.90,28.41L1.49,27.41L0.43,26.41L0.00,22.41L0.11,21.41L0.80,19.41L1.97,18.41L2.49,17.41L3.49,17.00L5.42,15.41L3.49,13.43L2.49,12.95L2.04,12.41L1.19,10.41L1.07,9.41L1.24,7.41L1.81,5.41L2.49,4.42L4.49,2.43L6.49,1.18L12.49,0.11L19.49,0.00L21.49,0.20L25.49,0.88L27.31,1.41L28.49,2.21L29.49,2.62L31.86,5.41L32.32,7.41L32.40,9.41L32.32,10.41L31.64,12.41L30.49,13.09L29.49,14.26L27.91,15.41L31.49,18.08L32.47,19.41L33.35,21.41L33.53,24.41L33.31,25.41L31.71,28.41L30.11,29.41L29.49,30.05L25.49,31.57L20.49,32.41ZM21.24,12.41L22.49,11.71L23.49,10.76L23.70,9.41L22.02,7.41L21.49,7.15L17.49,6.79L12.49,7.01L11.56,7.41L10.49,8.19L9.90,9.41L10.01,10.41L10.49,11.28L12.49,12.47L14.49,12.70L17.49,12.75L19.49,12.71L21.24,12.41ZM19.04,25.41L21.49,25.26L23.60,24.41L24.28,22.41L24.20,21.41L23.49,20.59L21.49,19.39L18.49,19.10L12.49,19.19L11.49,19.73L10.49,20.00L9.02,21.41L8.97,22.41L9.24,23.41L9.95,24.41L10.49,24.81L12.49,25.33L14.49,25.49L19.04,25.41Z","w":33.529,"h":32.522},"4":{"path":"M27.24,31.57L22.24,31.64L20.24,30.53L19.92,29.50L19.76,26.50L19.24,25.75L18.24,25.54L4.24,25.65L2.24,25.49L0.24,24.34L0.01,23.50L0.07,20.50L0.97,18.50L1.94,17.50L2.24,16.90L3.24,16.22L3.92,15.50L4.30,14.50L5.24,14.08L5.84,13.50L6.24,12.45L7.24,11.99L7.64,11.50L7.98,10.50L9.55,9.50L9.86,8.50L10.24,8.09L11.24,7.57L11.73,6.50L12.89,5.50L13.49,4.50L14.24,3.78L14.85,3.50L15.43,2.50L16.24,1.77L17.05,1.50L17.58,0.50L18.24,0.08L27.24,0.07L28.06,0.50L28.27,1.50L28.76,2.50L28.84,17.50L30.24,18.90L32.24,19.21L33.24,19.72L33.60,20.50L33.78,23.50L33.24,25.23L32.24,25.58L30.24,25.75L29.24,26.36L28.90,29.50L28.42,30.50L27.24,31.57ZM19.57,18.50L20.01,17.50L20.07,16.50L20.00,10.50L19.51,8.50L19.24,8.28L18.18,8.50L17.91,9.50L17.24,10.18L16.61,10.50L16.06,11.50L13.49,14.50L13.24,15.30L12.24,15.77L11.58,16.50L11.03,18.50L12.24,19.17L14.24,19.35L19.24,18.91L19.57,18.50Z","w":33.785,"h":31.678},"2":{"path":"M31.43,31.45L30.43,32.05L29.43,32.27L17.43,32.14L6.43,32.27L2.43,32.04L1.43,31.82L0.82,31.31L0.58,30.31L0.55,27.31L0.96,26.31L1.76,25.31L5.11,23.31L7.26,22.31L8.70,21.31L11.43,19.98L12.43,19.14L15.43,17.65L16.43,16.87L17.43,16.52L18.56,15.31L20.09,14.31L21.43,12.61L21.78,11.31L21.35,9.31L20.43,8.24L19.43,7.49L17.43,6.89L15.43,6.83L12.43,7.21L11.43,7.76L10.43,8.45L9.65,9.31L9.23,10.31L8.43,11.43L7.43,12.01L0.43,11.85L0.11,11.31L0.00,10.31L0.15,9.31L0.89,8.31L2.43,5.37L4.43,3.25L8.16,1.31L9.43,0.86L12.43,0.29L17.43,0.00L21.43,0.45L23.43,1.00L27.59,3.31L28.13,4.31L29.43,5.64L30.14,7.31L30.33,8.31L30.51,9.31L30.44,12.31L29.72,14.31L28.33,16.31L25.43,18.90L23.43,20.32L19.43,22.68L17.90,23.31L17.43,23.95L16.71,24.31L18.43,24.80L29.43,24.99L30.81,25.31L31.43,26.13L31.69,27.31L31.70,30.31L31.43,31.45Z","w":31.702,"h":32.273},"6":{"path":"M21.61,32.51L16.61,32.68L13.61,32.52L10.61,31.92L8.61,31.17L6.61,30.07L4.61,28.61L2.61,26.29L1.13,23.34L0.05,19.34L0.00,15.34L0.45,11.34L1.13,9.34L2.69,6.34L4.61,4.09L7.61,1.99L9.61,1.07L12.61,0.30L14.61,0.05L18.61,0.03L21.61,0.49L25.61,1.97L26.61,2.60L28.80,4.34L30.31,6.34L30.78,7.34L31.09,8.34L30.61,9.04L29.77,9.34L24.61,9.40L23.61,9.14L21.02,7.34L19.61,6.84L17.61,6.64L14.61,6.72L12.69,7.34L10.61,8.69L9.42,10.34L8.60,12.34L8.34,13.34L8.38,14.34L8.61,14.83L9.61,14.76L12.61,12.93L15.61,11.91L20.61,11.61L23.61,11.90L24.61,12.11L26.61,12.99L28.72,14.34L30.62,16.34L31.61,18.48L32.03,20.34L31.93,23.34L31.09,26.34L28.61,29.19L27.10,30.34L24.61,31.59L21.61,32.51ZM21.07,25.34L22.22,24.34L22.91,23.34L23.18,22.34L23.12,21.34L22.87,20.34L21.61,19.00L19.61,18.14L17.61,17.94L14.61,18.35L11.61,19.63L10.53,20.34L9.54,21.34L9.54,22.34L10.31,23.34L12.61,25.28L13.61,25.76L15.61,26.09L18.61,26.06L20.61,25.65L21.07,25.34Z","w":32.025,"h":32.684},"3":{"path":"M19.30,32.62L15.30,32.72L9.30,32.08L7.30,31.61L6.14,30.56L5.30,30.29L3.30,29.19L2.98,28.56L2.30,27.75L1.90,27.56L1.30,26.69L0.70,25.56L0.12,23.56L0.00,22.56L0.30,22.19L1.30,21.74L7.30,21.81L8.30,22.06L8.82,22.56L9.25,23.56L10.61,24.56L11.30,25.41L13.30,25.86L17.30,26.01L20.30,25.71L20.63,25.56L21.48,24.56L22.30,24.10L22.64,23.56L22.74,22.56L22.27,20.56L20.30,19.71L18.30,19.35L13.30,19.35L11.30,18.63L10.95,17.56L10.96,14.56L11.30,13.88L13.30,13.27L18.30,13.26L19.30,12.73L20.30,12.51L21.61,11.56L22.17,10.56L22.15,9.56L21.74,8.56L20.30,7.66L18.30,6.94L14.30,7.01L11.30,8.04L10.65,8.56L10.25,9.56L8.30,10.97L3.30,10.93L2.30,10.83L1.30,10.44L0.90,9.56L0.97,8.56L2.07,6.56L2.90,5.56L3.30,4.44L4.30,4.04L6.16,2.56L7.30,2.00L10.30,1.10L11.30,0.43L15.30,0.02L18.30,0.00L20.30,0.10L22.72,0.56L25.30,1.71L26.30,1.96L27.38,2.56L29.52,4.56L30.80,6.56L30.90,9.56L30.57,11.56L30.30,12.12L29.08,13.56L28.30,14.16L27.25,14.56L26.87,15.56L27.30,16.21L28.30,16.86L28.83,17.56L30.40,18.56L31.31,20.56L31.55,23.56L30.72,27.56L30.30,28.04L29.25,28.56L28.70,29.56L28.30,29.87L27.30,30.10L26.30,30.97L24.99,31.56L24.30,31.84L19.30,32.62Z","w":31.569,"h":32.752},"9":{"path":"M19.49,32.64L17.49,32.97L12.49,32.90L11.84,32.37L8.49,31.86L6.49,31.04L6.09,30.37L5.49,30.01L4.49,29.81L3.91,29.37L3.49,28.23L2.49,27.89L2.13,27.37L1.39,24.37L2.49,23.59L7.49,23.61L8.49,23.77L9.49,24.06L9.86,24.37L10.49,25.50L12.49,26.06L17.49,26.19L19.49,25.77L20.18,25.37L20.49,24.77L21.01,24.37L21.49,24.24L22.26,23.37L22.49,22.25L23.49,21.53L23.65,20.37L23.07,18.37L22.49,18.25L22.24,18.37L21.69,19.37L18.49,20.13L17.95,20.37L17.49,21.20L15.49,21.51L10.49,21.51L8.49,21.27L7.63,20.37L4.49,19.75L3.99,19.37L3.67,18.37L2.49,17.87L2.11,17.37L1.89,16.37L1.49,15.73L0.79,15.37L0.49,14.85L0.08,13.37L0.04,10.37L0.23,8.37L0.49,7.59L0.90,7.37L1.36,6.37L2.16,5.37L2.40,4.37L3.49,3.97L4.11,3.37L4.55,2.37L6.49,1.67L8.10,1.37L10.49,0.23L16.49,0.00L20.10,0.37L21.49,0.91L21.99,1.37L23.49,1.65L25.37,2.37L25.99,3.37L27.49,3.88L27.99,4.37L28.18,5.37L28.49,5.76L29.49,6.12L29.69,6.37L29.88,7.37L30.91,9.37L31.49,9.72L31.81,10.37L32.09,12.37L32.14,19.37L31.95,21.37L31.49,23.55L30.49,24.12L29.49,27.10L29.29,27.37L28.49,27.59L27.79,28.37L27.49,29.47L26.49,29.60L25.20,30.37L24.18,31.37L23.49,31.69L19.75,32.37L19.49,32.64ZM17.32,14.37L18.49,13.96L19.49,13.85L21.49,13.07L22.25,11.37L22.21,10.37L20.83,8.37L19.49,7.82L18.49,7.70L17.80,7.37L17.49,6.85L15.49,6.38L14.49,6.36L12.49,6.93L12.14,7.37L10.49,7.83L9.85,8.37L9.69,9.37L9.10,10.37L9.13,11.37L9.49,11.83L10.02,13.37L10.49,13.82L13.49,14.39L14.49,14.86L15.49,14.84L17.32,14.37Z","w":32.144,"h":32.971},"5":{"path":"M21.94,31.28L19.94,31.76L16.94,31.96L11.94,31.91L8.94,31.48L6.94,30.91L4.94,29.78L1.65,27.01L0.94,26.00L0.47,25.01L0.00,23.01L0.36,22.01L0.94,21.68L5.94,21.58L6.94,21.71L7.94,22.00L8.94,23.18L10.94,24.56L13.94,25.31L16.94,25.27L18.28,25.01L18.94,24.68L20.98,23.01L21.29,22.01L21.43,20.01L21.15,19.01L20.58,18.01L19.94,17.49L16.94,16.52L12.94,16.67L9.45,18.01L7.94,18.88L6.94,19.01L2.94,19.01L1.22,18.01L1.24,16.01L2.04,11.01L2.78,4.01L3.10,2.01L3.48,1.01L3.94,0.46L4.94,0.13L23.94,0.13L24.94,0.00L26.94,0.18L27.94,0.98L28.23,2.01L28.25,5.01L27.94,6.18L25.94,6.78L24.94,6.84L10.94,6.81L9.94,7.13L9.34,8.01L8.94,9.97L8.94,11.30L9.94,11.60L14.94,10.62L20.94,10.73L23.94,11.45L25.94,12.60L26.94,13.45L27.94,13.86L28.58,15.01L29.45,16.01L30.22,18.01L30.49,20.01L30.48,23.01L29.68,25.01L28.60,27.01L26.40,29.01L23.94,30.61L21.94,31.28Z","w":30.496,"h":31.967},"0":{"path":"M36.42,55.94L33.42,56.11L26.42,55.99L20.42,54.83L17.42,53.81L14.42,52.50L10.42,50.01L8.42,48.31L5.91,45.75L3.25,41.75L2.21,39.75L1.20,36.75L0.17,31.75L0.00,27.75L0.27,23.75L0.97,19.75L2.03,16.75L3.04,14.75L5.60,10.75L7.42,8.72L10.42,5.98L15.42,3.05L19.42,1.45L22.42,0.73L26.42,0.13L33.42,0.03L38.42,0.50L43.42,1.81L45.42,2.58L47.42,3.49L51.13,5.75L55.42,9.68L57.82,12.75L59.88,16.75L60.64,18.75L61.56,22.75L61.79,24.75L62.01,27.75L61.77,31.75L60.75,36.75L59.66,39.75L58.70,41.75L57.47,43.75L55.98,45.75L53.08,48.75L50.42,50.82L48.42,52.05L43.42,54.23L39.42,55.34L36.42,55.94ZM36.29,41.75L39.42,40.25L41.17,38.75L42.86,36.75L43.89,34.75L44.74,31.75L45.04,27.75L44.63,23.75L43.71,20.75L41.42,17.31L39.42,15.71L36.42,14.29L32.42,13.56L29.42,13.59L26.42,14.11L23.42,15.24L21.42,16.53L19.40,18.75L18.26,20.75L17.21,23.75L16.86,26.75L16.89,29.75L17.13,31.75L17.99,34.75L19.05,36.75L21.42,39.28L22.42,40.13L25.70,41.75L28.42,42.29L31.42,42.46L33.42,42.34L36.29,41.75Z","w":62.006,"h":56.108},".":{"path":"M13.14,17.40L11.14,17.94L9.14,18.09L7.14,17.94L5.14,17.40L3.14,16.13L2.14,15.14L0.88,13.28L0.27,11.28L0.00,8.28L0.78,5.28L2.04,3.28L3.00,2.28L5.14,0.85L7.14,0.20L9.14,0.00L11.14,0.28L13.14,0.85L15.15,2.28L17.41,5.28L18.00,7.28L18.22,9.28L17.63,12.28L17.24,13.28L15.81,15.28L13.14,17.40Z","w":18.224,"h":18.091},"s":{"path":"M33.14,43.46L31.14,43.72L23.14,43.76L15.14,42.64L10.14,40.92L7.14,39.54L4.14,37.34L3.17,36.40L1.66,34.40L0.61,32.40L0.08,30.40L0.00,29.40L1.14,28.54L14.14,28.44L16.14,28.57L17.14,29.29L19.10,31.40L20.14,31.97L22.14,32.63L25.14,33.04L31.14,33.04L32.14,32.80L33.14,32.42L34.14,31.77L34.55,31.40L35.07,30.40L34.93,29.40L34.14,28.44L33.14,28.05L28.14,27.25L18.14,26.48L12.14,25.54L9.14,24.68L7.14,23.84L5.14,22.74L4.14,21.94L2.84,20.40L1.69,18.40L0.91,15.40L0.89,12.40L1.83,9.40L3.06,7.40L5.14,5.20L7.14,3.74L10.14,2.38L14.14,1.08L18.14,0.43L24.14,0.00L28.14,0.04L31.14,0.34L35.14,1.06L38.14,1.93L43.14,4.15L46.14,6.47L48.00,8.40L49.14,10.04L50.20,12.40L50.39,13.40L49.87,14.40L49.14,14.68L35.14,14.74L34.03,14.40L32.34,12.40L30.97,11.40L28.14,10.23L27.14,10.06L24.14,9.97L21.14,10.16L19.14,10.81L18.14,11.44L17.47,12.40L17.43,13.40L17.95,14.40L19.14,15.10L20.14,15.39L38.14,16.91L43.14,18.12L45.14,18.89L47.14,20.09L49.14,21.78L50.33,23.40L51.29,26.40L51.49,28.40L51.40,30.40L50.70,33.40L49.14,36.19L48.16,37.40L45.14,39.84L41.72,41.40L38.14,42.62L33.14,43.46Z","w":51.511,"h":43.807}}};
-const BUILD='SEQ-20261013-02';
-const $=id=>document.getElementById(id);
-const canvas=$('game'),ctx=canvas.getContext('2d',{alpha:false});
-const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
-const colors=REF.palette;
-const glyphPaths=Object.fromEntries(Object.entries(REF.glyphs).map(([n,g])=>[n,new Path2D(g.path)]));
-const CFG={referenceWidth:512,referenceHeight:1038,key:'sequencePractice.v1.records',duration:REF.duration,back:REF.overshoot};
-let config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false,customSequence:''};
-let state='settings',priorState='running',sequence=[],boards=[],progress=0,elapsed=0,visual=0,last=0,raf=0;
-let fromPos=[],toPos=[],animStart=-99999,animIndex=-1,pressed=null,wrong=null,wrongAt=-99999;
-let hits=[],errors=0,empty=0,interrupted=false,isDemo=false,demoCursor=0,manual=false,seed=1,completedRun=null;
-let armedSince=0,runStarted=false,frameCount=0;
-const held=new Set();
-let records={};
-try{const r=JSON.parse(store.get(CFG.key)||'{}');if(r&&typeof r==='object'&&!Array.isArray(r))records=r;}catch(e){}
-let W=1,H=1,D=1,OX=0,OY=0,S=1,AW=1,AH=1,safeTop=0,safeBottom=0;
-let L={centers:[],s:1,ox:0,oy:0,ah:1,aw:1};
-let audio=null;
-function rng(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
-function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function freshSeed(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]||1;}catch(e){return (Date.now()^Math.floor(Math.random()*4294967295))>>>0;}}
-// Custom targets use the existing nine-key game; no new gameplay timing is added.
-const CUSTOM_STORAGE_KEY='sequencePractice.v1.customSequence';
-function parseCustomSequence(raw){
- const value=String(raw||'').replace(/\s/g,'');
- if(!value)return {valid:false,value,message:'8 rakam yaz. 1–9 kullan; aynı rakam tekrarlanabilir.'};
- if(/[^1-9]/.test(value))return {valid:false,value,message:'Yalnız 1–9 rakamlarını kullan. Bu oyunda 0 tuşu yok.'};
- if(value.length!==8)return {valid:false,value,message:value.length<8
-  ?'Tam 8 rakam gerekli. '+(8-value.length)+' rakam daha yaz.'
-  :'Tam 8 rakam gerekli. '+(value.length-8)+' fazla rakamı sil.'};
- return {valid:true,value,message:'Sıran: '+value.split('').join(' → ')+'. Her doğru basışta tuşlar yer değiştirir.'};
+const REF={"anchor":54.1666666667,"end":50.1,"times":[0.0,0.053333,0.166666,0.2,0.233333,0.266666,0.3,0.333333,0.366666,0.4,0.433333,0.466666,0.5,0.533333,0.566666,0.6,0.633333,0.666666,0.7,0.733333,0.766666,0.8,0.833333,0.866666,0.9,0.933333,0.966666,1.0,1.033333,1.066666,1.1,1.133333,1.166666,1.2,1.233333,1.266666,1.3,1.333333,1.366666,1.4,1.433333,1.466666,1.5,1.533333,1.566666,1.6,1.633333,1.666666,1.7,1.733333,1.766666,1.8,1.833333,1.866666,1.9,1.933333,1.966666,2.0,2.033333,2.066666,2.1,2.133333,2.166666,2.2,2.233333,2.266666,2.3,2.333333,2.366666,2.4,2.433333,2.466666,2.5,2.533333,2.566666,2.6,2.633333,2.666666,2.7,2.733333,2.766666,2.8,2.833333,2.866666,2.9,2.933333,2.966666,3.0,3.033333,3.066666,3.1,3.133333,3.166666,3.2,3.233333,3.266666,3.3,3.333333,3.366666,3.4,3.433333,3.466666,3.5,3.533333,3.566666,3.6,3.633333,3.766666,3.8,3.833333,3.866666,3.9,3.933333,3.966666,4.0,4.033333,4.066666,4.1,4.133333,4.166666,4.2,4.233333,4.266666,4.3,4.333333,4.366666,4.4,4.433333,4.466666,4.5,4.533333,4.566666,4.6,4.633333,4.666666,4.7,4.733333,4.766666,4.8,4.833333,4.866666,4.9,4.933333,4.966666,5.0,5.033333,5.066666,5.1,5.133333,5.166666,5.2,5.233333,5.266666,5.3,5.333333,5.366666,5.4,5.433333,5.466666,5.5,5.533333,5.566666,5.6,5.633333,5.666666,5.7,5.733333,5.766666,5.8,5.833333,5.866666,5.9,5.933333,5.966666,6.0,6.033333,6.066666,6.1,6.133333,6.166666,6.2,6.233333,6.266666,6.3,6.333333,6.366666,6.4,6.433333,6.466666,6.5,6.533333,6.566666,6.6,6.633333,6.666666,6.7,6.733333,6.766666,6.8,6.833333,6.866666,6.9,6.933333,6.966666,7.0,7.033333,7.066666,7.1,7.133333,7.166666,7.2,7.233333,7.266666,7.4,7.433333,7.466666,7.5,7.533333,7.566666,7.6,7.633333,7.666666,7.7,7.733333,7.766666,7.8,7.833333,7.866666,7.9,7.933333,7.966666,8.0,8.033333,8.066666,8.1,8.133333,8.166666,8.2,8.233333,8.266666,8.3,8.333333,8.366666,8.4,8.433333,8.466666,8.5,8.533333,8.566666,8.6,8.633333,8.666666,8.7,8.733333,8.766666,8.8,8.833333,8.866666,8.9,8.933333,8.966666,9.0,9.033333,9.066666,9.1,9.133333,9.166666,9.2,9.233333,9.266666,9.3,9.333333,9.366666,9.4,9.433333,9.466666,9.5,9.533333,9.566666,9.6,9.633333,9.666666,9.7,9.733333,9.766666,9.8,9.833333,9.866666,9.9,9.933333,9.966666,10.0,10.033333,10.066666,10.1,10.133333,10.166666,10.2,10.233333,10.266666,10.3,10.333333,10.366666,10.4,10.433333,10.466666,10.5,10.533333,10.566666,10.6,10.633333,10.666666,10.9,10.933333,10.966666,11.0,11.033333,11.066666,11.1,11.133333,11.166666,11.2,11.233333,11.266666,11.3,11.333333,11.366666,11.4,11.433333,11.466666,11.5,11.533333,11.566666,11.6,11.633333,11.666666,11.7,11.733333,11.766666,11.8,11.833333,11.866666,11.9,11.933333,11.966666,12.0,12.033333,12.066666,12.1,12.133333,12.166666,12.2,12.233333,12.266666,12.3,12.333333,12.366666,12.4,12.433333,12.466666,12.5,12.533333,12.566666,12.6,12.633333,12.666666,12.7,12.733333,12.766666,12.8,12.833333,12.866666,12.9,12.933333,12.966666,13.0,13.033333,13.066666,13.1,13.133333,13.166666,13.2,13.233333,13.266666,13.3,13.333333,13.366666,13.4,13.433333,13.466666,13.5,13.533333,13.566666,13.6,13.633333,13.666666,13.7,13.733333,13.766666,13.8,13.833333,13.866666,14.033333,14.066666,14.1,14.133333,14.166666,14.2,14.233333,14.266666,14.3,14.333333,14.366666,14.4,14.433333,14.466666,14.5,14.533333,14.566666,14.6,14.633333,14.666666,14.7,14.733333,14.766666,14.8,14.833333,14.866666,14.9,14.933333,14.966666,15.0,15.033333,15.066666,15.1,15.133333,15.166666,15.2,15.233333,15.266666,15.433333,15.466666,15.5,15.533333,15.566666,15.6,15.633333,15.666666,15.7,15.733333,15.766666,15.8,15.833333,15.866666,15.9,15.933333,15.966666,16.0,16.033333,16.066666,16.1,16.133333,16.166666,16.2,16.233333,16.266666,16.3,16.333333,16.366666,16.4,16.433333,16.466666,16.5,16.533333,16.566666,16.6,16.633333,16.666666,16.7,16.733333,16.766666,16.8,16.833333,16.866666,16.9,16.933333,16.966666,17.0,17.033333,17.066666,17.1,17.133333,17.166666,17.2,17.233333,17.266666,17.3,17.333333,17.466666,17.5,17.533333,17.566666,17.6,17.633333,17.666666,17.7,17.733333,17.766666,17.8,17.833333,17.866666,17.9,17.933333,17.966666,18.0,18.033333,18.066666,18.1,18.133333,18.166666,18.2,18.233333,18.266666,18.3,18.333333,18.366666,18.4,18.433333,18.466666,18.5,18.533333,18.566666,18.6,18.733333,18.766666,18.8,18.833333,18.866666,18.9,18.933333,18.966666,19.0,19.033333,19.066666,19.1,19.133333,19.166666,19.2,19.233333,19.266666,19.3,19.333333,19.366666,19.4,19.433333,19.466666,19.5,19.533333,19.566666,19.6,19.633333,19.666666,19.7,19.733333,19.766666,19.8,19.833333,19.866666,19.9,19.933333,19.966666,20.0,20.033333,20.066666,20.1,20.133333,20.166666,20.2,20.233333,20.266666,20.366666,20.4,20.433333,20.466666,20.5,20.533333,20.566666,20.6,20.633333,20.666666,20.7,20.733333,20.766666,20.8,20.833333,20.866666,20.9,20.933333,20.966666,21.0,21.033333,21.066666,21.1,21.133333,21.166666,21.2,21.233333,21.266666,21.3,21.333333,21.366666,21.4,21.433333,21.466666,21.5,21.533333,21.566666,21.6,21.633333,21.666666,21.833333,21.866666,21.9,21.933333,21.966666,22.0,22.033333,22.066666,22.1,22.133333,22.166666,22.2,22.233333,22.266666,22.3,22.333333,22.366666,22.4,22.433333,22.466666,22.5,22.533333,22.566666,22.6,22.633333,22.666666,22.7,22.733333,22.766666,22.8,22.833333,22.866666,22.9,22.933333,22.966666,23.0,23.033333,23.066666,23.1,23.133333,23.166666,23.2,23.233333,23.266666,23.4,23.433333,23.466666,23.5,23.533333,23.566666,23.6,23.633333,23.666666,23.7,23.733333,23.766666,23.8,23.833333,23.866666,23.9,23.933333,23.966666,24.0,24.033333,24.066666,24.1,24.133333,24.166666,24.2,24.233333,24.266666,24.3,24.333333,24.366666,24.4,24.433333,24.566666,24.6,24.633333,24.666666,24.7,24.733333,24.766666,24.8,24.833333,24.866666,24.9,24.933333,24.966666,25.0,25.033333,25.066666,25.1,25.133333,25.166666,25.2,25.233333,25.266666,25.3,25.333333,25.366666,25.4,25.433333,25.466666,25.5,25.533333,25.566666,25.6,25.633333,25.666666,25.7,25.733333,25.766666,25.8,25.833333,25.866666,25.9,25.933333,25.966666,26.0,26.133333,26.166666,26.2,26.233333,26.266666,26.3,26.333333,26.366666,26.4,26.433333,26.466666,26.5,26.533333,26.566666,26.6,26.633333,26.666666,26.7,26.733333,26.766666,26.8,26.833333,26.866666,26.9,26.933333,26.966666,27.0,27.033333,27.066666,27.1,27.133333,27.166666,27.2,27.233333,27.266666,27.3,27.333333,27.366666,27.4,27.433333,27.566666,27.6,27.633333,27.666666,27.7,27.733333,27.766666,27.8,27.833333,27.866666,27.9,27.933333,27.966666,28.0,28.033333,28.066666,28.1,28.133333,28.166666,28.2,28.233333,28.266666,28.3,28.333333,28.366666,28.4,28.433333,28.466666,28.5,28.533333,28.566666,28.6,28.633333,28.666666,28.7,28.733333,28.9,28.933333,28.966666,29.0,29.033333,29.066666,29.1,29.133333,29.166666,29.2,29.233333,29.266666,29.3,29.333333,29.366666,29.4,29.433333,29.466666,29.5,29.533333,29.566666,29.6,29.633333,29.666666,29.7,29.733333,29.766666,29.8,29.933333,29.966666,30.0,30.033333,30.066666,30.1,30.133333,30.166666,30.2,30.233333,30.266666,30.3,30.333333,30.366666,30.4,30.433333,30.466666,30.5,30.533333,30.566666,30.6,30.633333,30.666666,30.7,30.733333,30.766666,30.8,30.833333,30.866666,30.9,30.933333,30.966666,31.0,31.033333,31.066666,31.1,31.133333,31.166666,31.2,31.233333,31.4,31.433333,31.466666,31.5,31.533333,31.566666,31.6,31.633333,31.666666,31.7,31.733333,31.766666,31.8,31.833333,31.866666,31.9,31.933333,31.966666,32.0,32.033333,32.066666,32.1,32.133333,32.166666,32.2,32.233333,32.266666,32.3,32.333333,32.366666,32.4,32.433333,32.466666,32.5,32.533333,32.633333,32.666666,32.7,32.733333,32.766666,32.8,32.833333,32.866666,32.9,32.933333,32.966666,33.0,33.033333,33.066666,33.1,33.133333,33.166666,33.2,33.233333,33.266666,33.3,33.333333,33.366666,33.4,33.433333,33.466666,33.5,33.533333,33.566666,33.6,33.633333,33.666666,33.7,33.733333,33.766666,33.8,33.833333,33.866666,33.9,34.033333,34.066666,34.1,34.133333,34.166666,34.2,34.233333,34.266666,34.3,34.333333,34.366666,34.4,34.433333,34.466666,34.5,34.533333,34.566666,34.6,34.633333,34.666666,34.7,34.733333,34.766666,34.8,34.833333,34.966666,35.0,35.033333,35.066666,35.1,35.133333,35.166666,35.2,35.233333,35.266666,35.3,35.333333,35.366666,35.4,35.433333,35.466666,35.5,35.533333,35.566666,35.6,35.633333,35.666666,35.7,35.733333,35.766666,35.8,35.833333,35.866666,35.9,35.933333,35.966666,36.0,36.033333,36.066666,36.233333,36.266666,36.3,36.333333,36.366666,36.4,36.433333,36.466666,36.5,36.533333,36.566666,36.6,36.633333,36.666666,36.7,36.733333,36.766666,36.8,36.833333,36.866666,36.9,36.933333,36.966666,37.0,37.033333,37.066666,37.1,37.133333,37.166666,37.2,37.233333,37.266666,37.3,37.333333,37.366666,37.4,37.433333,37.466666,37.5,37.533333,37.566666,37.6,37.633333,37.666666,37.7,37.733333,37.766666,37.8,37.833333,37.866666,37.9,37.933333,37.966666,38.0,38.033333,38.066666,38.1,38.133333,38.166666,38.2,38.233333,38.266666,38.3,38.333333,38.366666,38.4,38.433333,38.566666,38.6,38.633333,38.666666,38.7,38.733333,38.766666,38.8,38.833333,38.866666,38.9,38.933333,38.966666,39.0,39.033333,39.066666,39.1,39.133333,39.166666,39.2,39.233333,39.266666,39.3,39.333333,39.366666,39.4,39.433333,39.466666,39.5,39.533333,39.566666,39.6,39.633333,39.666666,39.7,39.733333,39.766666,39.8,39.833333,39.866666,39.9,39.933333,39.966666,40.0,40.033333,40.066666,40.1,40.133333,40.166666,40.2,40.233333,40.266666,40.3,40.333333,40.466666,40.5,40.533333,40.566666,40.6,40.633333,40.666666,40.7,40.733333,40.766666,40.8,40.833333,40.866666,40.9,40.933333,40.966666,41.0,41.033333,41.066666,41.1,41.133333,41.166666,41.2,41.233333,41.266666,41.3,41.333333,41.366666,41.4,41.433333,41.466666,41.5,41.533333,41.566666,41.6,41.633333,41.666666,41.7,41.733333,41.766666,41.8,41.833333,41.866666,41.9,41.933333,41.966666,42.0,42.033333,42.066666,42.1,42.133333,42.166666,42.2,42.233333,42.266666,42.3,42.333333,42.366666,42.4,42.433333,42.466666,42.5,42.533333,42.566666,42.6,42.733333,42.766666,42.8,42.833333,42.866666,42.9,42.933333,42.966666,43.0,43.033333,43.066666,43.1,43.133333,43.166666,43.2,43.233333,43.266666,43.3,43.333333,43.366666,43.4,43.433333,43.466666,43.5,43.533333,43.566666,43.6,43.633333,43.666666,43.7,43.733333,43.766666,43.8,43.833333,43.866666,43.9,43.933333,43.966666,44.0,44.033333,44.066666,44.1,44.133333,44.166666,44.2,44.233333,44.266666,44.3,44.333333,44.366666,44.4,44.433333,44.466666,44.5,44.533333,44.566666,44.6,44.633333,44.666666,44.7,44.733333,44.766666,44.8,44.833333,44.866666,45.0,45.033333,45.066666,45.1,45.133333,45.166666,45.2,45.233333,45.266666,45.3,45.333333,45.366666,45.4,45.433333,45.466666,45.5,45.533333,45.566666,45.6,45.633333,45.666666,45.7,45.733333,45.766666,45.8,45.833333,45.866666,45.9,45.933333,45.966666,46.0,46.033333,46.066666,46.1,46.133333,46.166666,46.2,46.233333,46.266666,46.3,46.333333,46.366666,46.4,46.433333,46.466666,46.5,46.533333,46.566666,46.6,46.633333,46.666666,46.7,46.733333,46.766666,46.8,46.833333,46.866666,46.9,46.933333,46.966666,47.0,47.033333,47.066666,47.1,47.133333,47.166666,47.2,47.233333,47.266666,47.3,47.333333,47.366666,47.4,47.433333,47.466666,47.5,47.533333,47.566666,47.6,47.633333,47.666666,47.7,47.733333,47.766666,47.8,47.833333,47.866666,47.9,47.933333,47.966666,48.0,48.033333,48.066666,48.1,48.133333,48.166666,48.2,48.233333,48.266666,48.3,48.333333,48.366666,48.4,48.433333,48.466666,48.5,48.533333,48.566666,48.6,48.633333,48.666666,48.7,48.733333,48.766666,48.8,48.833333,48.866666,48.9,48.933333,48.966666,49.0,49.033333,49.066666,49.1,49.133333,49.166666,49.2,49.233333,49.266666,49.3,49.333333,49.366666,49.4,49.433333,49.466666,49.5,49.533333,49.566666,49.6,49.633333,49.666666,49.7,49.733333,49.766666,49.8,49.833333,49.866666,49.9,49.933333,49.966666,50.0,50.033333,50.066666,50.1],"ys":[697.45,697.45,695.5706,692.4078,688.1957,683.8057,681.4892,675.944,671.3116,664.4847,656.8489,648.391,634.4847,624.3266,618.8893,601.9963,593.0719,580.6158,567.9571,554.305,544.25,523.0347,508.37,493.9461,475.3212,471.5926,449.3273,434.6741,423.4197,408.9645,384.0018,377.2447,367.1866,353.7914,331.7464,320.4562,309.1184,298.8579,289.275,282.718,274.7656,267.1823,263.6047,257.8579,251.427,247.7721,244.8667,243.1544,242.2556,242.2556,244.2057,244.7326,248.4625,253.2055,264.539,273.2536,294.8674,306.8636,314.7097,328.2964,336.8942,355.0734,361.2887,373.8768,393.8129,400.6269,407.2641,417.5282,424.4675,434.8145,441.8444,448.6583,455.4823,469.4576,486.8491,496.8297,506.9676,523.6268,536.6614,549.3929,568.0111,573.7374,585.411,596.4577,606.9513,614.9981,622.1754,633.8764,644.5401,648.5401,659.8587,669.5929,672.7175,675.2266,684.7192,686.9479,690.1644,693.1237,695.2345,696.3754,697.5676,697.733,697.6413,696.6919,695.1913,692.4338,688.8793,671.1771,667.1129,662.1796,655.5671,648.5922,642.9983,635.028,622.2923,613.2655,604.1076,594.6879,584.8187,568.8489,566.2444,555.5847,541.8592,533.2159,522.0357,510.4219,498.6756,487.0222,469.1667,460.4923,448.4326,436.5882,424.661,409.9276,401.2021,392.7308,381.3832,370.3996,359.5036,346.4149,336.2814,328.8276,319.4101,305.7324,295.3741,291.3989,283.9137,275.0106,270.2561,264.6859,257.8614,254.5857,249.8769,248.1404,245.5183,242.9912,242.235,241.8849,242.5993,243.9857,247.5551,249.2606,255.3546,257.5293,261.5293,269.3546,274.5797,286.0683,294.9874,301.9266,309.553,317.25,340.0037,346.0714,361.792,371.4964,384.9632,398.9212,420.427,427.486,446.2878,453.5325,468.8171,487.4176,506.0868,524.9124,539.4537,550.3495,560.8697,574.9139,594.9139,607.2518,613.3535,625.1522,641.3376,653.3535,664.0912,669.864,673.5691,679.9691,685.7156,690.2283,694.989,696.6255,697.4161,697.4161,697.0596,694.6544,691.1996,688.6098,685.9496,679.1739,670.8827,635.0902,623.7066,615.0736,595.7918,582.9811,565.25,551.0688,514.5625,491.4132,472.7473,453.5,434.9552,416.7535,402.2872,381.6787,374.8357,361.7036,349.2941,340.4143,325.7664,315.0336,300.0124,284.7372,278.7731,267.8221,263.3593,256.5842,252.3485,249.3022,246.7724,243.4851,243.179,242.0709,243.1434,244.576,246.7137,249.25,252.4472,256.375,261.158,266.6486,271.158,277.6088,284.7941,292.3715,302.8992,307.0625,318.4176,323.1052,335.1142,345.3672,353.2555,366.9264,380.9264,389.1908,397.5328,409.364,417.9542,436.2008,448.2444,460.609,475.4291,481.4107,490.8244,502.8244,514.8244,526.569,535.0662,546.8333,563.3556,568.8849,574.2958,587.6373,592.8571,605.2676,615.0909,628.847,637.1418,645.4854,656.9601,661.9052,666.9601,672.9126,678.1394,681.7291,686.0746,689.8429,692.239,695.139,697.1022,697.4206,697.653,697.2055,695.8408,693.6955,690.8504,687.2336,682.8284,679.016,647.1487,642.8764,635.3917,625.3387,617.2018,606.0444,591.0324,575.0891,561.8943,551.4662,537.5804,523.2519,505.0568,493.5899,482.4354,467.2164,448.1679,436.6849,421.4307,410.1679,384.4254,370.1679,359.5474,346.1741,329.85,320.6783,312.0971,298.204,290.5,278.8584,272.475,264.984,256.9807,250.7113,247.3493,244.4541,242.6889,242.2547,242.85,243.9404,246.9302,249.714,254.7454,260.7153,267.5714,275.8656,285.1209,295.1079,312.0018,327.3571,337.418,347.7602,361.8651,376.8184,391.6661,407.1812,419.1498,435.1255,451.3686,471.7319,483.8012,507.9733,523.4706,535.3235,550.6378,565.2949,579.4964,593.2331,606.2773,615.3604,629.9007,638.1604,648.3619,657.4416,669.5418,676.9646,682.858,687.6324,691.5185,694.7311,696.8038,697.4522,697.4669,696.2061,694.4064,691.3819,687.4388,683.8577,678.4638,672.0464,628.7388,617.8396,609.5855,592.6066,586.6165,577.2266,555.2127,548.8849,539.1431,519.261,499.261,495.721,482.3912,472.5071,458.8803,445.6375,432.5211,413.0638,403.3369,391.0231,376.0037,358.6174,349.9816,344.5815,333.7831,321.257,311.8488,302.8656,296.4522,286.5,280.8964,272.5602,267.7974,263.6254,256.1022,251.1547,248.6348,246.6143,242.4176,243.94,246.6466,249.4852,253.2336,257.9808,262.913,268.913,273.6174,281.0667,289.0092,299.6343,306.8832,319.0487,330.1693,341.029,352.6788,365.1125,381.0204,390.7161,400.842,414.4746,439.1145,457.0464,467.9963,478.8066,493.3413,511.5181,518.6927,533.2092,543.9677,557.9923,571.7362,591.8273,597.7583,615.9682,630.3303,635.4964,646.0665,655.4317,664.4695,671.8978,677.2159,686.1628,690.6838,694.1667,696.9145,697.4,697.6541,696.9145,694.7903,691.4781,686.2057,678.9577,669.1318,663.0263,653.1848,648.154,595.1074,580.1654,564.3614,543.4858,530.8741,518.1097,500.5772,478.6092,452.1304,434.4338,425.3497,403.917,391.0037,374.7226,362.6144,347.1583,336.073,318.6495,309.0139,299.5915,288.4483,278.3158,265.2544,257.8972,252.0243,249.5515,244.3973,242.9436,241.9203,242.9431,244.9182,248.4023,253.2143,259.2143,266.4305,308.7324,321.5256,334.9321,349.2965,367.606,375.4927,391.269,407.2964,423.4771,440.4455,469.2649,477.4771,493.9423,510.194,526.2623,541.7857,556.9101,567.7635,595.7989,612.0361,634.9328,649.9926,663.3036,672.6561,677.4176,683.3764,689.2224,692.8333,695.3278,697.2709,697.6162,697.4541,697.0964,696.8511,695.5848,694.8274,693.5249,691.0,687.1197,683.4228,678.2399,668.8105,665.2222,657.6004,649.105,642.4894,632.9808,595.0484,586.1875,573.3754,557.3612,547.3612,534.4599,520.6439,510.2376,496.2376,471.5913,457.3074,447.0507,433.0507,418.979,405.286,391.8489,378.7258,371.9982,359.3877,341.2852,327.1236,316.1381,303.1264,300.9211,291.4161,280.7647,275.0644,266.1377,259.8713,254.7052,250.3652,246.7201,244.7974,242.5657,242.2744,242.5481,243.9239,247.0584,247.8878,252.6901,291.6673,299.6155,311.1255,326.3702,339.5436,350.3321,364.7688,379.6933,395.6203,411.8895,428.4444,449.7835,458.2823,484.6523,506.1815,514.9494,531.589,548.8516,569.2336,585.0498,596.7461,611.0451,624.8032,637.3993,649.2839,662.7198,671.6597,679.5929,683.0897,691.4762,695.1667,697.0564,697.9577,697.4762,695.3045,691.6357,686.7119,678.0217,669.3015,657.0199,648.4197,635.6929,618.7234,611.0854,544.3147,525.6058,506.2754,476.7935,456.9426,437.5206,428.0305,404.5394,385.6971,368.2938,351.0338,334.8432,315.9582,309.1254,292.8665,281.337,273.588,264.5321,256.7509,250.8838,246.1866,242.6196,241.7939,242.6196,245.4674,248.3272,253.3194,260.2509,267.9368,274.5603,284.7852,296.0412,358.7652,370.7135,387.0627,404.1654,421.4676,439.2269,452.8333,469.9745,487.6868,509.3464,522.2269,547.0421,555.1914,578.5687,592.8696,603.4811,616.8259,629.1929,640.53,650.8963,660.5943,667.0761,674.7852,681.5,689.1848,693.0441,695.4963,697.3817,697.485,697.3777,695.8357,693.3667,688.9873,686.6697,676.6667,669.5925,661.881,653.1121,645.9729,638.3929,622.1559,616.5251,601.3298,592.0247,533.5,518.6346,503.1894,487.6792,472.3202,460.8273,445.1904,429.6533,414.5474,399.5071,384.8525,366.9464,353.4214,343.3773,324.3947,315.2687,304.1755,291.0942,283.7322,279.3007,269.2357,262.2893,255.741,249.7674,246.9216,244.0827,242.1044,242.1044,243.0552,245.2782,249.0515,253.6099,259.4642,264.9511,273.0502,282.2007,292.6802,307.0018,316.3804,329.7841,396.8788,414.7099,432.8232,456.0251,465.3679,488.8736,512.2687,526.3667,540.2197,557.9783,575.927,596.5396,608.4964,623.5037,637.4513,650.1157,669.3913,673.9906,681.9925,691.267,693.3246,696.6397,697.4813,697.4813,695.5564,691.6798,687.7164,679.1844,665.0782,650.5219,640.4188,629.4667,614.5269,597.3571,574.9765,560.9735,469.0865,442.5741,421.4071,390.4962,375.3797,356.5,338.6461,317.4151,306.1377,292.0019,282.3712,271.237,261.7058,250.8088,244.9839,242.9184,241.9137,242.9149,245.4891,249.1403,257.0216,265.1387,275.0509,283.4599,296.0756,310.0165,325.0958,341.3787,419.4963,439.1046,459.2601,479.3594,499.1568,513.6194,532.9964,551.6903,594.8941,618.0794,621.5876,635.2556,641.9615,647.8948,659.1291,668.9109,675.225,682.8801,688.8514,693.0197,696.056,697.4557,697.8494,696.3284,689.3691,686.9731,682.4891,675.3267,664.8475,657.6254,647.2309,635.861,626.7692,613.6993,600.1703,578.2762,571.0115,555.2111,539.2096,519.1667,435.5485,419.0625,406.66,390.7074,375.0506,360.0468,345.544,328.4962,315.4927,300.6617,292.6541,282.3289,271.1738,261.8083,260.1506,254.1291,249.3358,244.9704,243.3849,242.2269,242.4354,243.9212,245.7117,253.174,257.3921,264.1642,272.2454,281.3617,291.8262,303.3893,315.8794,329.3404,343.9701,355.3433,371.2333,431.7731,445.6587,464.53,483.5038,502.1616,530.4044,539.5185,557.5879,575.4418,596.4529,604.5288,623.2912,633.6722,647.2962,659.2765,674.4648,682.7314,689.0037,693.4707,696.4076,697.5263,697.3836,695.2517,691.0091,685.0091,677.1058,669.6871,652.552,638.9103,623.4964,607.1455,584.1536,569.6197,554.5318,523.1404,507.1154,490.7,474.2041,452.0535,366.3459,346.5478,318.9353,302.4124,287.3821,277.6624,263.7604,256.9291,248.3182,244.9908,241.8623,242.0843,244.2875,247.4808,257.7375,262.1449,278.9388,292.8,308.2584,329.6078,343.5412,363.3674,384.4348,406.3407,423.1407,514.0768,530.7143,563.2228,573.5072,603.0985,620.7941,644.5,651.4158,661.1168,672.4314,681.8493,689.0257,694.0785,697.2912,697.7407,696.4746,691.9697,686.0114,678.2481,665.8921,654.2481,633.9689,630.1568,614.7008,597.6679,584.8384,561.2282,537.25,512.8205,507.5369,487.1655,467.1123,442.0393,422.5929,314.9286,294.7638,275.0019,257.6593,253.1203,247.9238,244.3791,242.3577,242.0131,243.6775,246.9613,251.1888,255.7482,264.5397,275.5637,283.4928,297.5576,306.895,323.6127,334.6429,345.6638,349.4308,381.8629,394.5722,412.2208,434.4191,447.9224,470.7564,488.9797,511.2834,520.7372,542.1971,555.196,572.2289,596.0243,607.0965,621.1944,628.2566,637.8022,643.7127,649.7399,655.2324,662.986,670.0693,678.5302,683.7145,690.7857,692.8601,696.1952,697.7966,697.6058,696.211,691.6903,688.205,681.5727,673.4377,664.094,655.7381,643.4779,629.9351,611.2491,586.1617,577.4526,558.9965,539.7113,519.9874,504.6958,410.9942,390.3654,375.2399,351.1162,337.25,319.9242,308.0115,293.0535,279.8222,265.5036,256.9015,247.087,244.9686,242.5106,242.1214,245.1475,247.5181,253.6475,267.4679,279.489,293.5519,305.2903,322.6882,346.6524,362.1029,384.0037,401.0181,424.2984,454.5426,478.0127,520.6181,544.0882,555.4134,577.5221,593.4853,617.648,635.3233,647.7976,661.9961,671.1143,685.8525,693.7248,696.4412,697.8077,696.7374,692.7899,688.1277,679.5745,665.9964,648.5035,632.2986,614.5291,600.3182,584.7185,493.4758,475.1038,450.7456,426.6993,392.1284,369.8481,354.0762,334.0762,307.0348,299.0495,284.2033,266.0745,261.1111,252.8838,248.3195,242.5982,242.1237,244.5432,247.7634,253.8371,259.4373,272.1742,287.0842,294.249,312.8745,325.2491,347.3608,370.9545,391.0901,406.3467,437.6637,453.6308,464.3409,485.3582,511.2065,526.4228,541.3974,579.4091,592.5036,605.0105,620.9895,638.8162,648.6625,663.0665,668.1911,679.3697,686.4851,691.7709,694.8963,697.7709,697.7709,696.144,691.3846,688.922,686.5573,675.4611,664.144,658.7418,647.4264,634.9669,610.5739,595.3534,587.2079,566.5672,553.3655,484.2302,469.6086,445.7182,426.875,408.2576,389.9125,363.2226,350.7652,334.5255,319.3525,305.231,292.3205,280.8382,270.6364,260.0462,251.5226,248.9769,245.6654,242.2817,242.2791,244.0265,247.2726,251.1053,259.8731,268.6255,276.2921,288.1757,297.9618,320.126,340.7647,354.2727,373.2546,393.0679,408.6232,429.6767,451.028,478.3415,500.3441,511.1704,538.3473,564.2955,584.3582,603.2978,621.2269,641.1,658.9407,664.8381,675.75,684.6964,692.6935,695.5687,697.5812,697.1534,694.2985,688.8173,678.4176,670.6889,658.0224,635.1679,626.2664,607.6317,587.2734,565.3278,542.5114,524.6031,419.0977,394.5892,370.645,348.2978,317.2901,312.646,295.0018,279.5437,266.6245,252.0039,247.1974,243.1046,243.0358,244.7528,248.3333,255.938,266.2836,283.0428,303.3093,322.4053,348.2045,376.322,394.322,400.3104,425.0109,450.3376,476.1643,494.9588,532.6993,544.9624,568.0775,589.876,620.3485,642.3872,654.2115,667.7299,678.9116,687.6805,692.2399,697.1691,697.8456,697.4182,695.4432,688.9387,680.9652,664.8358,651.4847,636.3244,623.6375,605.6483,586.2445,555.1396,549.666,522.6818,499.8022,482.9895,460.3092,426.6643,415.897,384.249,369.2179,350.1264,327.7182,315.4644,300.095,286.7022,274.7294,264.6383,258.1961,249.5985,245.1726,243.1952,241.9502,243.1655,247.1655,249.4891,257.4164,265.6818,275.3007,286.9847,299.5662,313.3273,332.5805,340.6374,366.3157,379.4416,393.1784,412.2132,431.4481,450.9493,470.6329,495.14,519.4025,533.8849,556.4336,569.906,591.25,603.4631,622.4597,633.2418,646.0037,655.1462,665.9522,675.0993,686.2399,691.4891,695.3505,697.2834,697.489,696.8907,694.2206,689.7222,685.0406,673.2581,670.9858,657.708,638.7939,624.1312,608.2742,591.6749,558.8993,558.9515,539.3266,519.1016,498.0536,476.9635,461.009,433.9427,407.277,397.0319,367.141,338.8643,325.4728,312.8281,301.142,283.4301,274.3659,263.718,254.8935,247.0636,244.1022,241.9323,242.8226,246.2926,252.1292,260.0852,270.5179,283.2708,298.0211,310.7246,328.8804,348.9124,370.2338,404.5889],"slopes":[0.0,0.0,-32.365,-108.3845,-128.9783,-90.9803,-98.0342,-151.4374,-165.5855,-216.2602,-240.7788,-315.5525,-352.2084,-212.498,-246.8004,-350.3657,-311.959,-376.6957,-394.0975,-347.4232,-409.3065,-520.2587,-436.3039,-487.7211,-186.3991,-191.6266,-530.232,-381.9244,-379.6694,-549.2526,-319.061,-242.51,-344.6757,-499.9334,-447.985,-339.4168,-323.1671,-297.3065,-233.5865,-215.6262,-232.9068,-145.849,-132.2961,-182.0898,-139.8264,-97.1201,-64.641,-35.3656,0.0,0.0,24.8914,27.7035,125.2768,200.6186,295.5887,372.6351,462.8655,284.6137,298.4308,315.9357,350.2258,277.9081,249.6525,462.9575,304.6976,201.7312,241.8434,248.4157,249.2178,251.1556,207.6082,204.5662,275.1054,464.9261,380.4828,301.7581,378.1544,438.7674,386.4353,453.6689,262.7592,230.5048,340.549,322.8887,273.2619,227.6188,266.9125,334.7485,174.5342,177.3308,314.0008,141.9249,83.4973,119.0711,108.2984,78.9901,92.4762,73.9233,44.4358,34.979,8.7131,0.0,-5.0139,-34.8911,-58.3072,-93.1693,-115.7484,-126.0409,-133.7024,-169.5252,-203.6647,-186.2564,-197.2206,-294.138,-316.9539,-272.7578,-278.6069,-289.1757,-365.9844,-134.355,-125.5834,-360.0011,-318.2089,-292.4802,-341.7902,-350.3891,-350.9875,-423.0841,-350.2858,-302.718,-358.5356,-356.5669,-395.4768,-328.8063,-257.8943,-291.0208,-334.8813,-328.1869,-356.7622,-342.6963,-257.6833,-249.6393,-334.6437,-353.6612,-172.3633,-155.7823,-243.9843,-185.9603,-153.9051,-184.0159,-132.7988,-115.9106,-76.1158,-62.678,-77.2137,-34.9213,-14.358,0.0,28.2877,59.9133,69.2429,79.9508,96.1647,84.5276,158.8179,187.9844,215.4989,301.2597,234.165,218.0004,229.8454,345.0825,287.4217,262.6776,360.0205,338.4086,411.2387,507.8571,318.8771,307.9298,313.7777,294.9056,503.4068,559.0413,562.4185,492.2494,373.7172,321.1442,360.8825,495.0308,457.8415,244.9549,241.3058,409.4515,413.7696,340.2257,225.2634,135.401,140.7955,181.6723,151.6614,139.0002,73.0718,31.9839,0.0,0.0,-18.6284,-85.0782,-88.8127,-78.7355,-114.613,-223.7202,-256.2631,-307.9787,-294.5821,-357.7878,-461.8153,-446.242,-472.7571,-612.8107,-849.9831,-620.0134,-568.5612,-566.6919,-551.147,-483.6102,-509.992,-308.2299,-269.9229,-382.8208,-310.5601,-331.7015,-371.6562,-375.599,-454.4109,-257.3653,-231.6738,-190.2395,-161.4327,-156.3772,-106.3168,-82.9248,-85.7763,-16.802,-14.391,0.0,36.8,51.4676,69.5992,84.8581,105.7521,129.4025,153.3714,148.5576,159.2449,203.9472,221.2874,264.3643,179.0065,182.7829,199.0714,202.2901,331.8552,267.4937,300.1208,415.0087,311.8021,249.0907,293.5478,298.6036,350.4314,435.3026,366.0588,404.4417,255.6977,219.453,316.5183,360.0036,356.125,295.8108,296.0537,412.3512,248.5704,164.0845,230.9764,225.1141,220.4651,328.9888,343.8496,310.4773,249.5724,289.8523,207.3507,149.9812,164.0124,166.9848,127.6862,117.9477,121.0916,87.8832,78.7223,70.2429,16.4355,8.0609,0.0,-20.2219,-50.0444,-73.3857,-95.5461,-119.1664,-122.6233,-121.7976,-131.1987,-163.192,-257.4225,-269.8195,-282.324,-384.0235,-463.9076,-433.1872,-349.4811,-357.3298,-423.1147,-480.9574,-422.0358,-339.2606,-386.2066,-507.5891,-429.8567,-393.079,-388.7406,-470.0964,-550.5301,-365.1923,-355.1739,-441.0622,-352.3383,-266.0021,-318.2825,-297.3509,-278.1641,-247.3648,-206.7891,-232.1627,-210.929,-131.3073,-93.3373,-65.7951,-20.9078,0.0,23.1041,47.9404,86.4947,107.5329,163.8175,191.4736,225.2055,262.4515,288.2204,376.5917,482.6352,364.7037,305.9857,358.0161,435.5057,447.0067,455.2197,405.3962,410.5445,483.2461,542.1466,454.6685,482.9891,566.5923,402.9671,400.8907,449.3585,432.7686,418.9553,401.4498,321.27,335.4377,316.0526,273.8534,288.237,311.2398,276.0323,197.1069,158.2576,128.5397,105.5217,75.5946,29.6323,0.8628,0.0,-44.4845,-67.6986,-102.6971,-112.6021,-129.1336,-175.8401,-214.0935,-297.1256,-281.8185,-333.2411,-265.6781,-219.4263,-394.9342,-294.9025,-230.1632,-392.2891,-598.2322,-180.4573,-167.8282,-340.5407,-343.7262,-402.9603,-395.3822,-470.0874,-389.1,-326.0598,-405.9782,-483.4897,-346.197,-199.349,-215.9911,-347.9505,-322.3655,-275.723,-224.5168,-234.0049,-215.1012,-201.0641,-181.8607,-133.434,-161.0248,-179.0803,-100.1736,-67.2824,-39.1754,0.0,58.461,83.131,96.9208,125.6709,145.1382,162.4215,158.2127,173.0045,230.641,272.6994,258.5442,272.5432,348.5859,329.6557,337.2304,360.869,418.7335,361.448,297.1819,348.6117,526.6075,622.718,407.9072,326.3919,371.9644,484.5878,308.6521,288.0905,370.7415,365.2932,416.4825,489.6604,274.7556,268.4323,481.7606,227.9685,208.2059,297.9345,275.9593,244.6304,185.956,200.1315,180.1999,118.0372,92.1613,24.7538,10.0086,0.0,-32.9153,-77.652,-122.0572,-183.1299,-250.2681,-225.9402,-226.0748,-199.7426,-200.7676,-426.6319,-460.8248,-539.6816,-471.7155,-380.6258,-443.2024,-585.0343,-720.3975,-636.4479,-360.1637,-382.7978,-483.4959,-432.0858,-416.6381,-407.3703,-387.3216,-406.4918,-372.2682,-285.8315,-306.3223,-318.4193,-342.3584,-282.3769,-195.9551,-104.4079,-100.2654,-68.0352,-36.0337,0.0,40.4322,75.6303,121.2531,160.2225,196.5636,247.9934,354.097,392.779,416.065,482.9675,330.7354,315.4842,477.0309,483.1089,496.953,640.8141,383.4578,328.7562,490.738,484.7813,473.7321,459.6438,379.1325,469.4582,616.934,570.0084,545.0749,423.9481,329.5797,189.3078,158.799,177.0558,133.9301,88.5201,65.5354,17.5913,0.0,-6.6939,-8.7307,-12.3296,-28.4354,-28.7346,-51.5552,-91.7756,-113.5908,-129.4682,-200.6728,-155.9501,-146.3825,-241.0474,-223.1559,-234.0787,-318.1305,-303.6838,-314.287,-427.0629,-369.3543,-338.0047,-400.2939,-356.1314,-358.1543,-535.7078,-542.5745,-358.1937,-355.1887,-421.0707,-416.3919,-406.9193,-398.3447,-266.8532,-263.2297,-445.9619,-476.7401,-371.1938,-357.3904,-113.1432,-107.4016,-301.3659,-222.788,-208.7319,-220.9076,-169.8985,-141.517,-118.868,-75.5252,-61.9728,-15.4578,0.0,13.6977,57.3668,39.3529,42.4372,169.3582,236.6446,282.0929,393.4977,424.0121,355.8646,370.4604,440.3016,462.2815,482.886,492.3298,559.348,364.6825,385.6427,711.1449,373.8307,344.535,508.3589,560.7889,534.3398,403.4308,386.0184,420.7051,394.5415,366.8977,378.3856,322.0842,252.1953,145.623,148.0693,153.7641,74.9871,36.6144,0.0,-23.6473,-81.8509,-126.1393,-188.5807,-261.1539,-305.9673,-303.4941,-307.9265,-436.3499,-316.037,-292.6367,-535.4005,-570.443,-700.5155,-711.7871,-589.029,-382.5022,-405.5614,-627.3485,-542.8242,-519.9384,-501.2513,-523.0276,-301.0441,-288.6601,-404.7514,-278.0557,-250.55,-251.1081,-200.6983,-156.523,-121.6438,-40.228,0.0,38.4049,85.6138,109.0952,174.1242,218.6754,213.4594,241.1774,321.4699,380.6487,396.1665,414.1943,501.5296,516.0536,525.8306,462.2424,455.1164,522.6591,584.6486,484.6271,508.7521,368.085,362.568,532.3738,365.4934,354.666,385.1172,354.893,324.8985,300.6304,233.1089,211.2693,215.3297,215.0163,154.1455,89.9659,63.9541,5.8759,0.0,-6.0203,-56.9509,-94.7333,-90.9343,-112.8986,-248.6215,-221.3757,-246.1879,-236.1152,-220.5928,-310.0564,-250.8551,-246.5065,-346.2617,-326.7226,-443.1273,-454.4905,-464.3267,-463.0311,-394.4273,-397.4505,-467.6097,-459.5508,-452.1877,-445.3532,-483.5385,-462.3047,-345.8287,-394.1119,-369.7849,-300.4212,-360.1633,-282.6477,-165.9813,-184.6086,-246.5954,-202.2464,-187.4315,-115.6506,-85.2707,-69.9522,0.0,0.0,39.9567,83.932,123.8671,153.7707,169.9393,196.2593,257.7815,293.0992,363.0919,340.0369,331.0652,437.253,521.7706,539.1301,610.3325,399.6396,401.1277,703.5145,527.8114,419.2309,466.9408,535.5912,575.6559,454.039,399.2841,433.7405,398.2548,458.5715,222.7958,175.2373,257.7396,101.0374,76.1754,40.2733,0.0,0.0,-77.1752,-117.5846,-162.3758,-318.9848,-429.8293,-357.831,-315.3134,-379.1641,-479.3245,-582.9557,-516.8184,-462.9473,-678.5631,-706.209,-753.8196,-609.1113,-503.6992,-550.5719,-581.893,-441.9151,-376.3748,-343.6865,-309.8426,-308.1147,-305.0517,-227.7547,-91.4854,-40.5566,0.0,43.2513,90.5859,149.7139,239.9227,267.7577,272.9699,302.7432,397.3556,434.637,469.7379,523.2754,587.3041,596.3425,603.8189,598.4219,501.4355,496.8843,570.8853,782.8865,905.2911,182.8311,167.5005,269.9241,188.8825,232.9605,313.7341,230.2346,207.6057,201.2754,147.2864,105.3994,57.4837,18.4374,0.0,-74.8944,-106.9414,-93.6944,-165.4562,-255.2713,-256.5276,-255.6779,-325.814,-303.1188,-321.7122,-398.8698,-501.7145,-327.2859,-298.5977,-477.0069,-533.8666,-558.2044,-497.331,-424.6736,-418.6577,-474.0977,-459.7048,-442.4693,-470.1771,-442.6094,-415.7169,-311.9976,-270.5988,-321.7222,-305.4673,-84.5061,-77.9917,-160.1292,-137.0823,-69.7831,-40.152,0.0,10.9671,48.7198,86.6396,161.6887,155.9488,221.071,257.0272,292.3187,329.5953,360.2604,388.7202,420.6353,383.9227,397.7198,523.0322,478.7964,479.9693,567.6695,564.4404,674.1246,413.4303,363.5029,538.8274,579.1244,350.0221,338.7463,400.9929,353.5066,382.4802,401.8448,321.1855,213.9786,156.537,106.3156,48.6081,0.0,-8.0238,-85.1341,-149.1162,-204.6427,-229.5996,-310.6319,-455.7092,-434.2116,-476.0539,-573.333,-534.2871,-444.1688,-611.4143,-636.5445,-486.5338,-493.671,-567.2844,-655.6532,-612.5731,-691.8365,-620.2324,-472.2423,-354.1565,-343.2174,-274.8319,-228.5557,-144.0001,-96.7478,0.0,12.1009,78.2243,146.1064,184.9631,209.4718,455.6147,438.4852,537.9795,505.8574,490.9614,612.8448,644.3518,570.4839,562.7602,559.0909,660.3055,468.7702,457.9158,664.4141,607.9412,321.2283,242.2472,313.3796,308.3824,244.3729,177.9092,117.8362,23.6612,0.0,-59.3001,-153.9199,-202.2641,-286.0615,-359.6814,-443.8144,-192.5286,-183.4694,-486.1907,-439.0578,-498.7495,-713.7905,-726.0497,-260.643,-251.7284,-606.328,-668.5117,-657.132,-606.2409,-620.2725,-598.8362,-554.1993,-215.8479,-145.3652,-126.435,-77.2401,-17.6625,0.0,66.2741,110.8897,131.6155,180.1421,293.4582,276.7152,304.2366,336.707,359.4675,398.7345,330.7647,168.4441,202.5004,547.8583,443.3099,589.917,503.7554,509.116,608.0991,601.7399,398.3699,393.7655,485.7157,442.3468,595.6305,453.3681,372.093,282.3119,243.5451,219.0164,179.0489,172.4225,192.9017,222.1013,231.3303,192.8767,179.4774,96.233,76.7347,64.9148,0.0,-10.0675,-63.9566,-118.0813,-137.0803,-219.2171,-260.9261,-264.6663,-298.1528,-386.0865,-471.1182,-642.5663,-387.8861,-355.0158,-565.8517,-585.0599,-516.8142,-532.7425,-649.8918,-523.6061,-557.7992,-528.3008,-462.1209,-423.5509,-397.8831,-421.2501,-412.6083,-322.4242,-275.0518,-104.5376,-68.2663,-20.1604,0.0,79.7546,102.5654,254.7751,385.741,388.8603,383.882,420.554,604.7922,563.6409,543.5588,574.5226,589.8111,789.2743,792.8966,908.018,908.0033,458.3415,449.3406,556.1967,576.7532,612.4866,438.7831,398.4181,333.1494,337.9852,307.8839,121.1728,54.5487,0.0,-50.5203,-128.255,-181.0437,-314.8609,-458.6638,-504.7263,-508.5413,-473.7632,-446.1857,-535.7373,-597.6726,-628.3692,-726.0453,-850.911,-812.9076,-554.0905,-529.0811,-689.8067,-369.8953,-311.5471,-489.719,-233.798,-185.747,-176.1378,-152.3318,-26.2939,0.0,82.8912,126.2669,174.8196,233.3938,412.1403,290.3602,310.4646,446.09,476.0505,684.8683,651.8336,520.7925,615.5371,634.5093,384.6182,425.6894,695.5117,574.676,452.8392,644.5559,584.3654,383.8225,420.9384,505.5678,380.5769,350.9049,226.7893,210.8284,260.8701,181.9686,117.8456,89.8423,0.0,0.0,-72.7475,-97.3738,-72.3814,-116.9588,-336.1644,-219.4045,-219.3914,-355.795,-494.8267,-562.3409,-318.3565,-350.4402,-483.1053,-437.366,-467.4517,-544.2177,-632.0599,-561.8943,-554.4053,-652.3264,-509.6002,-422.9777,-470.6441,-438.8559,-404.6642,-364.636,-324.1314,-311.7709,-283.3543,-117.6134,-86.3553,-100.4155,-0.1605,0.0,68.1556,105.453,160.0143,262.8015,245.2111,279.6089,321.9994,407.3276,641.2242,489.8637,473.5195,581.6569,522.8391,536.752,636.0365,719.0111,731.1699,435.3555,464.522,796.4579,678.8673,584.5465,552.6207,565.5318,564.0618,265.9371,229.699,294.956,253.3579,126.8882,71.0303,0.0,-22.3208,-112.6301,-215.3645,-266.0219,-287.9941,-488.9885,-384.3755,-361.4341,-583.7587,-633.6613,-671.172,-602.0051,-616.4115,-756.6925,-726.7001,-693.5419,-779.2322,-242.3508,-220.5858,-494.3674,-422.2553,-411.517,-217.0395,-132.6335,-4.0547,0.0,69.629,146.0612,262.9737,383.8121,550.4003,589.9133,658.4217,807.2512,658.4655,269.6123,289.1941,750.287,767.2344,652.6892,752.7809,555.3452,480.7414,673.1213,762.4809,767.3444,461.73,378.4468,367.182,294.881,179.9848,142.112,35.6915,0.0,-21.0808,-90.8999,-214.9363,-320.1451,-438.2778,-425.9531,-414.41,-446.3913,-560.0983,-716.9671,-279.2698,-273.033,-742.8858,-581.4724,-579.3235,-812.859,-489.4135,-482.0443,-611.4539,-504.5895,-618.525,-475.304,-409.0742,-429.4004,-379.2893,-328.5495,-235.9218,-220.9622,-175.3089,-82.0075,-45.8386,0.0,55.9257,88.1889,107.8156,242.7868,266.7279,316.539,363.4875,394.3448,481.5071,340.8038,367.9629,521.1556,402.737,478.7256,574.0269,581.019,587.7551,654.9593,731.5338,544.1383,529.1064,506.0176,495.5501,466.0875,446.0339,412.6879,350.6611,319.598,297.145,297.2264,301.3805,214.0778,133.4884,77.2869,11.1507,0.0,-29.3281,-100.5323,-137.6437,-201.0243,-114.2946,-116.4141,-468.0807,-495.5747,-457.0922,-486.5947,-661.1267,0.0,0.0,-597.6105,-618.8456,-632.0766,-544.9853,-602.2559,-805.9444,-444.0802,-457.7897,-871.8504,-545.2584,-390.22,-364.3983,-422.4417,-359.7475,-293.7759,-289.5239,-248.9239,-128.9257,-75.1374,0.0,42.5095,130.572,202.0027,270.8287,344.3003,410.371,409.5222,448.4384,571.4308,619.7042,789.3785,1226.1247],"shots":[{"n":1,"t":0.033333,"sourceT":54.2,"y":697.45,"observedY":697.448,"timeAdjustmentMs":-3.89,"success":true},{"n":2,"t":3.638848,"sourceT":57.805515,"y":688.232,"observedY":688.232,"timeAdjustmentMs":-5.64,"success":true},{"n":3,"t":7.281779,"sourceT":61.448446,"y":667.03,"observedY":667.03,"timeAdjustmentMs":8.89,"success":true},{"n":4,"t":10.679318,"sourceT":64.845985,"y":677.452,"observedY":677.452,"timeAdjustmentMs":-12.83,"success":true},{"n":5,"t":13.910394,"sourceT":68.077061,"y":662.088,"observedY":662.088,"timeAdjustmentMs":12.34,"success":true},{"n":6,"t":15.295681,"sourceT":69.462348,"y":245.502,"observedY":245.502,"timeAdjustmentMs":15.64,"success":true},{"n":7,"t":17.362975,"sourceT":71.529642,"y":640.042,"observedY":640.042,"timeAdjustmentMs":0.81,"success":true},{"n":8,"t":18.615106,"sourceT":72.781773,"y":270.344,"observedY":270.344,"timeAdjustmentMs":-2.44,"success":true},{"n":9,"t":20.26645,"sourceT":74.433117,"y":633.05,"observedY":633.05,"timeAdjustmentMs":-16.82,"success":true},{"n":10,"t":21.701865,"sourceT":75.868531,"y":259.493,"observedY":259.493,"timeAdjustmentMs":10.24,"success":true},{"n":11,"t":23.277992,"sourceT":77.444659,"y":607.418,"observedY":607.418,"timeAdjustmentMs":-0.89,"success":true},{"n":12,"t":24.440628,"sourceT":78.607294,"y":298.915,"observedY":298.915,"timeAdjustmentMs":-3.63,"success":true},{"n":13,"t":25.99954,"sourceT":80.166207,"y":592.174,"observedY":592.174,"timeAdjustmentMs":7.71,"success":true},{"n":14,"t":27.433934,"sourceT":81.6006,"y":330.047,"observedY":330.047,"timeAdjustmentMs":3.43,"success":true},{"n":15,"t":28.764272,"sourceT":82.930938,"y":546.325,"observedY":546.325,"timeAdjustmentMs":16.69,"success":true},{"n":16,"t":29.815739,"sourceT":83.982406,"y":349.831,"observedY":349.831,"timeAdjustmentMs":-10.4,"success":true},{"n":17,"t":31.256051,"sourceT":85.422717,"y":506.8,"observedY":506.8,"timeAdjustmentMs":-2.17,"success":true},{"n":18,"t":32.533393,"sourceT":86.70006,"y":371.265,"observedY":371.265,"timeAdjustmentMs":-10.99,"success":true},{"n":19,"t":33.908696,"sourceT":88.075362,"y":446.35,"observedY":446.35,"timeAdjustmentMs":0.61,"success":true},{"n":20,"t":34.833399,"sourceT":89.000065,"y":423.178,"observedY":423.178,"timeAdjustmentMs":0.03,"success":true},{"n":21,"t":36.097856,"sourceT":90.264522,"y":403.142,"observedY":403.142,"timeAdjustmentMs":1.57,"success":true},{"n":22,"t":38.466957,"sourceT":92.633624,"y":483.928,"observedY":483.928,"timeAdjustmentMs":8.94,"success":true},{"n":23,"t":40.351164,"sourceT":94.517831,"y":574.326,"observedY":574.326,"timeAdjustmentMs":44.83,"success":true},{"n":24,"t":42.60026,"sourceT":96.766926,"y":553.252,"observedY":553.252,"timeAdjustmentMs":6.48,"success":true},{"n":25,"t":44.876101,"sourceT":99.042767,"y":518.541,"observedY":518.541,"timeAdjustmentMs":15.26,"success":true},{"n":26,"t":50.1,"sourceT":104.266667,"y":404.589,"observedY":404.589,"timeAdjustmentMs":6.21,"success":false}],"minY":242.1,"maxY":697.8,"centerY":469.95,"amplitude":227.85,"flightDuration":0.116,"wall":{"x":0,"right":105,"y":216,"bottom":726},"launchX":450,"landX":220,"halfPeriods":[1.733333,1.733333,1.966667,1.566667,1.466666,1.966667,1.7,1.466667,1.8,1.633333,1.366667,1.366666,1.733334,1.4,1.233333,1.366667,1.533333,1.266667,1.133333,1.2,1.4,1.266667,1.066666,1.066667,1.066667,1.366666,1.166667,0.966667,1.0,1.1,1.266666,1.066667,0.966667,0.933333,1.066667,1.2],"initialHalf":1.733333,"arrowSprite":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAAAgCAYAAADJ9TDRAAAN2ElEQVR4nO1bbWxb13l+zjn3krwkRYqkKJGMSIWWLKuKvdiz3KiD7TQftTtgKIpiQ4ElTdY/wTYMCLr2T7EPbMBWbBj2Yy2wBRnWre0CA8MCZFvRbkHauNuAIuuczo5lxZZsy5JMSiJFit/349xz9oO8FEVbsmzLkR3oAWxS597zeZ/znOe895CEegfwICClfCDlflTY7fYLIba8rrYuc9L8tFuftHXdaT/ZtBvNAiTZmEpIM4FSCkJIuzwQQtoX9/DoY6eepeJ82e0Zs4edByEE3TQRcJSFtlM67++GckvKHh5JUNp84O3H3rFEOdecNEIIICUIIZC3KaMz76YEuXeJalYi5dZr6MOP3VbUrcfPohv/lrYNxhgYb+bzCAFKKVyEQtqSVKmUlABcEkACTKGwbRtB4oaqqnARCsuyUCMCAgJWq/77VhDZYqLzffcHdmewm35MSnnb2bwVbNsGIQRuRYGUEj5Ng6qqgMVhmqaE5BBCQKLpNWu1GjweDwKBADRNA7UFKpUKapa+odw7EoQQchsS7OHBg26S3iSMSUT7Lkop3IJC2jY0nw+BQAC/3Tf6N0IIeq64+INsNjv0vl3/ppQSBqFglGE/9fxS2B9enhwYnggGg6tr1YqyqC+OnDesf+ZcqisuLADbVJDbsdkhTOdM2yPP7sC2baggCAQC2LdvXzQSiQyPhIYvWJblWlDNxVKpFKHVKizLguJ2obe3F8O+8MX+/v7e4f70mtfrjYb1RqnRaCzResEGoAohwBjbPkE6DU4nKYQQG83PxwQPqi+bTaJb62spBL39MuOSzQcYsiVhTJFHgtEvJhKJ65N9Q8e9Xm/l+aL913rDwHzVeFcv1Y8qQn/ToyhmJBxuDA4Oxn/LnfqPvr6+7GPwnaoX6pjSG283KvzwBQtfMy14Vlz0b4G78CCU0jZRpJQwTROUUvhaksY5R71eh2FYHwsledBkl1K2l+7OSeekbWcINU1DVPPJvr6+wC/G0guRSGS0xyRFQohczeeRz+eRKWf2GYahuf3uRiwWMwdT+8ai0ehoVEZver3eirVmoVgsIlPMpsvlcri7jm0RhBACSpuut1qtQgiB3t5eDA0N+Q8dOvSFgwcPfv7ixYtvvfPOO9+t1Rp7QbdtotvXOePcmdYmUYswAjYAYEioo1EtcPOXw4k/jQ/E5ybc4a+yBuOuUvXxcrmM7xdvWtduXFP/zypd8Pv8P/1CYv8fpFKpK5/0x3/TDXdjsM6fM9fymCmVkc1m8X59+b1SvTRbcPGfcFWoThtvIUjnw3UMKqUUuq6Dcw6fz4dkMskmJydfmZiYePnw4cNPJRIJvPbaawsAvlsql6AwBT6fD4ry6IZZHvQS43zatg3btjcs1U2sfxdCgEiAMQZJBAgheHx49EoikTi0P5w439PTo7Iy54ZhaOV8HtevX8fV0rJa53VEwpF8LBa7kUwmZ+LxOA1If4FzrtZqFRQKBdxYXkE2m0WB1Qcs2xKcQpVyPQB/yxN0pM/tdkPXdViWBSEEAoEARkZGRicmJl46evTolw4dOpTq7++Hpmmo1WpgjLmSyeQAY2y5WdJmLvzRwIMiiKMQ3Sb/VtPPATRpQghB0JTgnMNtmDEpJflydN93Qv7QygEDL1jVAtYUOmfbtnWumlm+tHp1YMqHVwdSAwufGtj3XDgcFp/i3je8JSBiNFAqlfBvlcXF+fn5wf+yKr9rKIaWcclvSylJmbJsZ3s3JYizlESjUaRSqcdOnDjx6tNPP/3VgwcP0lAoBMYYDMNAo9GAlBKTk5OvjIyMPKPrellKKWxbmrKJRzJiRgh5IAwnTVDGmMupx0lz7lFVVXO7WY+iKG5QSgkhVKsa+ampqX81cvnL9Xq9EKjYBQDQdR2KomBsbOycOjDgWmqUwtMfTg/EYgPz6XT6cjwQH/b5fGVPGWg0GljO1ZDJZHApNztY4IVGFaqPEkqFABVCMIH1ZQ7YYolJpVI4duzYSydPnvzKgQMHDodCIfT390NVVUgpoes6bNtu55mcnKQADjgmFlgn23bhvEF8GHCvRruz/Z0DvdX93UYVAAREy5O04hzzuaCeWRqKla1M2SD8qF77ohACYij2YSSdfm/1ufGXNU3D3NLjf3Qtnzr+K77Y3w1GEp/4ZIV+A7oOatlYW17GW2tLeiaX8fyLXTglIUnGT9+mtNnXZiBNQWezlc6BkFJCURSMj48/9uKLL545derUiXA4jHq93iaGYRjweDzt9dIZBM75LXGSezGrD8sOaCfasZ0oqFNP972i7UFaIYSVFWSz2QtaqVwyDMMnRJNAkeHh/8WRI1+KpKKwy2WoqqoNDw+fGOtNnqOU2qRag2EYKK3kMT09jStWzmPCbBBKJKVU3InEm7rIRqOxlsvl4PF4EImEYVnNNZFzjmq1CsZYe8YritL+7jS82+xuF486QTr7up1+dxPElk1VFq1IqSUs2LYNn1tBT8CX6M2sjRmW8Gg2QAgAXbdQra40TH8MHhUZXstn7XrBt1b/ssvl0nt1AJyhpDAQVcFlW/6VLuzyNZ/yDiFoq0XAAoQAci4AEAgICgJA6e6QEAIXL168OTc397kzZ870TkxMvHz69Ok/TqfTwVQqBa/XA8uyoKoqOpcTzjkMwwDnvL30ONiO1N7NoH4U+KgI0jmZKKWQpGlGdau5hNuwm7tHAAMDA59Qr65cKxQK/YriB+cc2evXPx3X9Q+nfSNqOByOlEqlm9PT01Mzbv3JWCx2A9wLuFyIRqNQVRVH+MB/Liws7P9ArsGyrPZOtROU0vYmitzuRFl3pDQej+Opp5564eTJk185cuTI0WQyiZ6eHnDOYZomGo0GpqamcO7cuX80DKMKAFJK4RivuzV8UkrhmFshBL+bvDuF3TTXQgjbsIyalFLYkBYhhAxSjy+Xy13pv7FcNU3T82tK6Hs9PT3oqxsgjGHpQOw7mqZV/+Jnb3/zRz/+0edi4bCZTCZnfjUw+P1IJLI0bqoJQggWBMfNmzfxvdXr31paWhr6uSY/L4RgRSq4lBIE3g07rU1NKiEEqqrCMAzMzc1hZmbmjXffffeNw4cPH3/++ed/b3x8/LPJZBKpVAoAcPbs2b88c+bM10qlElRVBaUUjLF2mduBlLKtSp3/dgO7VW/nUiOlhGgNXbBmeTVNqx/S8feMMX44lMITTzwBAOCmifn5+VGPx1OnlLJIOJLPF/JDuq4/udAvqRAiUVOC8Pv9CAQCcLlc2B9WziuKYs0YRWkYBmfCbPZZbpzLtyhIp29wfAaA5lmBWg22bSMajWJsbGzk2LFjv/Hss89+PZlM0tdff/3rb7755p8Vi8XmuYQWOTrLvBO6o4edaXeDztfld5u/M6q5G/Wv190kiiNjOpqBtIBpQlEUHFdCf5hOpy894wm/1tvbm9vv9o4xxrBslavLy8v+t1au/nkmk0m7IfsikcjSM4HEr8diMRzUInC5XCjXDOTzefy7ufqTtbW16A9r2Zd0XfeWmOd/AKBMiXFbBVl/FyDbET7GGAgh8Pv9kFKiUCjg7Nmzs7Ozs78/PT39g9HR0c+cP3/+nxhj8Hq9zY5t8xxD98B01n8/PuB+896Pgjhe7l7RrHudIEIIiNZ2V1VVEEJQXCuG9Wn92FAwHkmn06TWI6FpGhhjPBaLVZ6M+//b6/VW5i5/eCqbzT5+ZakK0zSRiqsIBALweDyIRqMY0UIf5PP5eHSF31xZWRlUoJi2bbe96R09CCEEtm2vH2nrePVvt04xuVwu1Gq1DaH1nTKbu72rudf6d6rd3FlyaVPRnfgI0U0QQjCiaKPBYHD1dCj2J+l0euo4/N+ilGKgwVEsFvEPq5d/Pjs7+wvvuY3TwWBw9cjgcCwcDi+/oMbf93g86DcVVKtVnDVXr924cWPft+vLccMwtCWXvA5sss3tlnjG2AZP4HgUhxBmS/Z2enB2E/fTh86896ok3RNS0o3nbjxuNyilqJfrPeVyOTyTrzxpGIYn3RNHX18fCHEhGAyin/UvLi4uDkMaKBaL/ZfKl44Fg8HVq8E64vE4wp4wvF4v+gIkW6lUQlTPCUKIlFLc3qRu1eFO6eyMczhBNOeFU1Om7U3Lu8PQ3GO+jxu6x2GjIuutg8fc7zonhIKz3DzlyS3W51fXzKSdnPls6LFvKIpiLTQaH6wpCl2D8mMpJSly86dKtWjxyqXxQZSvfjo0+KrP5ysXTD69UC8RrhtRYgsFCgWwTYJsaGbXCTJCCEzTvOXaHpq4mxjQVuhUdefvrk9qGIZWMu1IvV73J7yrqsvlUm/oSwfq9bofXoAxJhRKDSklKdfKdGFhYf+lbHlI0zRUXMTK5XIJ0zY9zRqUjv83aRBw54fe3fD7hyPJj66S7OQxTGcUqAQgJWg7pNQ5ThJVhZQJITivWq8AFjKlxZ8pimLpQi9zIlSTqJISCsGIKaXErI/8DqWWWG7kPiA6kYQQwTlXqyq9ADS9z5ZHDvfU4NFDyyMSABBCMNM0mU3smnNNCAGB9R2eEIIKIdvBTCEEcyjZDpZt9tvc+yXIvXsQB7urILtttGX3j2ZbWNeNjeaXOaHxLvVSJN+QzsnGvlF7/aWrEAKcNI+W2s57tp3ozB4eHmxG7Hb6XU78O3qQhxUPun273X8htlbg7s1z9+suSZpbbKvFB7WlyAKAkHL9V/2sIx+joFSBjXXF2VOQjwm64y23W6GEEO13O9vF/wP7n1JfVk3l5AAAAABJRU5ErkJggg=="};
+const BUILD='ARW-20261014-02';
+const CFG=Object.freeze({w:480,h:854,min:242.1,max:697.8,mid:469.95,amp:227.85,launch:450,land:220,shaft:112,collision:4.5,flight:.116});
+const $=id=>document.getElementById(id),cv=$('game'),ctx=cv.getContext('2d',{alpha:false});
+const storage={get(k){try{return localStorage.getItem(k);}catch(_){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(_){}}};
+let records={};try{const v=JSON.parse(storage.get('arrowWall.v2.records')||'{}');if(v&&typeof v==='object'&&!Array.isArray(v))records=v;}catch(_){}
+let config={mode:'reference',tempo:1,checkpoint:0,lesson:'edges',layout:'source',guide:false,sound:false};
+let state='settings',clock=0,flight=null,arrows=[],shots=[],failed=null,lessonStep=0,attempts=0,successes=0,roundStart=0,refGenerated=false;
+let manual=false,demo=false,demoCursor=0,interrupted=false,raf=0,lastReal=0,held=new Set(),seed=1,legs=[],pausedFrom='running',reviewPoint=null,priorShotTime=0;
+let W=1,H=1,D=1,SX=1,SY=1,OX=0,OY=0,safeTop=0,safeBottom=0,audio=null,spare=0;
+const arrowImg=new Image();arrowImg.src=REF.arrowSprite;$('heroArrow').src=REF.arrowSprite;
+const notify=s=>{$('live').textContent=s;};
+const fmt=(x,n=2)=>Number(x).toFixed(n).replace('.',',');
+function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
+function newSeed(){try{let a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]||1;}catch(_){return (Date.now()^Math.floor(Math.random()*1e9))>>>0;}}
+function settingsValues(){config={mode:$('mode').value,tempo:Number($('tempo').value),checkpoint:Number($('checkpoint').value),lesson:$('lesson').value,layout:$('layout').value,guide:$('guide').checked,sound:$('sound').checked};}
+function syncSettings(){
+ $('lessonField').hidden=config.mode!=='training';$('checkpointField').hidden=config.mode==='training';
+ $('modeNote').textContent=config.mode==='reference'?'Kayıttaki yaklaşık 50 saniyelik hareket saati. Kendi atışlarını sen yaparsın; videodaki puan otomatik verilmez.':config.mode==='challenge'?'Her tur yeni ritim: kenarda yavaşla, merkezde hızlan. Bu üretilmiş bir mücadeledir; özgün rastgele dağılım değildir.':'Hedef bandı ve geri deneme açıktır. Eğitim ilkeleri aynı hareket üzerinde çalışılır; bu puan normal rekora karışmaz.';
 }
-function readSettings(){
- const entry=parseCustomSequence($('customSequence').value);
- config={route:$('route').value,mode:$('mode').value,motion:$('motion').value,layout:$('layout').value,guide:$('guide').checked,sound:$('sound').checked,customSequence:entry.value};
- if(config.route==='custom'&&entry.valid)store.set(CUSTOM_STORAGE_KEY,entry.value);
-}
-function syncCustomEntry(){
- const own=$('route').value==='custom',entry=parseCustomSequence($('customSequence').value);
- $('customEntry').hidden=!own;
- $('customCount').textContent=entry.value.length+' / 8';
- $('customHelp').textContent=entry.message;
- const invalid=own&&!entry.valid&&entry.value.length>0;
- $('customHelp').dataset.error=String(invalid);
- $('customSequence').setAttribute('aria-invalid',String(invalid));
- $('customSequence').setCustomValidity(own&&!entry.valid?entry.message:'');
- if(state==='settings'){
-  $('start').disabled=own&&!entry.valid;
-  // A recorded demo is not a demonstration of the user's custom target.
-  $('demo').hidden=own;
- }else $('start').disabled=false;
-}
-function recordKey(){return config.route==='custom'?'custom:'+sequence.join(''):config.route;}
-function refreshSettingsPreview(){
- if(state!=='settings')return;
- readSettings();initialize();state='settings';syncCustomEntry();resize();
-}
-function validBest(r){return r&&Number.isFinite(r.ms)&&r.ms>0?r:null;}
-function eligible(){return config.mode==='challenge'&&config.motion==='reference'&&!config.guide&&!interrupted&&!isDemo&&!manual&&errors===0;}
-function stopFrame(){if(raf)cancelAnimationFrame(raf);raf=0;}
-function schedule(){if(!manual&&!raf&&['armed','running','demo'].includes(state))raf=requestAnimationFrame(frame);}
-function clockStamp(e){let t=Number(e&&e.timeStamp),now=performance.now();if(t>1e12)t-=performance.timeOrigin;return Number.isFinite(t)&&Math.abs(t-now)<60000?t:now;}
-function notify(message){$('live').textContent=message;}
-function initialize(seedValue){
- if(config.route==='custom'){
-  const entry=parseCustomSequence(config.customSequence);
-  if(!entry.valid){stopFrame();held.clear();state='settings';return false;}
-  config.customSequence=entry.value;
+function stop(){if(raf)cancelAnimationFrame(raf);raf=0;}
+function schedule(){if(!manual&&!raf&&['running','demo'].includes(state))raf=requestAnimationFrame(frame);}
+function currentBest(){const v=records[config.mode];return Number.isFinite(v)&&v>=0?v:0;}
+function eligible(){return config.mode!=='training'&&config.tempo===1&&config.checkpoint===0&&!config.guide&&!interrupted&&!demo&&!manual;}
+function measuredY(t){
+ if(t<=0)return REF.ys[0];
+ if(t>REF.end){
+  const y0=REF.ys.at(-1),phase=Math.acos(Math.max(-1,Math.min(1,(CFG.mid-y0)/CFG.amp)));
+  return CFG.mid-CFG.amp*Math.cos(phase+(t-REF.end)*Math.PI/1.075);
  }
- stopFrame();held.clear();progress=0;elapsed=0;visual=0;hits=[];errors=0;empty=0;pressed=null;wrong=null;wrongAt=-99999;interrupted=false;runStarted=false;completedRun=null;animStart=-99999;animIndex=-1;last=0;demoCursor=0;manual=false;isDemo=false;
- seed=seedValue===undefined?freshSeed():seedValue;
- sequence=config.route==='custom'?config.customSequence.split('').map(Number):config.route==='random'?Array.from({length:8},()=>1+Math.floor(rng()*9)):REF.sequence.slice();
- boards=config.route==='record'?REF.boards.map(b=>b.slice()):[];
- if(config.route!=='record'){for(let i=0;i<8;i++){let b=shuffle([1,2,3,4,5,6,7,8,9]);if(i&&b.every((n,j)=>n===boards[i-1][j]))[b[0],b[1]]=[b[1],b[0]];boards.push(b);}}
- toPos=positionsFor(boards[0]);fromPos=toPos.map(p=>({...p}));state='armed';last=performance.now();armedSince=last;return true;
+ const ts=REF.times,ys=REF.ys,ds=REF.slopes;let lo=0,hi=ts.length-1;
+ while(hi-lo>1){const m=(lo+hi)>>1;if(ts[m]<=t)lo=m;else hi=m;}
+ const h=ts[hi]-ts[lo],u=(t-ts[lo])/h,u2=u*u,u3=u2*u;
+ return (2*u3-3*u2+1)*ys[lo]+(u3-2*u2+u)*h*ds[lo]+(-2*u3+3*u2)*ys[hi]+(u3-u2)*h*ds[hi];
 }
-function positionsFor(board){const out=[];board.forEach((n,i)=>out[n]={c:i%3,r:Math.floor(i/3)});return out;}
-function backEase(t){const u=Math.max(0,Math.min(1,t))-1;return 1+(CFG.back+1)*u*u*u+CFG.back*u*u;}
-function curveAt(t,idx){
- if(t<=0)return 0;
- const scale=config.motion==='slow'?2:1;
- const ct=t/1000/scale;
- if(config.route==='record'&&idx>=0&&idx<REF.curves.length){
-  const a=REF.curves[idx];if(ct>=a[a.length-1][0])return 1;
-  for(let i=1;i<a.length;i++)if(ct<=a[i][0]){const f=(ct-a[i-1][0])/(a[i][0]-a[i-1][0]);return a[i-1][1]+(a[i][1]-a[i-1][1])*f;}
- }
- return backEase(ct/CFG.duration);
-}
-function positions(){if(animIndex<0)return toPos.map(p=>p&&({...p}));const f=curveAt(visual-animStart,animIndex);return toPos.map((p,n)=>p&&({c:fromPos[n].c+(p.c-fromPos[n].c)*f,r:fromPos[n].r+(p.r-fromPos[n].r)*f}));}
-function pulse(num){if(pressed!==num)return 1;const age=(visual-animStart)/(config.motion==='slow'?2:1);return age>=180||age<0?1:1+.105*Math.sin(Math.PI*age/180);}
-function geometry(n){
- const p=positions()[n],a=pulse(n),sz=106*L.s*a;
- return {x:L.ox+L.aw/2+(p.c-1)*123*L.s,y:L.oy+L.ah*(731/1038)+(p.r-1)*123*L.s,size:sz,radius:16*L.s*a};
-}
-function drawOrder(){const a=[1,2,3,4,5,6,7,8,9];if(pressed!==null){a.splice(a.indexOf(pressed),1);a.push(pressed);}return a;}
-function insideRounded(x,y,g){
- const dx=Math.abs(x-g.x),dy=Math.abs(y-g.y),h=g.size/2,r=g.radius;
- if(dx>h||dy>h)return false;
- return dx<=h-r||dy<=h-r||((dx-h+r)**2+(dy-h+r)**2<=r*r);
-}
-function hitNumberAt(x,y){const order=drawOrder();for(let i=order.length-1;i>=0;i--)if(insideRounded(x,y,geometry(order[i])))return order[i];return null;}
-function tone(ok=true){
- if(!config.sound||isDemo||manual)return;
- try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.frequency.setValueAtTime(ok?640:190,t);o.type='sine';g.gain.setValueAtTime(.045,t);g.gain.exponentialRampToValueAtTime(.0001,t+.055);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.06);}catch(e){}
-}
-function advance(now){
- if(!['armed','running','demo'].includes(state))return;
- if(!Number.isFinite(now)||now<=last)return;
- const dt=now-last;last=now;
- if(!manual&&dt>700){pause(false,'Sekme veya görüntü akışı kesildi. Bu tur rekora yazılmayacak.');return;}
- visual+=dt;
- if(state==='running')elapsed+=dt;
- if(state==='demo')updateDemo(dt);
-}
-function frame(now){raf=0;if(!['armed','running','demo'].includes(state))return;advance(now);render();frameCount++;schedule();}
-function press(n,now,automatic=false){
- if(!['armed','running'].includes(state))return false;
- if(!automatic)advance(now);
- if(!['armed','running'].includes(state))return false;
- if(n===null){empty++;notify('Tuşun içinden dokun.');return false;}
- if(n!==sequence[progress]){
-  errors++;wrong=n;wrongAt=visual;tone(false);
-  notify('Yanlış sayı. Beklenen '+sequence[progress]+'.');
-  if(config.mode==='challenge'){finish(false,n);}else render();
-  return false;
- }
- if(state==='armed'){state='running';runStarted=true;elapsed=0;last=now;$('pauseBtn').hidden=false;}
- const oldPositions=positions(),stepMs=hits.length?elapsed-hits[hits.length-1].at:0;
- hits.push({n,step:progress+1,at:elapsed,interval:stepMs});progress++;pressed=n;wrong=null;animStart=visual;animIndex=progress-1;
- tone(true);
- if(progress===sequence.length){fromPos=oldPositions;toPos=oldPositions;animIndex=-1;finish(true);return true;}
- fromPos=oldPositions;toPos=positionsFor(boards[progress]);
- notify(progress+' / '+sequence.length+'. Sıradaki '+sequence[progress]+'.');
- render();schedule();return true;
-}
-function arm(){
- readSettings();
- if(!initialize()){showPanel('settings');syncCustomEntry();$('customSequence').focus();notify(parseCustomSequence(config.customSequence).message);return;}
- $('customSequence').blur();
- $('panel').hidden=true;$('pauseBtn').hidden=true;resize();notify('Hazır. İlk '+sequence[0]+' dokunuşunda süre başlayacak.');render();schedule();
-}
-function retry(){if(!initialize()){showPanel('settings');return;}$('panel').hidden=true;$('pauseBtn').hidden=true;resize();render();schedule();}
-function finish(ok,wrongNumber){
- stopFrame();held.clear();state=ok?'done':'error';$('pauseBtn').hidden=true;
- let newBest=false;
- if(ok&&eligible()&&elapsed>0){const prev=validBest(records[recordKey()]);if(!prev||elapsed<prev.ms){records[recordKey()]={ms:elapsed,date:new Date().toISOString()};store.set(CFG.key,records);newBest=true;}}
- completedRun={ok,elapsed,errors,empty,progress,route:config.route,sequence:sequence.slice(),eligible:ok&&eligible(),newBest,hits:hits.map(h=>({...h})),interrupted};
- showPanel(ok?'done':'error',ok?'':('Beklenen '+sequence[progress]+' yerine '+wrongNumber+' geldi.\nBu deneme geçerli rekor sayılmaz.'));
- render();notify(ok?'Tamamlandı. '+(elapsed/1000).toFixed(2)+' saniye.':'Yanlış sayı.');
-}
-function showPanel(kind,reason=''){
- $('panel').hidden=false;
- const setup=kind==='settings',done=kind==='done',error=kind==='error',paused=kind==='paused',demoDone=kind==='demoDone';
- $('settings').hidden=!setup;$('intro').hidden=!setup;$('hero').hidden=!setup;$('tips').hidden=!setup;$('limits').hidden=!setup;
- $('demo').hidden=!setup;$('settingsBtn').hidden=setup;$('stats').hidden=setup||paused;$('splitList').hidden=!done;
- $('reason').hidden=setup;$('reason').textContent=reason;
- if(setup){$('heading').innerHTML='Sırayı oku.<br><em>Yeni yeri bul.</em>';$('start').textContent='PROVAYA HAZIRLAN';}
- else if(paused){$('heading').textContent='Duraklatıldı';$('start').textContent='DEVAM ET';$('reason').textContent=reason||'Bu tur ara verildiği için rekor dışı. Aynı noktadan çalışmaya devam edebilirsin.';}
- else if(demoDone){$('heading').textContent='Kayıt akışı tamam';$('start').textContent='KENDİM DENEYECEĞİM';$('reason').textContent='Bu puansız gösterim, karelerden çıkarılan basış aralıklarını kullandı. Gerçek oyuncunun parmak kaydı değildir.';$('stats').hidden=true;}
- else if(done){$('heading').textContent=(elapsed/1000).toFixed(2).replace('.',',')+' saniye';$('start').textContent=config.route==='custom'?'AYNI DİZİYLE YENİ YERLEŞİM':config.route==='record'?'AYNI KAYITLA TEKRAR':'YENİ YERLEŞİMLE TEKRAR';$('reason').textContent=completedRun.newBest?'Yeni yerel rekor.':completedRun.eligible?'Sekiz sayı tamamlandı. Daha kısa süre daha iyi.':'Çalışma tamamlandı. Yardım, öğrenme veya ara verme nedeniyle rekora yazılmadı.';}
- else{$('heading').textContent='Yanlış tuş';$('start').textContent='TEKRAR DENE';}
- if(done||error){
-  const best=validBest(records[recordKey()]), vals=[[progress+'/'+sequence.length,'Doğru basış'],[(elapsed/1000).toFixed(2)+' sn','İlk doğru basıştan'],[errors,'Yanlış sayı'],[best?(best.ms/1000).toFixed(2)+' sn':'—',config.route==='custom'?'Bu 8 haneli dizi için rekor':'Bu dizilimde yerel rekor']];
-  $('stats').innerHTML=vals.map(v=>'<div class="stat"><b>'+v[0]+'</b>'+v[1]+'</div>').join('');
-  $('splitList').innerHTML='<div class="split"><span>1. doğru basış</span><strong>Sayaç başlangıcı · 0,00</strong></div>'+hits.slice(1).map(h=>'<div class="split"><span>'+h.step+'. sayı · '+h.n+'</span><strong>'+(h.interval/1000).toFixed(3)+' sn</strong></div>').join('')+'<p style="font-size:10px;margin-top:10px">İlk sayı öncesindeki gözlem süresi sonuca dahil değil. Boşa dokunuş: '+empty+'.</p>';
- }
- if((done||error)&&config.route==='custom')$('reason').textContent='Senin dizin: '+sequence.join('–')+'\n'+$('reason').textContent;
- syncCustomEntry();
-}
-function settings(){
- stopFrame();held.clear();state='settings';isDemo=false;manual=false;$('pauseBtn').hidden=true;readSettings();initialize();state='settings';showPanel('settings');resize();render();
-}
-function pause(advanceFirst=true,reason){
- if(!['armed','running','demo'].includes(state))return;
- if(advanceFirst){advance(performance.now());if(!['armed','running','demo'].includes(state))return;}
- priorState=state;state='paused';interrupted=true;stopFrame();held.clear();$('pauseBtn').hidden=true;showPanel('paused',reason);render();
-}
-function resume(){if(state!=='paused')return;state=priorState;last=performance.now();$('panel').hidden=true;$('pauseBtn').hidden=state==='armed';render();schedule();}
-function beginDemo(){
- readSettings();config={...config,route:'record',motion:'reference',guide:false};
- initialize(41729);isDemo=true;state='demo';demoCursor=0;elapsed=0;visual=0;$('panel').hidden=true;$('pauseBtn').hidden=false;resize();last=performance.now();notify('Puansız kayıt gösterimi.');render();schedule();
-}
-function updateDemo(dt){
- const old=elapsed;elapsed+=dt;
- // A short visible setup before the first recorded successful press.
- const warm=650;
- while(demoCursor<REF.observedEventSeconds.length&&elapsed>=warm+REF.observedEventSeconds[demoCursor]*1000){
-  const n=sequence[demoCursor],oldPositions=positions();
-  const ev=warm+REF.observedEventSeconds[demoCursor]*1000;
-  progress=demoCursor+1;pressed=n;animStart=visual-(elapsed-ev);animIndex=demoCursor;
-  if(progress<8){fromPos=oldPositions;toPos=positionsFor(boards[progress]);}else{fromPos=oldPositions;toPos=oldPositions;animIndex=-1;}
-  demoCursor++;
- }
- if(demoCursor===8&&elapsed>warm+REF.observedEventSeconds[7]*1000+500){
-  state='demoDone';stopFrame();$('pauseBtn').hidden=true;showPanel('demoDone');
+function ensureLeg(t){
+ while(!legs.length||legs.at(-1).end<=t){
+  const i=legs.length,start=i?legs[i-1].end:0;
+  const base=i<REF.halfPeriods.length?REF.halfPeriods[i]:1.075;
+  const duration=Math.max(.75,base*(.93+.14*rnd()));legs.push({start,end:start+duration,duration,index:i});
  }
 }
-function rr(x,y,w,h,r,fill,stroke=null,lw=1){
- ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);
- else{const a=Math.min(r,w/2,h/2);ctx.moveTo(x+a,y);ctx.arcTo(x+w,y,x+w,y+h,a);ctx.arcTo(x+w,y+h,x,y+h,a);ctx.arcTo(x,y+h,x,y,a);ctx.arcTo(x,y,x+w,y,a);}
- ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}
+function generatedY(t){ensureLeg(t);let lo=0,hi=legs.length-1;while(lo<hi){const m=(lo+hi)>>1;if(legs[m].end<=t)lo=m+1;else hi=m;}
+ const l=legs[lo],u=Math.max(0,Math.min(1,(t-l.start)/l.duration));return CFG.mid+CFG.amp*Math.cos(Math.PI*(l.index+u));}
+function aimAt(t=clock){return config.mode==='challenge'?generatedY(Math.max(0,t)):measuredY(Math.max(0,t));}
+function velocityAt(t=clock){const a=Math.max(0,t-.015),b=t+.015;return (aimAt(b)-aimAt(a))/(b-a);}
+function safeIntervals(){
+ const s=arrows.map(a=>a.y).sort((a,b)=>a-b),out=[];let start=CFG.min;
+ for(const y of s){const end=Math.min(CFG.max,y-CFG.collision);if(end>=start)out.push([start,end]);start=Math.max(start,y+CFG.collision);}
+ if(start<=CFG.max)out.push([start,CFG.max]);return out;
 }
-function label(text,x,y,size,color='#fff',weight=750,align='center'){
- ctx.font=weight+' '+size+'px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(text,x,y);
+function lessonTarget(){
+ if(config.mode!=='training')return null;
+ if(config.lesson==='edges')return {y:lessonStep%2?CFG.min+5:CFG.max-5,tolerance:8,name:lessonStep%2?'Üst dönüşteki bandı yakala':'Alt dönüşteki bandı yakala',total:10};
+ if(config.lesson==='cluster')return {y:[697.2,687.8,678,668,658][Math.min(4,lessonStep)],tolerance:2.5,name:'Alt kenara beşli küme · '+(lessonStep+1)+'/5',total:5};
+ if(config.lesson==='sandwich')return {y:REF.shots[Math.min(24,5+lessonStep)].y,tolerance:Math.min(6,Math.max(2,(nearestDistance(REF.shots[Math.min(24,5+lessonStep)].y)-CFG.collision)/2)),name:lessonStep%2?'Alt taraftan içeri ilerle':'Üst taraftan içeri ilerle',total:20};
+ const gaps=safeIntervals().sort((a,b)=>(b[1]-b[0])-(a[1]-a[0]));
+ if(!gaps.length)return null;const g=gaps[0];return {y:(g[0]+g[1])/2,tolerance:Math.min(7,(g[1]-g[0])/3),name:'En geniş güvenli aralığın ortasını yakala',total:10};
 }
-function numeral(n,x,y,h,color='#fff'){
- const g=REF.glyphs[String(n)];if(!g){label(n,x,y,h,color,850);return;}
- const s=h/g.h;ctx.save();ctx.translate(x-g.w*s/2,y-h/2);ctx.scale(s,s);ctx.fillStyle=color;ctx.fill(glyphPaths[String(n)],'evenodd');ctx.restore();
+function nearestDistance(y){return arrows.length?Math.min(...arrows.map(a=>Math.abs(a.y-y))):Infinity;}
+function reset(seedValue){
+ stop();held.clear();seed=seedValue===undefined?newSeed():seedValue;legs=[];flight=null;arrows=[];shots=[];failed=null;lessonStep=0;successes=0;attempts=0;clock=0;reviewPoint=null;interrupted=false;manual=false;demo=false;demoCursor=0;roundStart=0;
+ if(config.mode==='training'){
+  if(config.lesson==='sandwich')arrows=REF.shots.slice(0,5).map(s=>({y:s.y,preset:true}));
+  if(config.lesson==='gaps')arrows=REF.shots.slice(0,18).map(s=>({y:s.y,preset:true}));
+ }else if(config.checkpoint>0){const n=Math.min(24,config.checkpoint);arrows=REF.shots.slice(0,n).map(s=>({y:s.y,preset:true}));clock=REF.shots[n-1].t+CFG.flight+.01;}
+ roundStart=clock;state='running';lastReal=performance.now();
 }
-function timerText(seconds,cx,cy,h){
- const str=Math.max(0,seconds).toFixed(1)+'s';
- const dims=[...str].map(ch=>{const g=REF.glyphs[ch],hh=ch==='.'?h*17/56:ch==='s'?h*43/56:h;return {ch,g,hh,w:g.w*hh/g.h};});
- const gap=h*.10,tw=dims.reduce((a,g)=>a+g.w,0)+gap*(dims.length-1);let x=cx-tw/2;
- for(const v of dims){const s=v.hh/v.g.h;ctx.save();ctx.translate(x,cy+h/2-v.hh);ctx.scale(s,s);ctx.fillStyle='#fafaff';ctx.fill(glyphPaths[v.ch],'evenodd');ctx.restore();x+=v.w+gap;}
+function startRun(){settingsValues();reset();$('overlay').hidden=true;$('pause').hidden=false;resize();notify('Başladı. Her yeni dokunuş bir atış.');schedule();}
+function replay(){settingsValues();config={...config,mode:'reference',tempo:1,checkpoint:0,guide:false};reset(4271);demo=true;state='demo';$('overlay').hidden=true;$('pause').hidden=false;resize();notify('Kayıttaki yerleşimler gösteriliyor. Puan yazılmaz.');schedule();}
+function playTone(ok){if(!config.sound||demo||manual)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.type='sine';o.frequency.value=ok?700:175;g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.0001,t+.07);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.08);}catch(_){} }
+function createShot(){
+ if(!['running','demo'].includes(state)||flight)return false;
+ const y=aimAt(),target=lessonTarget();attempts++;reviewPoint=null;priorShotTime=clock;
+ flight={y,t0:clock,end:clock+CFG.flight,target:target?{...target}:null};
+ return true;
 }
-function resize(){
- const b=canvas.getBoundingClientRect();W=Math.max(1,b.width);H=Math.max(1,b.height);D=Math.min(devicePixelRatio||1,3);
- const st=getComputedStyle($('safe'));safeTop=parseFloat(st.paddingTop)||0;safeBottom=parseFloat(st.paddingBottom)||0;
- canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);
- const usefulH=Math.max(100,H-safeTop-safeBottom);
- const contain=config.layout==='source'||W/usefulH>.80;
- const s=contain?Math.min(W/512,usefulH/1038):Math.min(W/512,usefulH/700);
- const aw=contain?512*s:W,ah=contain?1038*s:usefulH;
- L={s,aw,ah,ox:(W-aw)/2,oy:safeTop+(usefulH-ah)/2};
- const own=parseCustomSequence(config.customSequence);
- const targetText=config.route==='custom'?(own.valid?'Senin dizin: '+own.value.split('').join('–')+'.':'Kendi dizini oynamak için 8 rakamı tamamla.'):config.route==='random'?'Her denemede yeni 8 sayı.':'Kayıttaki dizi: 6–8–5–7–6–8–6–7.';
- $('sizeInfo').textContent='Tuş: '+Math.round(106*s)+' × '+Math.round(106*s)+' px · '+targetText+' İlk doğru basışla sayaç başlar; sonraki arama ve yer değiştirme süreleri dahildir.';
- render();
+function land(){
+ const f=flight;if(!f)return;flight=null;
+ const distance=nearestDistance(f.y),collides=distance<CFG.collision-1e-7;
+ shots.push({time:f.t0,y:f.y,distance:Number.isFinite(distance)?distance:null,collision:collides});
+ if(collides){failed={y:f.y,gap:distance,at:f.t0,type:'collision'};reviewPoint=f.y;playTone(false);if(config.mode==='training'){state='review';showPanel('review','Yerleşmiş oka fazla yaklaştın. Ok gövdeleri arasındaki güvenli aralığı hedefle.');}else finish('collision');return;}
+ if(config.mode==='training'){
+  const inTarget=!f.target||Math.abs(f.y-f.target.y)<=f.target.tolerance+1e-7;
+  if(!inTarget){failed={y:f.y,at:f.t0,type:'target',target:f.target.y};reviewPoint=f.y;playTone(false);state='review';showPanel('review','Ok boşluğa gidiyordu, fakat bu dersin hedef bandını kaçırdın. Bu bir oyun çarpışması değil; eğitim hedefi hatası.');return;}
+  successes++;lessonStep++;playTone(true);
+  if(config.lesson==='edges')arrows=[];else arrows.push({y:f.y});
+  if(lessonStep>=(f.target?f.target.total:10)){finish('lesson');return;}
+ }else{arrows.push({y:f.y});successes++;playTone(true);}
+ if(!safeIntervals().length&&config.mode!=='training'){finish('filled');return;}
+ notify(config.mode==='training'?'Eğitim '+lessonStep+'. hedef tamam.':arrows.length+' puan.');
+}
+function finish(kind){
+ stop();state=kind==='lesson'?'lessonDone':'over';held.clear();$('pause').hidden=true;
+ if(!demo&&eligible()){const best=currentBest();if(arrows.length>best){records[config.mode]=arrows.length;storage.set('arrowWall.v2.records',records);}}
+ const msg=kind==='lesson'?'Ders tamamlandı. Aynı dersi daha az hata ile veya 1,00× hızda yeniden çalış.':kind==='filled'?'Bu modelin temas aralığında duvar doldu. 25 puan zorunlu bitiş sınırı değildir.':demo?'Kayıttaki 25 başarılı yerleşim ve son çarpışma gösterildi. Bu, videodan çıkarılmış bir gösterimdir; kişisel rekoruna yazılmaz.':'Yeni ok, önceki okun gövde aralığına girdi. Boşluğu önceden seçip o hizaya gelmesini bekle.';
+ showPanel(kind==='lesson'?'lessonDone':'over',msg);
+}
+function step(dt){
+ if(!Number.isFinite(dt)||dt<0||!['running','demo'].includes(state))return;
+ const target=clock+dt;let guard=0;
+ while(['running','demo'].includes(state)&&clock<target-1e-10&&guard++<1000){
+  let next=target;
+  if(flight)next=Math.min(next,flight.end);
+  if(demo&&demoCursor<REF.shots.length)next=Math.min(next,Math.max(clock,REF.shots[demoCursor].t));
+  clock=next;
+  if(flight&&clock>=flight.end-1e-9)land();
+  if(!['running','demo'].includes(state))break;
+  if(demo&&demoCursor<REF.shots.length&&clock>=REF.shots[demoCursor].t-1e-9){createShot();demoCursor++;}
+  if(next>=target-1e-9)break;
+ }
+}
+function advance(now){if(!['running','demo'].includes(state)||!Number.isFinite(now)||now<=lastReal)return;const dt=(now-lastReal)/1000;lastReal=now;if(!manual&&dt>.35){pause(false,'Görüntü veya sekme kesildi. Zaman donduruldu; bu tur rekor dışı.');return;}step(dt*config.tempo);}
+function frame(t){raf=0;advance(t);render();schedule();}
+function eventTime(e){const now=performance.now();let t=Number(e&&e.timeStamp);if(t>1e12)t-=performance.timeOrigin;return Number.isFinite(t)&&Math.abs(t-now)<60000?t:now;}
+function pointerDown(e){
+ if(e.pointerType==='mouse'&&e.button!==0)return;if(state!=='running'||demo||held.has(e.pointerId))return;
+ e.preventDefault();held.add(e.pointerId);try{cv.setPointerCapture(e.pointerId);}catch(_){}
+ if(!manual)advance(eventTime(e));if(state==='running')createShot();render();schedule();
+}
+function pointerUp(e){held.delete(e.pointerId);try{if(cv.hasPointerCapture(e.pointerId))cv.releasePointerCapture(e.pointerId);}catch(_){}}
+if(window.PointerEvent){cv.addEventListener('pointerdown',pointerDown,{passive:false});cv.addEventListener('pointerup',pointerUp);cv.addEventListener('pointercancel',pointerUp);cv.addEventListener('lostpointercapture',e=>held.delete(e.pointerId));cv.addEventListener('pointermove',e=>{if(held.has(e.pointerId))e.preventDefault();},{passive:false});}
+else{cv.addEventListener('touchstart',e=>{e.preventDefault();for(const t of e.changedTouches)pointerDown({pointerId:t.identifier,pointerType:'touch',timeStamp:e.timeStamp,preventDefault(){}});},{passive:false});for(const n of ['touchend','touchcancel'])cv.addEventListener(n,e=>{for(const t of e.changedTouches)pointerUp({pointerId:t.identifier});});if(!('ontouchstart' in window))cv.addEventListener('mousedown',e=>pointerDown({pointerId:1,pointerType:'mouse',button:e.button,timeStamp:e.timeStamp,preventDefault:()=>e.preventDefault()}));window.addEventListener('mouseup',()=>pointerUp({pointerId:1}));}
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+function pause(first=true,msg){if(!['running','demo'].includes(state))return;if(first&&!manual){advance(performance.now());if(!['running','demo'].includes(state))return;}pausedFrom=state;state='paused';interrupted=true;held.clear();stop();showPanel('paused',msg||'Hareket ve uçuş aynı noktada bekliyor. Ara verilen tur normal rekora yazılmaz.');render();}
+function resume(){state=pausedFrom;$('overlay').hidden=true;$('pause').hidden=false;lastReal=performance.now();render();schedule();}
+function retryLesson(){clock=Math.max(0,priorShotTime-.65);flight=null;failed=null;reviewPoint=null;held.clear();state='running';$('overlay').hidden=true;$('pause').hidden=false;lastReal=performance.now();render();schedule();}
+function retryRun(){const saved={...config};reset();config=saved;$('overlay').hidden=true;$('pause').hidden=false;resize();schedule();}
+function showPanel(kind,msg=''){
+ $('overlay').hidden=false;$('pause').hidden=true;const setup=kind==='settings';
+ for(const id of ['settings','intro','hero','tips','limits'])$(id).hidden=!setup;
+ $('demo').hidden=!setup;$('configure').hidden=setup;$('restart').hidden=setup||kind==='over'||kind==='lessonDone';$('reason').hidden=setup;$('reason').textContent=msg;$('stats').hidden=setup||kind==='paused';
+ $('heading').innerHTML=setup?'Kenarı yakala.<br><em>Boşluğu koru.</em>':kind==='paused'?'Duraklatıldı':kind==='review'?'Hedefi yeniden yakala.':kind==='lessonDone'?'Ders tamamlandı.':arrows.length+' puan';
+ $('start').textContent=setup?'PROVAYA BAŞLA':kind==='paused'?'DEVAM ET':kind==='review'?'AYNI HEDEFİ TEKRAR DENE':'BAŞTAN DENE';
+ if(!setup){const vals=config.mode==='training'?[[successes,'Başarılı hedef'],[attempts,'Toplam atış'],[attempts?Math.round(100*successes/attempts)+'%':'—','Eğitim isabeti'],[fmt(clock-roundStart,1)+' sn','Referans saat']]:[[arrows.length,'Yerleşen ok'],[attempts,'Atış'],[fmt(clock-roundStart,1)+' sn','Referans saat'],[demo?'PUANSIZ':currentBest(),'Bu moddaki rekor']];$('stats').innerHTML=vals.map(v=>'<div class="stat"><b>'+v[0]+'</b>'+v[1]+'</div>').join('');}
+}
+function toSettings(){stop();held.clear();state='settings';flight=null;demo=false;manual=false;settingsValues();arrows=[];clock=0;failed=null;reviewPoint=null;syncSettings();showPanel('settings');resize();}
+function resize(){const b=cv.getBoundingClientRect();W=Math.max(1,b.width);H=Math.max(1,b.height);D=Math.min(devicePixelRatio||1,3);cv.width=Math.round(W*D);cv.height=Math.round(H*D);const st=getComputedStyle($('safe'));safeTop=parseFloat(st.paddingTop)||0;safeBottom=parseFloat(st.paddingBottom)||0;const ah=Math.max(1,H-safeTop-safeBottom);if(config.layout==='screen'&&W<ah){SX=W/CFG.w;SY=ah/CFG.h;OX=0;OY=safeTop;}else{SX=SY=Math.min(W/CFG.w,ah/CFG.h);OX=(W-CFG.w*SX)/2;OY=safeTop+(ah-CFG.h*SY)/2;}$('sizeInfo').textContent='Duvar: '+Math.round(105*SX)+' × '+Math.round(510*SY)+' px · Atış boyunca yükseklik sabittir. Temas eşiği özgün koddan alınmış değildir.';render();}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h);}
+function label(s,x,y,size,c='#fff',weight=750,align='center'){ctx.font=weight+' '+size+'px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';ctx.fillStyle=c;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(s,x,y);}
+function line(x1,y1,x2,y2,c,w=1){ctx.beginPath();ctx.strokeStyle=c;ctx.lineWidth=w;ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+function drawArrow(x,y,color=false,stuck=false){
+ if(arrowImg.complete&&arrowImg.naturalWidth&&!color){if(stuck){line(x-115,y,x+3,y,'#eeeef2',3.5);ctx.drawImage(arrowImg,104,0,32,32,x-16,y-15.5,32,32);}else ctx.drawImage(arrowImg,x-120,y-15.5,136,32);return;}
+ line(x-108,y,x+4,y,color?'#f15378':'#eeeef2',3.5);ctx.fillStyle=color?'#f15378':'#eeeef2';ctx.beginPath();ctx.moveTo(x-114,y);ctx.lineTo(x-102,y-4.5);ctx.lineTo(x-102,y+4.5);ctx.closePath();ctx.fill();for(const off of [0,12]){ctx.beginPath();ctx.strokeStyle='#ed3976';ctx.lineWidth=3.5;ctx.moveTo(x+off+2,y-8);ctx.lineTo(x+off-7,y);ctx.lineTo(x+off+2,y+8);ctx.stroke();}
 }
 function render(){
- if(!ctx||!sequence.length||!toPos.length)return;
- ctx.setTransform(D,0,0,D,0,0);ctx.fillStyle='#182131';ctx.fillRect(0,0,W,H);
- const s=L.s,yy=v=>L.oy+L.ah*v/1038,cx=L.ox+L.aw/2;
- // Personal display, not an imitation of the recorded person's avatar/ranking.
- const ay=yy(87);ctx.fillStyle='#2f425a';ctx.beginPath();ctx.arc(cx,ay,26*s,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ced5da';ctx.lineWidth=1.3*s;ctx.stroke();label('1→8',cx,ay,13*s,'#e5ebf0',850);
- rr(cx-21*s,ay-40*s,42*s,28*s,8*s,'#ffe263');label('SEN',cx,ay-26*s,13*s,'#172131',850);
- const shownSecs=isDemo?Math.max(0,Math.min(REF.observedEventSeconds[7],(elapsed-650)/1000)):elapsed/1000;
- if(state==='running'||state==='done'||state==='error'||state==='demo'||state==='demoDone'){
-  const secLabel=Math.floor(shownSecs)+' saniye';rr(cx-47*s,ay+21*s,94*s,25*s,8*s,'#ffffff');label(secLabel,cx,ay+33.5*s,11*s,'#202832',800);
- }
- timerText(shownSecs,cx,yy(278),56*s);
- const chip=52*s,gap=10*s,total=8*chip+7*gap,sx=cx-total/2,sy=yy(367)-chip/2;
- for(let i=0;i<8;i++){
-  const fill=i<progress?'#20a58d':i===progress?'#fff45f':'#414956';
-  rr(sx+i*(chip+gap),sy,chip,chip,12*s,fill);
-  numeral(sequence[i],sx+i*(chip+gap)+chip/2,sy+chip/2,29*s,i===progress?'#101824':i<progress?'#a7e6db':'#e3e5eb');
- }
- if(state==='armed'){
-  label('İlk '+sequence[0]+'’ya dokun · süre başlayacak',cx,yy(457),15*s,'#adbfce',650);
- }else if(isDemo){label('KAYIT GÖSTERİMİ · PUANSIZ',cx,yy(457),12*s,'#a6d9ca',750);}
- else if(config.guide){label('ÖĞRENME YARDIMI AÇIK',cx,yy(457),11*s,'#bfe5ce',750);}
- for(const num of drawOrder()){
-  const g=geometry(num);
-  const borderAge=(visual-animStart)/(config.motion==='slow'?2:1);
-  let stroke=null,lw=1;
-  if(config.guide&&num===sequence[progress]){stroke='#baf5ce';lw=4*s;}
-  if(pressed===num&&borderAge>=0&&borderAge<150){stroke='#ffffff';lw=4.5*s;}
-  if(wrong===num&&visual-wrongAt<550){stroke='#fff45e';lw=4*s;}
-  rr(g.x-g.size/2,g.y-g.size/2,g.size,g.size,g.radius,colors[num],stroke,lw);
-  // The recorded numerals are compact, not stretched with tall screens.
-  numeral(num,g.x,g.y,31*s*pulse(num));
- }
- if(state==='armed'||isDemo)label(isDemo?'Kaydedilen sonuç: 4,47 sn':'Tek dokunuş · bir cevap',cx,yy(980),11*s,'#839ab1',600);
- if(state==='error')label('Beklenen sayı: '+sequence[progress],cx,yy(980),13*s,'#ffc5ad',750);
+ if(!ctx)return;ctx.setTransform(D,0,0,D,0,0);rect(0,0,W,H,'#0c0b12');ctx.save();ctx.translate(OX,OY);ctx.scale(SX,SY);
+ const bg=ctx.createRadialGradient(230,450,0,230,450,530);bg.addColorStop(0,'#17151e');bg.addColorStop(1,'#0c0b11');ctx.fillStyle=bg;ctx.fillRect(0,0,480,854);
+ rect(0,216,105,510,'#f1ede8');line(104.5,216,104.5,726,'#c8c5c3',1);for(let i=1;i<8;i++){const y=216+i*63.75;line(0,y,91,y,'#d8d4d0',1.8);line(0,y+1.8,91,y+1.8,'#e3dedb',.6);}
+ line(469,242,469,698,'#ffffff09',2);line(464,242,476,242,'#ffffff09',1);line(464,698,476,698,'#ffffff09',1);
+ const training=config.mode==='training';const help=config.guide||training;
+ if(help){for(const gap of safeIntervals())rect(92,gap[0],13,Math.max(.5,gap[1]-gap[0]),'#66dfba35');for(const a of arrows)rect(89,a.y-CFG.collision,16,CFG.collision*2,'#f8677d45');}
+ const target=training?lessonTarget():null;
+ if(target){rect(105,target.y-target.tolerance,355,target.tolerance*2,'#a5dd6b22');line(102,target.y,463,target.y,'#c5ed9275',1);label(target.name,260,779,12,'#d6eca1',700);label('HEDEF '+Math.min(lessonStep+1,target.total)+' / '+target.total+'  ·  EĞİTİM',240,805,10,'#939aa6',650);}
+ for(const a of arrows){rect(89,a.y-2,16,4,'#17141b');drawArrow(CFG.land,a.y,false,true);}
+ if(flight){const u=Math.min(1,Math.max(0,(clock-flight.t0)/CFG.flight));drawArrow(CFG.launch+(CFG.land-CFG.launch)*u,flight.y);}
+ else if(['running','demo','paused','settings','review'].includes(state))drawArrow(CFG.launch,aimAt());
+ if(help&&!flight){const y=aimAt(),ok=nearestDistance(y)>=CFG.collision;ctx.setLineDash([5,6]);line(108,y,330,y,ok?'#85dcb255':'#fb597a80',1);ctx.setLineDash([]);}
+ if(failed){drawArrow(CFG.land,failed.y,true);if(failed.type==='collision')rect(0,216,480,510,'#ef285015');}
+ const score=training?successes:arrows.length;
+ ctx.save();ctx.translate(240,160);ctx.scale(1.35,1);label(score,0,0,64,'#fafafa',950);ctx.restore();
+ label(demo?'KAYIT GÖSTERİMİ · PUANSIZ':training?'EĞİTİM':config.mode==='challenge'?'NORMAL MÜCADELE':'VİDEO PROVASI',240,105,10,'#9393a4',800);
+ label(config.tempo.toFixed(2)+'×'+(clock>REF.end&&config.mode!=='challenge'?' · ÜRETİLMİŞ DEVAM':''),240,121,9,'#727285',700);
+ if(!target&&['running','demo','paused'].includes(state))label(demo?'25 başarılı yerleşim · özgün parmak kaydı değil':state==='paused'?'DURAKLATILDI':'Dokun → Gönder  ·  Tutma / sürükleme tekrar ateşlemez',240,804,9.5,'#777889',650);
+ if(help&&!training)label('REHBER AÇIK · BU TUR REKOR DIŞI',240,781,10,'#b1c88b',750);
+ ctx.restore();
 }
-function pointerDown(e){
- if(e.pointerType==='mouse'&&e.button!==0)return;
- if(!['armed','running'].includes(state)||isDemo)return;
- if(held.has(e.pointerId))return;
- e.preventDefault();held.add(e.pointerId);
- try{canvas.setPointerCapture(e.pointerId);}catch(e){}
- const t=clockStamp(e);advance(t);
- if(!['armed','running'].includes(state))return;
- const b=canvas.getBoundingClientRect();press(hitNumberAt(e.clientX-b.left,e.clientY-b.top),t);
-}
-function pointerUp(e){held.delete(e.pointerId);try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch(e){}}
-if(window.PointerEvent){
- canvas.addEventListener('pointerdown',pointerDown,{passive:false});
- canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('lostpointercapture',e=>held.delete(e.pointerId));
- canvas.addEventListener('pointermove',e=>{if(held.has(e.pointerId))e.preventDefault();},{passive:false});
-}else{
- canvas.addEventListener('touchstart',e=>{e.preventDefault();if(!['armed','running'].includes(state))return;for(const t of e.changedTouches){if(held.has(t.identifier))continue;held.add(t.identifier);const tt=clockStamp(e);advance(tt);const b=canvas.getBoundingClientRect();press(hitNumberAt(t.clientX-b.left,t.clientY-b.top),tt);}},{passive:false});
- for(const event of ['touchend','touchcancel'])canvas.addEventListener(event,e=>{for(const t of e.changedTouches)held.delete(t.identifier);});
- if(!('ontouchstart' in window))canvas.addEventListener('mousedown',e=>pointerDown({pointerId:1,pointerType:'mouse',button:e.button,clientX:e.clientX,clientY:e.clientY,timeStamp:e.timeStamp,preventDefault:()=>e.preventDefault()}));
-}
-canvas.addEventListener('contextmenu',e=>e.preventDefault());
-$('start').addEventListener('click',()=>{if(state==='settings')arm();else if(state==='paused')resume();else if(state==='demoDone')arm();else retry();});
-$('demo').addEventListener('click',beginDemo);$('homeBtn').addEventListener('click',settings);$('pauseBtn').addEventListener('click',()=>pause());$('settingsBtn').addEventListener('click',settings);
-$('refresh').addEventListener('click',()=>{const u=new URL(location.href);u.searchParams.set('v',String(Date.now()));location.replace(u.href);});
-for(const id of ['layout','route','mode','motion','guide','sound'])$(id).addEventListener('change',refreshSettingsPreview);
-$('customSequence').addEventListener('input',refreshSettingsPreview);
-$('customSequence').addEventListener('blur',()=>{const entry=parseCustomSequence($('customSequence').value);if(entry.valid)$('customSequence').value=entry.value;syncCustomEntry();});
-$('customSequence').addEventListener('keydown',e=>{if(e.key==='Enter'&&state==='settings'){e.preventDefault();arm();}});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(false,'Uygulama arka plana geçti. Bu tur rekora yazılmayacak.');});
-let resizeQueued=false;
-function onResize(){if(resizeQueued)return;resizeQueued=true;requestAnimationFrame(()=>{resizeQueued=false;if(Math.abs(canvas.getBoundingClientRect().width-W)>1&&['running','demo'].includes(state))pause(false,'Ekran yönü değişti. Bu tur rekora yazılmayacak.');resize();});}
+$('start').addEventListener('click',()=>{if(state==='settings')startRun();else if(state==='paused')resume();else if(state==='review')retryLesson();else retryRun();});$('demo').addEventListener('click',replay);$('restart').addEventListener('click',retryRun);$('configure').addEventListener('click',toSettings);$('home').addEventListener('click',toSettings);$('pause').addEventListener('click',()=>pause());$('refresh').addEventListener('click',()=>{const u=new URL(location.href);u.searchParams.set('v',String(Date.now()));location.replace(u.href);});
+for(const id of ['mode','lesson','tempo','checkpoint','layout','guide','sound'])$(id).addEventListener('change',()=>{if(state==='settings'){settingsValues();syncSettings();resize();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(false,'Uygulama arka plana geçti. Saat donduruldu; bu tur rekor dışı.');});window.addEventListener('blur',()=>pause(false));
+let resizeQueued=false;function onResize(){if(resizeQueued)return;resizeQueued=true;requestAnimationFrame(()=>{resizeQueued=false;const width=cv.getBoundingClientRect().width;if(Math.abs(width-W)>2)pause(false,'Ekran yönü değişti. Aynı noktadan devam edebilirsin.');resize();});}
 window.addEventListener('resize',onResize);if(window.visualViewport)window.visualViewport.addEventListener('resize',onResize);
-window.addEventListener('blur',()=>{if(['running','demo'].includes(state))pause(false);});
-document.addEventListener('keydown',e=>{
- if(e.repeat)return;
- if(e.code==='Escape'){if(state==='paused')resume();else pause();return;}
- if(e.target&&['SELECT','INPUT','BUTTON'].includes(e.target.tagName))return;
- const map={KeyQ:0,KeyW:1,KeyE:2,KeyA:3,KeyS:4,KeyD:5,KeyZ:6,KeyX:7,KeyC:8};
- if(map[e.code]===undefined||!['armed','running'].includes(state))return;
- e.preventDefault();advance(performance.now());const i=map[e.code],pos={x:L.ox+L.aw/2+(i%3-1)*123*L.s,y:L.oy+L.ah*(731/1038)+(Math.floor(i/3)-1)*123*L.s};press(hitNumberAt(pos.x,pos.y),performance.now());
-});
-// Local deterministic tests only. No game automation is enabled in normal play.
-if(new URLSearchParams(location.search).get('test')==='1'||window.__ENABLE_SEQUENCE_TEST__===true){
- window.__sequenceTest={
-  ref:()=>JSON.parse(JSON.stringify(REF)),cfg:()=>({...CFG}),parseCustom:parseCustomSequence,recordKey,
-  snapshot:()=>({state,progress,elapsed,visual,errors,empty,sequence:sequence.slice(),board:boards[Math.min(progress,7)].slice(),positions:positions(),held:[...held],interrupted,isDemo,records:JSON.parse(JSON.stringify(records)),eligible:eligible(),size:{...L},hits:hits.map(h=>({...h})),raf:!!raf}),
-  setup:(opts={},seedValue=41729)=>{config={route:'record',mode:'challenge',motion:'reference',layout:'responsive',guide:false,sound:false,customSequence:'',...opts};if(!initialize(seedValue))return false;manual=true;resize();state='armed';last=1000;armedSince=last;$('panel').hidden=true;render();},
-  advance:ms=>{advance(last+ms);render();},
-  hit:n=>press(n,last,true),
-  point:n=>geometry(n),
-  at:(x,y)=>hitNumberAt(x,y),
-  pointer:e=>pointerDown(e),
-  render,resize,
-  pause:()=>pause(false),resume,
-  finishPanel:()=>showPanel('done'),restart:retry,
-  demo:beginDemo,
-  animation:t=>curveAt(t,animIndex),
-  setRecords:r=>{records=r;},
-  real:()=>{manual=false;last=performance.now();schedule();},
-  frames:()=>frameCount
- };
-}
-try{
- const saved=JSON.parse(store.get(CUSTOM_STORAGE_KEY)||'""');
- if(typeof saved==='string'&&parseCustomSequence(saved).valid)$('customSequence').value=saved;
-}catch(e){}
-settings();
-</script>
-</body></html>
+document.addEventListener('keydown',e=>{if(e.repeat||['INPUT','SELECT','BUTTON'].includes(e.target.tagName))return;if(e.code==='Space'||e.code==='Enter'){if(state==='running'&&!demo){e.preventDefault();if(!manual)advance(performance.now());createShot();render();}}if(e.code==='Escape'){e.preventDefault();if(state==='paused')resume();else pause();}});
+arrowImg.onload=()=>render();arrowImg.onerror=()=>{notify('Ok görseli açılamadı; vektör çizimle devam ediliyor.');render();};
+// Local test gate only. There is no connection to or control over another app.
+if(new URLSearchParams(location.search).get('test')==='1'||window.__ARROW_TEST__===true){window.__arrowTest={
+ cfg:()=>({...CFG}),ref:()=>JSON.parse(JSON.stringify(REF)),
+ setup:(opts={},s=731)=>{config={mode:'reference',tempo:1,checkpoint:0,lesson:'edges',layout:'source',guide:false,sound:false,...opts};reset(s);manual=true;$('overlay').hidden=true;resize();},
+ snapshot:()=>({state,clock,score:arrows.length,arrows:arrows.map(a=>({...a})),flight:flight?{...flight}:null,attempts,successes,lessonStep,failed,held:[...held],aim:aimAt(),velocity:velocityAt(),eligible:eligible(),demo,manual,interrupted,records:{...records},geometry:{W,H,SX,SY,OX,OY}}),
+ stepLogic:step,step:dt=>{step(dt);render();},fire:()=>{const r=createShot();render();return r;},aimAt,measuredY,velocityAt,safeIntervals,target:lessonTarget,
+ setClock:t=>{clock=t;render();},setArrows:a=>{arrows=a.map(y=>({y}));render();},setManual:v=>{manual=v;lastReal=performance.now();schedule();},setRecords:r=>{records={...r};},
+ demoSetup:()=>{config={mode:'reference',tempo:1,checkpoint:0,lesson:'edges',layout:'source',guide:false,sound:false};reset(731);manual=true;demo=true;state='demo';$('overlay').hidden=true;resize();},
+ pointer:pointerDown,up:pointerUp,pause:()=>pause(false),resume,retryLesson,retryRun,settings:toSettings,render,resize,createShot,advance,recordEligible:eligible
+};}
+toSettings();
+</script></body></html>
