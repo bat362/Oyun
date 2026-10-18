@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2e674d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Tilted • Antrenman V1</title>
+<style>
+:root{color-scheme:dark;--bg:#2e674d;--deep:#143d2e;--ink:#12291f;--lime:#fdfc8d;--rail:#b1cc86;--muted:#c0d3c7;--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#173c2d;font-family:ui-rounded,"Arial Rounded MT Bold",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#fff}
+body{display:flex;justify-content:center;overscroll-behavior:none}
+button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,input:focus-visible{outline:3px solid var(--lime);outline-offset:4px}button:disabled{opacity:.5;cursor:default}
+#app{width:100%;max-width:560px;height:100%;height:100dvh;position:relative;background:var(--bg);overflow:hidden;isolation:isolate}
+#field{display:block;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.topbar{position:absolute;top:calc(14px + var(--safe-t));left:20px;right:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none;z-index:3}
+.brand{font-size:15px;font-weight:900;letter-spacing:1.6px;line-height:1.2}.brand small{display:block;font-size:9px;letter-spacing:1.4px;font-weight:650;color:#c5d8cc;margin-top:4px}
+.top-actions{display:flex;gap:8px;align-items:center;pointer-events:auto}.best-pill{border:1px solid #ffffff26;background:#183f2e66;padding:7px 10px;border-radius:20px;color:#e5edda;font-size:11px;font-weight:700;white-space:nowrap}
+.icon-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ffffff25;border-radius:50%;background:#173b2c99;color:white;font-size:20px;font-weight:800;line-height:1}.icon-btn svg{width:16px;height:16px;fill:currentColor}
+#runLabel{position:absolute;top:calc(80px + var(--safe-t));left:0;right:0;text-align:center;font-size:10px;letter-spacing:1.5px;font-weight:750;color:#e0eccb;pointer-events:none;z-index:2}
+.bottomhint{position:absolute;left:20px;right:20px;bottom:calc(13px + var(--safe-b));display:flex;justify-content:space-between;gap:12px;font-size:10px;font-weight:750;letter-spacing:1px;color:#edf2d299;pointer-events:none;z-index:2}
+.overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:#0b281dbe;padding:calc(24px + var(--safe-t)) 22px calc(24px + var(--safe-b));overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+.overlay[hidden]{display:none}.panel{width:100%;max-width:400px;flex:0 0 auto;background:#163e2ff5;border:1px solid #c6d9a73d;border-radius:28px;padding:27px 25px 23px;box-shadow:0 22px 60px #0b201b66}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;color:#d4dfbc;margin:0 0 10px}.title{font-size:clamp(42px,12vw,62px);letter-spacing:-2px;line-height:.95;margin:0;font-weight:950;color:var(--lime)}
+.subtitle{font-size:14px;line-height:1.55;color:#e0e9dc;margin:15px 0 21px}.subtitle strong{color:white}
+.scene-mini{height:62px;position:relative;margin:18px 0 15px;display:grid;place-items:center;pointer-events:none}.mini-base{position:absolute;bottom:0;border-left:19px solid transparent;border-right:19px solid transparent;border-bottom:42px solid var(--rail);transform:rotate(180deg);transform-origin:center;display:none}
+.scene-mini svg{width:166px;height:64px;overflow:visible}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 13px}.mode{border:1px solid #ffffff29;color:#eff4e8;border-radius:15px;background:#244b3999;padding:13px 8px 12px;text-align:left;position:relative}.mode b{display:block;font-size:14px;margin-bottom:5px}.mode span{display:block;font-size:10px;color:#c1d1be;line-height:1.45}.mode[aria-pressed="true"]{border-color:var(--lime);background:#dded9c13}.mode[aria-pressed="true"]:after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:var(--lime);right:10px;top:11px}
+.option-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;padding:7px 1px;color:#d9e5d2}.check{display:flex;align-items:center;gap:8px;cursor:pointer}.check input{accent-color:#d8e886;width:16px;height:16px;margin:0;cursor:pointer}
+.primary{border:1px solid #fff3aa;background:var(--lime);color:var(--ink);font-size:17px;font-weight:900;width:100%;border-radius:16px;padding:15px 16px;box-shadow:0 4px 0 #acb55c;margin:17px 0 5px;letter-spacing:.3px}.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #acb55c}
+.secondary{border:1px solid #ffffff2f;background:transparent;border-radius:14px;color:#edf3e5;font-weight:750;font-size:13px;padding:12px 15px;width:100%;margin-top:12px}.secondary:active{background:#ffffff0b}
+.fine{font-size:10px;line-height:1.5;color:#b8cdbc;margin:14px 0 0;text-align:center}.small-note{font-size:11px;line-height:1.6;color:#c5d8c4;margin:10px 0}
+details{margin-top:15px;border-top:1px solid #ffffff19;padding-top:12px;font-size:11px;color:#c6d8c7}summary{cursor:pointer;color:#e5eecf;font-weight:700;list-style-position:inside;touch-action:manipulation}details p{line-height:1.6;margin:10px 0 0}details label{display:block;margin-top:14px}input[type="range"]{width:100%;accent-color:#eef79a;margin:10px 0 4px} .range-head{display:flex;justify-content:space-between;gap:10px;font-weight:750}
+#hudExtra{position:absolute;left:20px;right:20px;bottom:calc(64px + var(--safe-b));z-index:2;pointer-events:none;display:none;justify-content:center;gap:5px;flex-wrap:wrap}
+#hudExtra.show{display:flex}.telemetry{background:#143b2cd9;border:1px solid #ffffff20;padding:7px 9px;border-radius:10px;min-width:84px;text-align:center;font-size:10px;font-variant-numeric:tabular-nums}.telemetry span{display:block;color:#aecaab;margin-bottom:3px;font-size:8px;letter-spacing:1px;text-transform:uppercase}.telemetry b{font-weight:800;color:#f1f2cb}
+#countdown{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:4;pointer-events:none;background:#17412d19}#countdown[hidden]{display:none}#countN{font-size:80px;font-weight:950;color:var(--lime);text-shadow:0 6px 30px #1b302544}#countdown p{font-size:13px;color:#f2f3d3;font-weight:750;margin-top:8px}
+.result-score{font-size:61px;font-weight:950;letter-spacing:-2px;color:var(--lime);line-height:1.1;margin:5px 0}.result-score small{font-size:16px;letter-spacing:0;color:#dce8cc;font-weight:700;margin-left:4px}.result-title{font-size:24px;font-weight:900;margin:0 0 17px}.badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.5px;border:1px solid #d9e69755;border-radius:20px;padding:5px 9px;background:#b9d27b12;color:#ebf3c3;margin:9px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:17px 0 14px}.stat{border:1px solid #c4d5ae26;background:#0e2f2366;border-radius:13px;padding:12px 11px}.stat span{display:block;font-size:10px;color:#bfd2be;margin-bottom:7px}.stat b{font-size:19px;color:#f0f4db;font-weight:850;font-variant-numeric:tabular-nums}
+.feedback{border-left:2px solid #c8d990;padding:4px 0 4px 12px;margin:14px 0 4px;color:#dce7d3;font-size:12px;line-height:1.6}.pause-title{font-size:28px;font-weight:900;margin:0 0 12px}.sr-only{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+#fatal{position:absolute;inset:0;z-index:30;background:#133d2d;display:none;align-items:center;justify-content:center;padding:30px;color:white;font-size:15px;line-height:1.7}#fatal.show{display:flex}
+@media (max-height:700px){.overlay{align-items:flex-start;padding-top:calc(17px + var(--safe-t));padding-bottom:20px}.panel{padding:20px 21px;border-radius:24px}.title{font-size:43px}.scene-mini{height:42px;margin:8px 0}.scene-mini svg{height:42px}.subtitle{font-size:12px;margin:12px 0 14px}.mode{padding:10px 8px}.option-row{padding:5px 1px}.primary{margin-top:12px;padding:13px 16px}.fine{font-size:9px;margin-top:11px}.stats{gap:6px;margin:12px 0}.stat{padding:9px}.result-score{font-size:49px}.result-title{margin-bottom:9px}}
+@media (max-width:350px){.overlay{padding-left:15px;padding-right:15px}.panel{padding-left:19px;padding-right:19px}.mode b{font-size:12px}.mode span{font-size:9px}.option-row{font-size:11px}.topbar{left:15px;right:15px}.best-pill{font-size:10px;padding:6px 8px}}
+@media (prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+</head>
+<body>
+<main id="app" aria-label="Tilted bağımsız antrenman oyunu">
+<canvas id="field" tabindex="0" aria-label="Kirişi sola eğmek için sol yarıya, sağa eğmek için sağ yarıya dokun. Klavyede sol ve sağ ok tuşlarını kullan."></canvas>
+<header class="topbar"><div class="brand">TILTED<small>ANTRENMAN · V1</small></div><div class="top-actions"><div class="best-pill" id="bestPill">En iyi —</div><button id="pauseBtn" class="icon-btn" aria-label="Oyunu duraklat" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg></button></div></header>
+<div id="runLabel">VİDEO REFERANSLI · YAKLAŞIK FİZİK</div>
+<div class="bottomhint" id="bottomhint"><span>← SOL TARAFI ALÇALT</span><span>SAĞ TARAFI ALÇALT →</span></div>
+<div id="hudExtra"><div class="telemetry"><span>Son basış</span><b id="pressStat">—</b></div><div class="telemetry"><span>Kiriş açısı</span><b id="angleStat">0°</b></div><div class="telemetry"><span>Topun yönü / hızı</span><b id="speedStat">Durgun</b></div></div>
+<section class="overlay" id="menu" aria-label="Başlangıç menüsü"><div class="panel">
+<p class="eyebrow">MİKRO DOKUNUŞ. ERKEN FREN.</p><h1 class="title">TILTED</h1>
+<div class="scene-mini" aria-hidden="true"><svg viewBox="0 0 166 64"><path d="M83 29 L65 64 L101 64 Z" fill="#b1cc86"/><g transform="translate(83 28) rotate(-5)"><rect x="-63" y="-4" width="126" height="8" fill="#b1cc86"/><rect x="-8" y="-4" width="16" height="8" fill="#547236"/><circle cx="0" cy="-15" r="10" fill="#fdfc8d"/></g></svg></div>
+<p class="subtitle">Topu koyu yeşil merkeze getir.<br><strong>Kısa dokun, bırak, hareketi izle.</strong></p>
+<div class="modes" role="group" aria-label="Antrenman modu">
+<button class="mode" id="normalMode" data-mode="normal" aria-pressed="true"><b>Referans</b><span>Normal tempo · ×1<br>Kısalan kiriş</span></button>
+<button class="mode" id="slowMode" data-mode="slow" aria-pressed="false"><b>Öğrenme</b><span>Yavaş tempo · ×0,60<br>Aynı fizik, daha çok zaman</span></button>
+</div>
+<div class="option-row"><label class="check"><input id="guideCheck" type="checkbox">Basış ve hareket göstergeleri</label></div>
+<div class="option-row"><label class="check"><input id="soundCheck" type="checkbox">Antrenman sesleri</label><span style="font-size:10px;color:#bfd0b7">İsteğe bağlı</span></div>
+<button class="primary" id="startBtn">▶ BAŞLA</button>
+<p class="fine">Merkezde yaklaşık 1 saniye kalınca ×2.<br>Skor ile geçen oyun süresi ayrı gösterilir.</p>
+<details id="helpDetails"><summary>Kontrol, kalibrasyon ve sürüm bilgisi</summary>
+<p><strong>Dokunmak kirişi eğer; topu doğrudan sürüklemez.</strong> Basılı tutmak etkiyi sürdürür. Bırakınca dönme ve yuvarlanma anında kesilmez. İki taraf aynı anda basılıysa giriş nötrdür.</p>
+<p>Bilgisayarda: ← / → veya A / D. Boşluk: duraklat / devam. R: tekrar. Telefonda oyun alanının iki yarısını kullan; kenardan sistem kaydırması yapma.</p>
+<label><span class="range-head"><span>Dokunma hassasiyeti</span><output id="gainOut">1,00×</output></span><input id="gainRange" type="range" min="0.7" max="1.3" step="0.05" value="1" aria-label="Dokunma hassasiyeti"><span style="font-size:10px">Varsayılan 1,00×. Bu değer orijinal kaynak kodundan alınmadı.</span></label>
+<p>Görüntü oranları, daralma ve ×2 düzeni gönderilen videoya göre kuruldu. Dokunma olaylarının tam kaydı yok; kuvvet, sönüm ve top fiziği yaklaşık modeldir. Öğrenme modu fizik katsayılarını değil, oyun zamanını yavaşlatır. Her mod ve hassasiyetin rekoru ayrıdır.</p>
+<p>Bağımsız, çevrimdışı HTML antrenmanı. Playus'a bağlanmaz, puan göndermez, mevcut oyun dosyalarını değiştirmez. Rekorlar yalnız bu tarayıcıda tutulur; özel gezinmede kalıcı olmayabilir.</p>
+<p id="buildInfo">TLD-20261018-01 · HTML / Canvas · Haricî bağımlılık yok</p>
+</details>
+</div></section>
+<div id="countdown" hidden aria-live="polite"><strong id="countN">3</strong><p>Kısa dokunuşlarla başla</p></div>
+<section class="overlay" id="pauseOverlay" hidden aria-label="Oyun duraklatıldı"><div class="panel"><p class="eyebrow">KONTROL SENDE</p><h2 class="pause-title">Bir nefes.</h2><p class="small-note" id="pauseReason">Oyun ve skor duraklatıldı.</p><button id="resumeBtn" class="primary">▶ DEVAM</button><button id="restartPause" class="secondary">Yeniden başla</button><button id="menuPause" class="secondary">Ana menü</button><p class="fine">Devam ederken eski basışlar taşınmaz.</p></div></section>
+<section class="overlay" id="resultOverlay" hidden aria-label="Antrenman sonucu"><div class="panel">
+<p class="eyebrow" id="resultMode">REFERANS · NORMAL TEMPO</p><h2 class="result-title">Tur tamamlandı.</h2><div class="result-score"><span id="resultScore">0,00</span><small>skor</small></div><span id="newBest" class="badge" hidden>BU AYARDA YENİ REKOR</span>
+<div class="stats"><div class="stat"><span>Oyun süresi</span><b id="resultTime">0,00 sn</b></div><div class="stat"><span>×2 ile geçen süre</span><b id="resultPerfect">%0</b></div><div class="stat"><span>Dokunuş sayısı</span><b id="resultTaps">0</b></div><div class="stat"><span>Ortanca basış</span><b id="resultMedian">—</b></div></div>
+<p class="feedback" id="resultFeedback"></p><button class="primary" id="retryBtn">↻ TEKRAR DENE</button><button class="secondary" id="resultMenuBtn">Mod seç / ana menü</button><p class="fine" id="resultFoot">Gerçek Playus sıralaması değildir.</p>
+</div></section>
+<div id="fatal" role="alert"></div><div class="sr-only" id="liveStatus" aria-live="polite"></div>
+</main>
+<script id="tilted-core">
+'use strict';
+/*
+ * TILTED V1 — Independent practice model; not recovered Playus source code.
+ * Source: user-supplied 512 x 1128 / 30 fps recording (38.9667 s video).
+ * Reference drawing: approximately 508 px playable width, 254 px initial beam,
+ * 64 px minimum beam, 17 px rail thickness, 20 px ball radius, 30 px centre band.
+ * Shrink schedule and centre dwell are measurements/inferences from the clip.
+ * Torque, mass feedback and damping are estimated. They are deliberately
+ * grouped here; no frame-dependent random kicks or automatic balancing exist.
+ */
+const TILTED_BUILD='TLD-20261018-01';
+const TILTED_CFG=Object.freeze({
+  worldWidth:512, beamStart:254, beamMin:64, beamHeight:17, radius:20,
+  perfectHalf:15, perfectDwell:1.0, shrinkStart:9.3, shrinkRate:8.43,
+  controlTorque:5.25, angularDamping:1.12, massTorque:0.034,
+  shrinkTorquePower:2.0, rollingGravity:165, rollingDamping:0.32,
+  angularRollCoupling:20, angleLimit:1.08, maxAngularVelocity:3.4,
+  initialAngle:0.004, initialOmega:0.24, fallGravity:650,
+  maxStep:1/240
+});
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+class TiltedPhysics{
+  constructor(options={}){
+    this.cfg={...TILTED_CFG,...(options.config||{})};
+    this.gain=clamp(Number(options.gain)||1,.7,1.3);
+    this.reset(options.startSign===-1?-1:1);
+  }
+  reset(sign=1){
+    this.t=0;this.score=0;this.bonusTime=0;this.insideTime=0;this.dwell=0;
+    this.theta=this.cfg.initialAngle*sign;this.omega=this.cfg.initialOmega*sign;
+    this.x=0;this.vx=0;this.alive=true;this.fall=null;this.peakAngle=0;
+    this.loss=null;this.length=this.cfg.beamStart;this.multiplier=1;
+  }
+  contactPosition(){
+    const d=this.cfg.radius+this.cfg.beamHeight/2;
+    return (this.x-d*Math.sin(this.theta))/Math.cos(this.theta);
+  }
+  centreY(){
+    const d=this.cfg.radius+this.cfg.beamHeight/2;
+    return (this.x*Math.sin(this.theta)-d)/Math.cos(this.theta);
+  }
+  step(dt,input){
+    if(!this.alive||!Number.isFinite(dt)||dt<=0)return;
+    dt=Math.min(dt,this.cfg.maxStep);
+    input=clamp(Number(input)||0,-1,1);
+    const c=this.cfg;
+    this.t+=dt;
+    this.length=Math.max(c.beamMin,c.beamStart-c.shrinkRate*Math.max(0,this.t-c.shrinkStart));
+    const s=this.contactPosition();
+    const weight=c.massTorque*Math.pow(c.beamStart/this.length,c.shrinkTorquePower)*s;
+    const acc=c.controlTorque*this.gain*input+weight-c.angularDamping*this.omega;
+    this.omega=clamp(this.omega+acc*dt,-c.maxAngularVelocity,c.maxAngularVelocity);
+    this.theta+=this.omega*dt;
+    if(Math.abs(this.theta)>c.angleLimit){
+      this.theta=Math.sign(this.theta)*c.angleLimit;
+      if(Math.sign(this.omega)===Math.sign(this.theta))this.omega=0;
+    }
+    // Horizontal momentum remains after the finger is released.
+    const ax=c.rollingGravity*Math.sin(this.theta)+c.angularRollCoupling*this.omega-c.rollingDamping*this.vx;
+    this.vx+=ax*dt;this.x+=this.vx*dt;
+    this.peakAngle=Math.max(this.peakAngle,Math.abs(this.theta));
+    const contact=this.contactPosition();
+    if(!Number.isFinite(contact)||!Number.isFinite(this.x)||!Number.isFinite(this.theta)){
+      this.detach('model');return;
+    }
+    if(Math.abs(contact)>this.length/2){this.detach(contact<0?'left':'right');return;}
+    const inside=Math.abs(contact)<=c.perfectHalf;
+    let extra=0;
+    if(inside){
+      const prev=this.dwell;this.dwell+=dt;this.insideTime+=dt;
+      extra=Math.max(0,this.dwell-c.perfectDwell)-Math.max(0,prev-c.perfectDwell);
+      extra=clamp(extra,0,dt);
+    }else this.dwell=0;
+    this.multiplier=this.dwell>=c.perfectDwell?2:1;
+    this.bonusTime+=extra;
+    this.score+=dt+extra;
+  }
+  detach(side){
+    if(!this.alive)return;
+    this.alive=false;
+    const cs=Math.cos(this.theta),tn=Math.tan(this.theta),d=this.cfg.radius+this.cfg.beamHeight/2;
+    const fy=this.centreY();
+    const fvy=this.vx*tn+this.x/(cs*cs)*this.omega-d/cs*tn*this.omega;
+    this.fall={x:this.x,y:fy,vx:this.vx,vy:fvy,time:0};
+    this.loss={side,t:this.t,score:this.score,theta:this.theta,omega:this.omega,
+               x:this.x,vx:this.vx,s:this.contactPosition(),length:this.length};
+    this.multiplier=1;
+  }
+  stepFall(dt){
+    if(!this.fall||!Number.isFinite(dt)||dt<=0)return;
+    const f=this.fall;f.time+=dt;f.x+=f.vx*dt;f.y+=f.vy*dt+.5*this.cfg.fallGravity*dt*dt;f.vy+=this.cfg.fallGravity*dt;
+  }
+  snapshot(){return{t:this.t,score:this.score,theta:this.theta,omega:this.omega,x:this.x,vx:this.vx,
+    s:this.contactPosition(),length:this.length,alive:this.alive,dwell:this.dwell,
+    bonusTime:this.bonusTime,insideTime:this.insideTime,multiplier:this.multiplier,
+    peakAngle:this.peakAngle,fall:this.fall?{...this.fall}:null,loss:this.loss?{...this.loss}:null};}
+}
+</script>
+<script id="tilted-app">
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('field'),ctx=canvas.getContext('2d',{alpha:false});
+if(!ctx){$('fatal').textContent='Bu tarayıcı Canvas çizimini açamadı. Dosyayı güncel bir tarayıcıda aç.';$('fatal').classList.add('show');return;}
+const fmt=(n,d=2)=>Number(n).toLocaleString('tr-TR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const STORE='tilted.practice.v1';
+const safeRead=(key,fallback)=>{try{const s=localStorage.getItem(key);return s?JSON.parse(s):fallback;}catch{return fallback;}};
+const safeWrite=(key,v)=>{try{localStorage.setItem(key,JSON.stringify(v));return true;}catch{return false;}};
+const stored=safeRead(STORE+'.settings',{});
+let mode=stored.mode==='slow'?'slow':'normal',gain=clamp(Number(stored.gain)||1,.7,1.3);
+let guide=typeof stored.guide==='boolean'?stored.guide:mode==='slow',sound=stored.sound===true;
+let records=safeRead(STORE+'.records',{});if(!records||typeof records!=='object'||Array.isArray(records))records={};
+let model=new TiltedPhysics({gain}),phase='menu',stateBeforePause='playing',lastWall=performance.now();
+let countdownLeft=0,fallReal=0,realRun=0,rafId=0,lastBonus=false,finishedRecord=false;
+let W=512,H=1070,scale=1,pivotY=782,groundY=985,baseY=1027,dpr=1;
+let glowL=0,glowR=0,perfAlpha=0,latestPress=null,presses=[],touchCount=0,storageOK=true;
+const pointers=new Map(),keys=new Map();
+let audio=null;
+function configKey(){return mode+':'+gain.toFixed(2);}
+function getRecord(){const r=records[configKey()];return r&&Number.isFinite(r.score)?r:null;}
+function currentInput(){
+  let l=false,r=false;
+  for(const p of pointers.values()){if(p.dir<0)l=true;else if(p.dir>0)r=true;}
+  for(const p of keys.values()){if(p.dir<0)l=true;else if(p.dir>0)r=true;}
+  return (r?1:0)-(l?1:0);
+}
+function sides(){let l=false,r=false;for(const p of [...pointers.values(),...keys.values()]){if(p.dir<0)l=true;else r=true;}return{l,r};}
+function saveSettings(){safeWrite(STORE+'.settings',{mode,gain,guide,sound});}
+function refreshUI(){
+  $('normalMode').setAttribute('aria-pressed',String(mode==='normal'));
+  $('slowMode').setAttribute('aria-pressed',String(mode==='slow'));
+  $('guideCheck').checked=guide;$('soundCheck').checked=sound;$('gainRange').value=String(gain);
+  $('gainOut').textContent=fmt(gain)+'×';
+  const rec=getRecord();$('bestPill').textContent=rec?'En iyi '+fmt(rec.score):'En iyi —';
+  const playing=phase==='playing'||phase==='falling'||phase==='countdown';
+  $('hudExtra').classList.toggle('show',guide&&playing);
+  $('pauseBtn').hidden=!(phase==='playing'||phase==='countdown'||phase==='falling');
+  $('runLabel').textContent=phase==='menu'?'VİDEO REFERANSLI · YAKLAŞIK FİZİK':
+    (mode==='slow'?'ÖĞRENME · ×0,60 TEMPO':'REFERANS · NORMAL TEMPO')+(Math.abs(gain-1)>.001?' · '+fmt(gain)+' HASSASİYET':'');
+  $('bottomhint').style.opacity=phase==='menu'||phase==='result'||phase==='paused'?'0':'1';
+}
+function resize(){
+  const b=canvas.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.max(1,Math.round(b.width*dpr));canvas.height=Math.max(1,Math.round(b.height*dpr));
+  scale=b.width/512;W=512;H=Math.max(440,b.height/Math.max(scale,.01));
+  pivotY=Math.max(235,H-288);baseY=H-43;groundY=H-86;
+  draw();
+}
+function audioInit(){
+  if(!sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    if(!audio)audio=new AC();if(audio.state==='suspended')audio.resume().catch(()=>{});
+  }catch{}
+}
+function tone(freq,duration=.07,when=0){
+  if(!sound||!audio||audio.state!=='running')return;
+  try{const t=audio.currentTime+when,o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.07,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+duration);
+    o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+duration+.015);
+  }catch{}
+}
+function finishPress(p,now,interrupted=false){
+  const sec=Math.max(0,(now-p.start)/1000),v={dir:p.dir,seconds:sec,interrupted};
+  presses.push(v);latestPress=v;
+}
+function clearInputs(now=performance.now(),record=true,interrupted=true){
+  for(const p of pointers.values())if(record)finishPress(p,now,interrupted);
+  for(const p of keys.values())if(record)finishPress(p,now,interrupted);
+  const ids=[...pointers.keys()];pointers.clear();keys.clear();
+  for(const id of ids)try{if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);}catch{}
+}
+function hideOverlays(){for(const id of ['menu','pauseOverlay','resultOverlay'])$(id).hidden=true;}
+function start(){
+  clearInputs(performance.now(),false);hideOverlays();
+  model=new TiltedPhysics({gain});phase='countdown';countdownLeft=.9;realRun=0;fallReal=0;
+  latestPress=null;presses=[];touchCount=0;lastBonus=false;finishedRecord=false;glowL=0;glowR=0;perfAlpha=0;
+  $('countdown').hidden=false;$('countN').textContent='3';lastWall=performance.now();
+  saveSettings();audioInit();refreshUI();$('liveStatus').textContent='Antrenman başlıyor.';
+}
+function menu(){
+  clearInputs(performance.now(),false);hideOverlays();$('countdown').hidden=true;phase='menu';$('menu').hidden=false;
+  model=new TiltedPhysics({gain});glowL=0;glowR=0;perfAlpha=0;lastWall=performance.now();refreshUI();
+}
+function pause(reason='Oyun ve skor duraklatıldı.'){
+  if(!['playing','countdown','falling'].includes(phase))return;
+  advance(performance.now(),false);
+  // A last physics step may already have finished the run.
+  if(!['playing','countdown','falling'].includes(phase))return;
+  stateBeforePause=phase;phase='paused';clearInputs(performance.now(),true);
+  $('countdown').hidden=true;$('pauseReason').textContent=reason;$('pauseOverlay').hidden=false;lastWall=performance.now();refreshUI();
+}
+function resume(){
+  if(phase!=='paused')return;clearInputs(performance.now(),false);$('pauseOverlay').hidden=true;
+  phase=stateBeforePause;lastWall=performance.now();$('countdown').hidden=phase!=='countdown';audioInit();refreshUI();
+}
+function finish(){
+  if(finishedRecord)return;finishedRecord=true;phase='result';clearInputs(performance.now(),true);
+  hideOverlays();$('resultOverlay').hidden=false;$('countdown').hidden=true;
+  const rec=getRecord(),isBest=!rec||model.score>rec.score+.0001;
+  if(isBest){records[configKey()]={score:model.score,time:model.t,date:new Date().toISOString()};storageOK=safeWrite(STORE+'.records',records);}
+  const pp=presses.filter(p=>!p.interrupted).map(p=>p.seconds).sort((a,b)=>a-b);
+  const med=pp.length?(pp.length%2?pp[(pp.length-1)/2]:(pp[pp.length/2-1]+pp[pp.length/2])/2):null;
+  const longest=presses.length?Math.max(...presses.map(p=>p.seconds)):0;
+  $('resultMode').textContent=mode==='normal'?'REFERANS · NORMAL TEMPO':'ÖĞRENME · ×0,60 TEMPO';
+  $('resultScore').textContent=fmt(model.score);$('resultTime').textContent=fmt(model.t)+' sn';
+  $('resultPerfect').textContent='%'+fmt(model.t?100*model.bonusTime/model.t:0,0);
+  $('resultTaps').textContent=String(touchCount);$('resultMedian').textContent=med===null?'—':fmt(med)+' sn';
+  $('newBest').hidden=!isBest;
+  const side=model.loss&&model.loss.side==='left'?'sol':'sağ';
+  let message=touchCount===0?'Bu turda dokunmadın. İlk küçük eğim, topun hareketiyle büyüyor; erken bir karşı dokunuş dene.':
+    'Top '+side+' uçtan ayrıldı. En uzun basışın '+fmt(longest)+' sn. Top merkeze yaklaşırken hâlâ hızlıysa, merkeze gelmesini beklemeden küçük bir karşı eğimle frenle.';
+  if(model.loss&&model.loss.side==='model')message='Fizik hesabı güvenlik sınırına takıldı. Tur durduruldu; yeniden başlatabilirsin.';
+  $('resultFeedback').textContent=message;
+  $('resultFoot').textContent=(mode==='slow'?'Yavaş modda gerçek süre: '+fmt(realRun)+' sn. ':'')+
+    (storageOK?'Rekor yalnız bu tarayıcıda; Playus sıralaması değildir.':'Tarayıcı kalıcı kayda izin vermedi; rekor bu oturumda tutuluyor.');
+  refreshUI();$('liveStatus').textContent='Tur tamamlandı. Skor '+fmt(model.score)+', oyun süresi '+fmt(model.t)+' saniye.';
+}
+function onLoss(){
+  phase='falling';fallReal=0;clearInputs(performance.now(),true);tone(190,.17);refreshUI();
+}
+function advance(now,autoPause=true){
+  let wall=Math.max(0,(now-lastWall)/1000);lastWall=now;
+  if(autoPause&&wall>.45&&['playing','countdown','falling'].includes(phase)){
+    stateBeforePause=phase;phase='paused';clearInputs(now,true);$('countdown').hidden=true;
+    $('pauseReason').textContent='Ekran akışı kesildiği için tur duraklatıldı. Skor atlatılmadı.';$('pauseOverlay').hidden=false;refreshUI();return;
+  }
+  wall=Math.min(wall,.45);
+  if(phase==='countdown'){
+    countdownLeft-=wall;$('countN').textContent=String(Math.max(1,Math.ceil(countdownLeft/.3)));
+    if(countdownLeft<=0){phase='playing';$('countdown').hidden=true;clearInputs(now,false);refreshUI();tone(530,.055);}
+    return;
+  }
+  if(phase==='playing'){
+    const tempo=mode==='slow'?.6:1,input=currentInput();
+    let remain=wall*tempo;
+    while(remain>1e-9&&model.alive){const h=Math.min(TILTED_CFG.maxStep,remain);model.step(h,input);realRun+=h/tempo;remain-=h;}
+    const b=model.multiplier===2;
+    if(b&&!lastBonus){tone(640,.05);tone(900,.07,.07);}lastBonus=b;
+    if(!model.alive)onLoss();
+  }else if(phase==='falling'){
+    fallReal+=wall;let remain=wall*(mode==='slow'?.6:1);
+    while(remain>1e-9){const h=Math.min(TILTED_CFG.maxStep,remain);model.stepFall(h);remain-=h;}
+    if(fallReal>2.2||(model.fall&&model.fall.y+pivotY>H+45))finish();
+  }
+  const s=sides(),k=1-Math.exp(-wall*23);
+  glowL+=(Number(s.l)-glowL)*k;glowR+=(Number(s.r)-glowR)*k;
+  perfAlpha+=((phase==='playing'&&model.multiplier===2?1:0)-perfAlpha)*(1-Math.exp(-wall*16));
+}
+function roundRect(x,y,w,h,r){
+  r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+}
+function text(txt,x,y,size,weight=800,color='#fff',align='center'){
+  ctx.fillStyle=color;ctx.font=weight+' '+size+'px ui-rounded,"Arial Rounded MT Bold",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(txt,x,y);
+}
+function draw(){
+  const cw=canvas.width,ch=canvas.height;
+  if(!cw||!ch)return;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#2e674d';ctx.fillRect(0,0,cw,ch);
+  const sy=ch/H,sx=cw/W;ctx.setTransform(sx,0,0,sy,0,0);
+  ctx.fillStyle='#2e674d';ctx.fillRect(0,0,W,H);
+  // Flat scene matches the supplied gameplay, not the decorative red-ball cover.
+  ctx.fillStyle='#507338';ctx.fillRect(0,groundY,W,H-groundY);
+  for(const [left,a] of [[true,glowL],[false,glowR]]){
+    if(a<.002)continue;
+    const grad=ctx.createLinearGradient(left?0:W,H*.5,W/2,H*.5);
+    grad.addColorStop(0,'rgba(229,244,146,'+(a*.22)+')');grad.addColorStop(1,'rgba(229,244,146,0)');
+    ctx.fillStyle=grad;roundRect(left?0:W/2,H*.24,W/2,H*.76,20);ctx.fill();
+  }
+  ctx.fillStyle='#b1cc86';ctx.beginPath();ctx.moveTo(W/2,pivotY+9);ctx.lineTo(W/2-84,baseY);ctx.lineTo(W/2+84,baseY);ctx.closePath();ctx.fill();
+  ctx.save();ctx.translate(W/2,pivotY);ctx.rotate(model.theta);
+  ctx.fillStyle='#b1cc86';ctx.fillRect(-model.length/2,-TILTED_CFG.beamHeight/2,model.length,TILTED_CFG.beamHeight);
+  ctx.fillStyle='#547236';ctx.fillRect(-TILTED_CFG.perfectHalf,-TILTED_CFG.beamHeight/2,TILTED_CFG.perfectHalf*2,TILTED_CFG.beamHeight);
+  ctx.restore();
+  const bx=W/2+(model.fall?model.fall.x:model.x),by=pivotY+(model.fall?model.fall.y:model.centreY());
+  ctx.fillStyle='#fdfc8d';ctx.beginPath();ctx.arc(bx,by,TILTED_CFG.radius,0,Math.PI*2);ctx.fill();
+  const scoreY=Math.min(H*.307,pivotY-230),bonusY=scoreY+132;
+  if(phase!=='menu'){
+    text(String(Math.floor(model.score+1e-7)),W/2,scoreY,70,950);
+    text('SKOR',W/2,scoreY-51,10,750,'#d0e0bc');
+    text('Süre '+fmt(model.t,1)+' sn',W/2,scoreY+57,16,650,'#d6e4c9');
+    if(perfAlpha>.01){ctx.globalAlpha=perfAlpha;text('MÜKEMMEL (2×)',W/2,bonusY,25,900,'#f5f8e9');ctx.globalAlpha=1;}
+    if(guide&&phase==='playing'){
+      const inside=Math.abs(model.contactPosition())<=TILTED_CFG.perfectHalf;
+      if(model.multiplier!==2){
+        text(inside?'MERKEZDE KAL':'MERKEZE DÖN',W/2,bonusY,18,800,'#dfebc4');
+        if(inside){
+          ctx.fillStyle='#173f2f';roundRect(W/2-44,bonusY+23,88,4,2);ctx.fill();
+          const frac=clamp(model.dwell/TILTED_CFG.perfectDwell,0,1);if(frac>.01){ctx.fillStyle='#e7efb1';roundRect(W/2-44,bonusY+23,88*frac,4,2);ctx.fill();}
+        }
+      }
+      const v=model.vx,arrowLength=clamp(Math.abs(v)*.8,0,56),sign=Math.sign(v);
+      if(Math.abs(v)>3){
+        const ay=by-38,ax0=bx,ax1=bx+arrowLength*sign;
+        ctx.strokeStyle='#fffac3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(ax0,ay);ctx.lineTo(ax1,ay);ctx.lineTo(ax1-sign*6,ay-4);ctx.moveTo(ax1,ay);ctx.lineTo(ax1-sign*6,ay+4);ctx.stroke();
+      }
+      text('Ok, topun gittiği yönü gösterir.',W/2,bonusY+59,11,600,'#bdd2b6');
+    }
+  }
+}
+function telemetry(now){
+  if(!guide)return;
+  let active=null;for(const p of [...pointers.values(),...keys.values()])if(!active||p.start>active.start)active=p;
+  const p=active?{dir:active.dir,seconds:(now-active.start)/1000}:latestPress;
+  $('pressStat').textContent=p?(p.dir<0?'Sol ':'Sağ ')+fmt(p.seconds)+' sn'+(active?' •':''):'—';
+  $('angleStat').textContent=fmt(Math.abs(model.theta)*180/Math.PI,1)+'° '+(model.theta<-.01?'←':model.theta>.01?'→':'');
+  const abs=Math.abs(model.vx);$('speedStat').textContent=abs<1.5?'Durgun':(model.vx<0?'← ':'→ ')+fmt(abs,0)+' br/sn';
+}
+function frame(now){advance(now);draw();telemetry(now);rafId=requestAnimationFrame(frame);}
+function directionAt(e){const b=canvas.getBoundingClientRect();return e.clientX<b.left+b.width/2?-1:1;}
+canvas.addEventListener('pointerdown',e=>{
+  if(phase!=='playing'||(e.pointerType==='mouse'&&e.button!==0))return;
+  e.preventDefault();const now=performance.now();advance(now);
+  if(phase!=='playing')return;
+  if(pointers.has(e.pointerId))return;
+  pointers.set(e.pointerId,{dir:directionAt(e),start:now});touchCount++;
+  try{canvas.setPointerCapture(e.pointerId);}catch{}audioInit();
+},{passive:false});
+canvas.addEventListener('pointermove',e=>{
+  const p=pointers.get(e.pointerId);if(!p||phase!=='playing')return;e.preventDefault();
+  const dir=directionAt(e);if(dir!==p.dir){const now=performance.now();advance(now);if(phase!=='playing'||!pointers.has(e.pointerId))return;p.dir=dir;} // Crossing halves is one continuous contact, not a new tap.
+},{passive:false});
+function releasePointer(e,cancelled=false){
+  const p=pointers.get(e.pointerId);if(!p)return;e.preventDefault();const now=performance.now();advance(now);
+  if(pointers.has(e.pointerId)){finishPress(p,now,cancelled);pointers.delete(e.pointerId);}
+  try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch{}
+}
+canvas.addEventListener('pointerup',e=>releasePointer(e),{passive:false});
+canvas.addEventListener('pointercancel',e=>releasePointer(e,true),{passive:false});
+canvas.addEventListener('lostpointercapture',e=>{
+  const p=pointers.get(e.pointerId);if(p){finishPress(p,performance.now(),true);pointers.delete(e.pointerId);}
+});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('dblclick',e=>e.preventDefault());
+window.addEventListener('keydown',e=>{
+  if(e.target&&['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const key=e.key.toLowerCase(),dir=(key==='arrowleft'||key==='a')?-1:(key==='arrowright'||key==='d')?1:0;
+  if(dir){
+    if(phase!=='playing')return;e.preventDefault();if(e.repeat||keys.has(key))return;
+    const now=performance.now();advance(now);if(phase!=='playing')return;keys.set(key,{dir,start:now});touchCount++;audioInit();
+  }else if(e.code==='Space'&&!e.repeat){
+    if(phase==='playing'||phase==='countdown'||phase==='falling'){e.preventDefault();pause();}
+    else if(phase==='paused'){e.preventDefault();resume();}
+  }else if(key==='r'&&!e.repeat&&phase!=='menu'){e.preventDefault();start();}
+  else if(key==='escape'&&!e.repeat){if(phase==='paused')resume();else pause();}
+},{passive:false});
+window.addEventListener('keyup',e=>{
+  const key=e.key.toLowerCase(),p=keys.get(key);if(!p)return;e.preventDefault();const now=performance.now();advance(now);
+  if(keys.has(key)){finishPress(p,now);keys.delete(key);}
+},{passive:false});
+window.addEventListener('blur',()=>{if(['playing','countdown','falling'].includes(phase))pause('Başka bir pencereye geçildiği için tur duraklatıldı.');});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pause('Uygulama arka plana geçtiği için tur duraklatıldı.');clearInputs(performance.now(),true);}lastWall=performance.now();});
+$('startBtn').addEventListener('click',start);$('retryBtn').addEventListener('click',start);$('restartPause').addEventListener('click',start);
+$('pauseBtn').addEventListener('click',()=>pause());$('resumeBtn').addEventListener('click',resume);
+$('menuPause').addEventListener('click',menu);$('resultMenuBtn').addEventListener('click',menu);
+for(const btn of [$('normalMode'),$('slowMode')])btn.addEventListener('click',()=>{mode=btn.dataset.mode;guide=mode==='slow';refreshUI();saveSettings();});
+$('guideCheck').addEventListener('change',e=>{guide=e.target.checked;refreshUI();saveSettings();});
+$('soundCheck').addEventListener('change',e=>{sound=e.target.checked;audioInit();saveSettings();if(sound)tone(640,.06);});
+$('gainRange').addEventListener('input',e=>{gain=clamp(Number(e.target.value)||1,.7,1.3);refreshUI();saveSettings();});
+window.addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+// Opt-in inspection interface for QA only. No automatic player or remote calls.
+if(new URLSearchParams(location.search).get('test')==='1'){
+  window.__TILTED_TEST__={
+    get state(){return{phase,mode,gain,input:currentInput(),touchCount,presses:[...presses],model:model.snapshot(),W,H,pivotY};},
+    start,menu,pause,resume,
+    beginNow(){start();phase='playing';countdownLeft=0;$('countdown').hidden=true;lastWall=performance.now();refreshUI();},
+    setState(v){for(const k of ['t','score','theta','omega','x','vx','dwell','bonusTime','insideTime'])if(Number.isFinite(v[k]))model[k]=v[k];model.length=Math.max(model.cfg.beamMin,model.cfg.beamStart-model.cfg.shrinkRate*Math.max(0,model.t-model.cfg.shrinkStart));draw();},
+    kill(side='right'){model.detach(side);onLoss();},
+    Physics:TiltedPhysics,config:TILTED_CFG,
+    stopAnimation(){cancelAnimationFrame(rafId);},
+    render:draw
+  };
+}
+refreshUI();resize();lastWall=performance.now();rafId=requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
